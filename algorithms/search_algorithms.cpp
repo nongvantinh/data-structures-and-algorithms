@@ -1,14 +1,16 @@
 #include "search_algorithms.h"
 
-int clrs::linear_search(const std::vector<double>& v, const double& value, int from_index, int to_index)
+using namespace algorithms;
+
+int search::linear_search(const std::vector<double>& arr,int from_index, int to_index, double value)
 {
 	int result(-1);
-
 	for (size_t i(from_index); i != to_index; ++i)
 	{
-		if (v[i] == value)
+		if (arr[i] == value)
 		{
-			return i;
+			result = i;
+			break;
 		}
 	}
 	return result;

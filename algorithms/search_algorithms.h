@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
-namespace clrs
+
+namespace algorithms 
 {
-	int linear_search(const std::vector<double>& v,const double& value, int from_index, int to_index);
+	namespace search
+	{
+		int linear_search(const std::vector<double>& v,int from_index, int to_index, double value);
+	}
 }
