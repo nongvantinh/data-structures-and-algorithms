@@ -44,7 +44,7 @@ void sort::selection_sort(std::vector<double>& arr, const int& from_index, const
 	switch(oper)
 	{
 		case '<':
-			for(size_t i(from_index); i != to_index; ++i)
+			for(size_t i(from_index); i != to_index - 1; ++i)
 			{
 				size_t index(i);
 				for(size_t k(i + 1); k != to_index; ++k)
@@ -63,7 +63,7 @@ void sort::selection_sort(std::vector<double>& arr, const int& from_index, const
 			}
 			break;
 		case '>':
-			for(size_t i(from_index); i != to_index; ++i)
+			for(size_t i(from_index); i != to_index - 1; ++i)
 			{
 				size_t index(i);
 				for(size_t k(i + 1); k != to_index; ++k)
