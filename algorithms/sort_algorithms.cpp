@@ -1,5 +1,7 @@
 #include "sort_algorithms.h"
 
+#include <limits>
+
 using namespace algorithms;
 
 void sort::insertion_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
@@ -126,35 +128,71 @@ void sort::bubble_sort(std::vector<double>& arr, const int& from_index, const in
 
 void sort::merge_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
-	return;
 	if (from_index < to_index - 1)
 	{
-		size_t mid = ((from_index + to_index - 1) / 2);
-		merge_sort(arr, from_index, mid + 1, oper);
-		merge_sort(arr, mid + 1, to_index, oper);
-		merge(arr, from_index, mid, to_index - 1, oper);
+		size_t mid_index = (from_index + to_index) / 2;
+		merge_sort(arr, from_index, mid_index, oper);
+		merge_sort(arr, mid_index, to_index, oper);
+		merge(arr, from_index, mid_index, to_index, oper);
 	}
-
 }
 
-void sort::merge(std::vector<double>& v, int p, int q, int r, char oper)
+void sort::merge(std::vector<double>& arr,const int& from_index,const int& mid_index,const int& to_index,const char& oper)
 {
-	std::vector<double> result(v);
-	size_t n1 = q - p + 1;
-	size_t n2 = r - q;
-	std::vector<double> left(n1 + 1);
-	std::vector<double> right(n2 + 1);
-	left[left.size() - 1] = 999999;
-	right[right.size() - 1] = 999999;
+	size_t arr1_size = mid_index - from_index; 
+	size_t arr2_size = to_index - mid_index; 
+	std::vector<double> left(arr1_size + 1);
+	std::vector<double> right(arr2_size + 1);
 
-	for (size_t i(0); i < n1; ++i)
+	for (size_t i(0); i < arr1_size; ++i)
 	{
-		left[i] = result[p + i];
+		left[i] = arr[from_index + i];
 	}
 
-	for (size_t i(0); i < n2; ++i)
+	for (size_t i(0); i < arr2_size; ++i)
 	{
-		right[i] = result[q + 1 + i];
+		right[i] = arr[mid_index + i];
 	}
-	//for (size_t m(p), i(0); )
+	switch(oper)
+	{
+		case '<':
+
+			left[arr1_size] = std::numeric_limits<double>::infinity();
+			right[arr2_size] = std::numeric_limits<double>::infinity();
+
+			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
+			{
+				if(i < arr1_size && left[i] <= right[m])
+				{
+					arr[k] = left[i];
+					++i;
+				}
+				else
+				{
+					arr[k] = right[m];
+					++m;
+				}
+			}
+
+			break;
+		case '>':
+
+			left[arr1_size] = -std::numeric_limits<double>::infinity();
+			right[arr2_size] = -std::numeric_limits<double>::infinity();
+
+			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
+			{
+				if(i < arr1_size && left[i] >= right[m])
+				{
+					arr[k] = left[i];
+					++i;
+				}
+				else
+				{
+					arr[k] = right[m];
+					++m;
+				}
+			}
+			break;
+	}
 }
