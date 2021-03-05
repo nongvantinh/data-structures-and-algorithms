@@ -2,9 +2,7 @@
 
 #include <limits>
 
-using namespace algorithms;
-
-void sort::insertion_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
+void algorithms::sort::insertion_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
 	switch (oper)
 	{
@@ -41,7 +39,7 @@ void sort::insertion_sort(std::vector<double>& arr, const int& from_index, const
 	}
 }
 
-void sort::selection_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
+void algorithms::sort::selection_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
 	switch(oper)
 	{
@@ -89,7 +87,7 @@ void sort::selection_sort(std::vector<double>& arr, const int& from_index, const
 	}
 }
 
-void sort::bubble_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
+void algorithms::sort::bubble_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
 	switch(oper)
 	{
@@ -126,7 +124,7 @@ void sort::bubble_sort(std::vector<double>& arr, const int& from_index, const in
 	}
 }
 
-void sort::merge_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
+void algorithms::sort::merge_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
 	if (from_index < to_index - 1)
 	{
@@ -137,7 +135,7 @@ void sort::merge_sort(std::vector<double>& arr, const int& from_index, const int
 	}
 }
 
-void sort::merge(std::vector<double>& arr,const int& from_index,const int& mid_index,const int& to_index,const char& oper)
+void algorithms::sort::merge(std::vector<double>& arr,const int& from_index,const int& mid_index,const int& to_index,const char& oper)
 {
 	size_t arr1_size = mid_index - from_index; 
 	size_t arr2_size = to_index - mid_index; 
@@ -157,12 +155,12 @@ void sort::merge(std::vector<double>& arr,const int& from_index,const int& mid_i
 	{
 		case '<':
 
-			left[arr1_size] = std::numeric_limits<double>::infinity();
-			right[arr2_size] = std::numeric_limits<double>::infinity();
+		left[arr1_size] = std::numeric_limits<double>::infinity();
+		right[arr2_size] = std::numeric_limits<double>::infinity();
 
 			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
 			{
-				if(i < arr1_size && left[i] <= right[m])
+				if(left[i] <= right[m])
 				{
 					arr[k] = left[i];
 					++i;
@@ -182,7 +180,7 @@ void sort::merge(std::vector<double>& arr,const int& from_index,const int& mid_i
 
 			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
 			{
-				if(i < arr1_size && left[i] >= right[m])
+				if(left[i] >= right[m])
 				{
 					arr[k] = left[i];
 					++i;
