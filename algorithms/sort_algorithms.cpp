@@ -1,7 +1,5 @@
 #include "sort_algorithms.h"
 
-#include <limits>
-
 void algorithms::sort::insertion_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
 	switch (oper)
@@ -154,13 +152,19 @@ void algorithms::sort::merge(std::vector<double>& arr,const int& from_index,cons
 	switch(oper)
 	{
 		case '<':
-
-		left[arr1_size] = std::numeric_limits<double>::infinity();
-		right[arr2_size] = std::numeric_limits<double>::infinity();
-
 			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
 			{
-				if(left[i] <= right[m])
+				if(arr1_size <= i)
+				{
+					arr[k] = right[m];
+					++m;
+				}
+				else if(arr2_size <= m)
+				{
+					arr[k] = left[i];
+					++i;
+				}
+				else if(left[i] <= right[m])
 				{
 					arr[k] = left[i];
 					++i;
@@ -174,13 +178,19 @@ void algorithms::sort::merge(std::vector<double>& arr,const int& from_index,cons
 
 			break;
 		case '>':
-
-			left[arr1_size] = -std::numeric_limits<double>::infinity();
-			right[arr2_size] = -std::numeric_limits<double>::infinity();
-
 			for(size_t k(from_index), i(0), m(0); k < to_index; ++k)
 			{
-				if(left[i] >= right[m])
+				if(arr1_size <= i)
+				{
+					arr[k] = right[m];
+					++m;
+				}
+				else if(arr2_size <= m)
+				{
+					arr[k] = left[i];
+					++i;
+				}
+				else if(left[i] >= right[m])
 				{
 					arr[k] = left[i];
 					++i;
