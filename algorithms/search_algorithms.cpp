@@ -1,5 +1,5 @@
 #include "search_algorithms.h"
-
+#include "facilities.h"
 
 int algorithms::search::linear_search(const std::vector<double>& arr, const int& from_index, const int& to_index, const double& value)
 {
@@ -23,6 +23,9 @@ int algorithms::search::binary_search(const std::vector<double>& arr, const int&
 	while(low <= high)
 	{
 		mid = (low + high) / 2;
+//		algorithms::print(arr);
+//		std::cout <<"arr.size(): "<< arr.size() << "\tlow: " << low <<  "\tmid: " << mid << "\thigh: " << high << std::endl;
+//		std::cout << "from_index: " << from_index << "\tto_index: " << to_index << "\tvalue:" << value << std::endl;
 		if(mid == arr.size())
 			return -1;
 		else if(value == arr[mid])

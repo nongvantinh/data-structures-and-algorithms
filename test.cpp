@@ -39,9 +39,8 @@ bool test_insertion_sort()
 	std::vector<double> v(10000);
 	for (size_t i = 0; i < v.size(); ++i)
 	{
-		v[i] = rand() % 50000 - 25000;
+		v[i] = rand() % (50000 - -50000 + 1) + -50000;
 	}
-
 
 	char oper = '>';
 	sort::insertion_sort(v, 0, v.size(), oper);
@@ -117,7 +116,7 @@ bool test_merge_sort()
 	std::vector<double> v(10000);
 	for (size_t i = 0; i < v.size(); ++i)
 	{
-		v[i] = rand() % 50000 - 25000;
+		v[i] = rand() % (50000 - -50000 + 1) + -50000;
 	}
 
 	char oper = '>';
@@ -141,17 +140,38 @@ bool test_merge_sort()
 
 bool test_linear_search()
 {
-	std::vector<double> v{ 1,6,7,5,2,6 };
-	double value(v[5]);
-	int index = algorithms::search::linear_search(v, 0, v.size(), value);
-	return index != -1;
+	std::vector<double> v;
+	for(size_t i(0); i < 1000; ++i)
+	{
+		v.resize(i + 1);
+		for(size_t index(0); index != v.size(); ++index)
+		{
+			v[index] = rand() % (50000 - -50000 + 1) + -50000;
+		}
+		double value(v[rand() % ((v.size()-1) - 0 + 1) + 0]);
+		int index = algorithms::search::linear_search(v, 0, v.size(), value);
+		if(index == -1)
+			return false;
+	}
+	return true;
 }
 
 bool test_binary_search()
 {
-	std::vector<double> v{ 1,6,7,5,2,6 };
-	double value(v[5]);
-	int index = algorithms::search::binary_search(v, 0, v.size(), value);
-	return index != -1;
+	std::vector<double> v;
+	for(size_t i(0); i < 1000; ++i)
+	{
+		v.resize(i + 1);
+		for(size_t index(0); index != v.size(); ++index)
+		{
+			v[index] = rand() % (50000 - -50000 + 1) + -50000;
+		}
+		algorithms::sort::merge_sort(v, 0, v.size(), '<');
+		double value(v[rand() % ((v.size()-1) - 0 + 1) + 0]);
+		int index = algorithms::search::binary_search(v, 0, v.size(), value);
+		if(index == -1)
+			return false;
+	}
+	return true;
 }
 
