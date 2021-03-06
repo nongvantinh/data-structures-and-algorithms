@@ -8,3 +8,4 @@ bool test_bubble_sort();
 bool test_merge_sort();
 
 bool test_linear_search();
+bool test_binary_search();

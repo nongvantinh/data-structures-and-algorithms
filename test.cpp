@@ -27,6 +27,10 @@ void test_sort_algorithms()
 
 void test_search_algorithms()
 {
+	std::cout << "---------------------------------------------\n";
+	std::cout << "running test_search_algorithms.\n";
+	std::cout << "test_linear_search: " << (test_linear_search() ? "OK." : "Failed.") << std::endl;
+	std::cout << "test_binary_search: " << (test_binary_search() ? "OK." : "Failed.") << std::endl;
 
 }
 
@@ -139,6 +143,15 @@ bool test_linear_search()
 {
 	std::vector<double> v{ 1,6,7,5,2,6 };
 	double value(v[5]);
-	int index = search::linear_search(v, value, 0, v.size());
+	int index = algorithms::search::linear_search(v, 0, v.size(), value);
 	return index != -1;
 }
+
+bool test_binary_search()
+{
+	std::vector<double> v{ 1,6,7,5,2,6 };
+	double value(v[5]);
+	int index = algorithms::search::binary_search(v, 0, v.size(), value);
+	return index != -1;
+}
+
