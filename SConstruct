@@ -1,15 +1,19 @@
 #!python
 import os
+
 opts = Variables([], ARGUMENTS)        
 
 # Gets the standard flags, CC, CCX, ...
 env = DefaultEnvironment()
-
+try:
+    os.mkdir(os.getcwd()+'/bin/')
+except OSError as error:
+    print(error)
 # Define scons build options.
 opts.Add(EnumVariable('build', help="Build project", default='debug', allowed_values=['d', 'debug', 'r', 'release']))
-opts.Add(EnumVariable('platform', help="Build for platform", default='', allowed_values=['', 'windows', 'linux', 'mac']))
+opts.Add(EnumVariable('platform', help="Build for platform", default='linux', allowed_values=['', 'windows', 'linux', 'mac']))
 opts.Add(BoolVariable('use_llvm', help=" Use LLVM/ Clang compiler", default='no'))
-opts.Add(PathVariable('target_path', help="The path where the binary is stored.", default='bin/'))
+opts.Add(PathVariable('target_path', help="The path where the ary is stored.", default='bin/'))
 opts.Add(PathVariable('target_name', help="The library name", default='dsaa', validator=PathVariable.PathAccept))
 
 # Local dependencies path.
