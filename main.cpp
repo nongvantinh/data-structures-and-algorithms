@@ -5,6 +5,6 @@
 int main()
 {
 	srand(time(NULL));
-	test();
+	algorithms::test::test();
 }
 
