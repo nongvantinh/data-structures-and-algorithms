@@ -124,7 +124,11 @@ void algorithms::sort::bubble_sort(std::vector<double>& arr, const int& from_ind
 
 void algorithms::sort::merge_sort(std::vector<double>& arr, const int& from_index, const int& to_index, const char& oper)
 {
-	if (from_index < to_index - 1)
+	if(to_index - from_index <= 42)
+	{
+		algorithms::sort::insertion_sort(arr, from_index, to_index, oper);
+	}
+	else 
 	{
 		size_t mid_index = (from_index + to_index) / 2;
 		merge_sort(arr, from_index, mid_index, oper);
