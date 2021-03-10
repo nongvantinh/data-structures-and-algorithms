@@ -128,7 +128,7 @@ void algorithms::sort::merge_sort(std::vector<double>& arr, const int& from_inde
 	{
 		algorithms::sort::insertion_sort(arr, from_index, to_index, oper);
 	}
-	else 
+	else if(from_index < to_index - 1)
 	{
 		size_t mid_index = (from_index + to_index) / 2;
 		merge_sort(arr, from_index, mid_index, oper);
