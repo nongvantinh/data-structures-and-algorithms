@@ -14,7 +14,10 @@ namespace dsaa
 
 		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
 		FIterator buble_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
-			}
+		
+		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
+		FIterator selection_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
+	}
 }
 
 template <typename IIterator, typename SortBy>
@@ -47,6 +50,26 @@ FIterator dsaa::sort::buble_sort(FIterator p_first, FIterator p_last, Compare p_
 			if (p_compare(*k, *p_first))
 				std::swap(*k, *p_first);
 		}
+		++p_first;
+	}
+	return p_first;
+}
+
+template <typename FIterator, typename Compare>
+FIterator dsaa::sort::selection_sort(FIterator p_first, FIterator p_last, Compare p_compare)
+{
+	while (p_first != p_last)
+	{
+		FIterator key(p_first), k(p_first);
+		++k;
+
+		for (; k != p_last; ++k)
+		{
+			if (p_compare(*k, *key))
+				key = k;
+		}
+		if (key != p_first)
+			std::swap(*key, *p_first);
 		++p_first;
 	}
 	return p_first;
