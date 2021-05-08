@@ -14,12 +14,18 @@ namespace dsaa
 
 		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
 		FIterator buble_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
-		
+
 		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
 		FIterator selection_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
 
 		template <typename BIterator, typename Compare = std::less<typename std::iterator_traits<BIterator>::value_type>>
 		BIterator insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare = Compare());
+
+		template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+		RIterator merge_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+		template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+		RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
 	}
 }
 
@@ -112,5 +118,64 @@ BIterator dsaa::sort::insertion_sort(BIterator p_first, BIterator p_last, Compar
 			*(index) = key; // We met the begining.
 	}
 	return i;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::sort::merge_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_first;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator mid_index(p_first + (p_last - p_first) / 2);
+		merge_sort(p_first, mid_index, p_compare);
+		merge_sort(mid_index, p_last, p_compare);
+		merge(p_first, mid_index, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::sort::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_first;
+	size_t arr1_size = p_mid - p_first;
+	size_t arr2_size = p_last - p_mid;
+	std::vector<std::iterator_traits<RIterator>::value_type> left(arr1_size);
+	std::vector<std::iterator_traits<RIterator>::value_type> right(arr2_size);
+
+	for (size_t i(0); i < arr1_size; ++i)
+		left[i] = *(p_first + i);
+
+	for (size_t i(0); i < arr2_size; ++i)
+		right[i] = *(p_mid + i);
+
+	size_t i(0), m(0);
+	for (RIterator k(p_first); k != p_last; ++k)
+	{
+		if (arr1_size <= i)
+		{
+			*k = right[m];
+			++m;
+		}
+		else if (arr2_size <= m)
+		{
+			*k = left[i];
+			++i;
+		}
+		else if (p_compare(left[i], right[m]))
+		{
+			*k = left[i];
+			++i;
+		}
+		else
+		{
+			*k = right[m];
+			++m;
+		}
+	}
+	return p_last;
 }
 #endif // ! SORT_H
