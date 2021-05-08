@@ -17,6 +17,9 @@ namespace dsaa
 		
 		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
 		FIterator selection_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
+
+		template <typename BIterator, typename Compare = std::less<typename std::iterator_traits<BIterator>::value_type>>
+		BIterator insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare = Compare());
 	}
 }
 
@@ -73,5 +76,41 @@ FIterator dsaa::sort::selection_sort(FIterator p_first, FIterator p_last, Compar
 		++p_first;
 	}
 	return p_first;
+}
+
+template <typename BIterator, typename Compare>
+BIterator dsaa::sort::insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_first;
+
+	BIterator i(p_first), index(p_first), succ_index(p_first);
+	++i;
+	for (; i != p_last; ++i)
+	{
+		auto key = *i;
+
+		// Step back.
+		index = i;
+		--index;
+
+		succ_index = p_first; // Reset succ_index.
+		while (p_compare(key, *index))
+		{
+			succ_index = index;
+			*(++succ_index) = *index; // Move data to the right.
+
+			if (index == p_first) // Assume we can not move past the begining.
+				break;
+			--index;
+		}
+		if (succ_index == p_first) // Nothing happened.
+			continue;
+		if (index != p_first)
+			*(++index) = key; // Offset for the last --index;
+		else
+			*(index) = key; // We met the begining.
+	}
+	return i;
 }
 #endif // ! SORT_H
