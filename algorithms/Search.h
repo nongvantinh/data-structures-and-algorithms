@@ -3,23 +3,20 @@
 
 namespace dsaa
 {
-	namespace search
-	{
-		template<typename IIterator, typename Value>
-		IIterator linear_search(IIterator p_first, IIterator p_last, Value p_value);
-		template <typename IIterator, typename Predicate>
-		IIterator linear_search_if(IIterator p_first, IIterator p_last, Predicate p_predicate);
+	template <typename IIterator, typename Value>
+	IIterator linear_search(IIterator p_first, IIterator p_last, Value p_value);
+	template <typename IIterator, typename Predicate>
+	IIterator linear_search_if(IIterator p_first, IIterator p_last, Predicate p_predicate);
 
-		template <typename RIterator, typename Value>
-		RIterator binary_search(RIterator p_first, RIterator p_last, Value p_value);
+	template <typename RIterator, typename Value>
+	RIterator binary_search(RIterator p_first, RIterator p_last, Value p_value);
 
-		template <typename RIterator, typename OrderBy, typename Predicate>
-		RIterator binary_search(RIterator p_first, RIterator p_last, OrderBy p_orderBy, Predicate p_predicate);
-	}
+	template <typename RIterator, typename OrderBy, typename Predicate>
+	RIterator binary_search(RIterator p_first, RIterator p_last, OrderBy p_orderBy, Predicate p_predicate);
 }
 
-template<typename IIterator, typename Value>
-IIterator dsaa::search::linear_search(IIterator p_first, IIterator p_last, Value p_value)
+template <typename IIterator, typename Value>
+IIterator dsaa::linear_search(IIterator p_first, IIterator p_last, Value p_value)
 {
 	while (p_first != p_last && *p_first != p_value)
 		++p_first;
@@ -28,7 +25,7 @@ IIterator dsaa::search::linear_search(IIterator p_first, IIterator p_last, Value
 }
 
 template <typename IIterator, typename Predicate>
-IIterator dsaa::search::linear_search_if(IIterator p_first, IIterator p_last, Predicate p_predicate)
+IIterator dsaa::linear_search_if(IIterator p_first, IIterator p_last, Predicate p_predicate)
 {
 	while (p_first != p_last && !p_predicate(*p_first))
 		++p_first;
@@ -37,7 +34,7 @@ IIterator dsaa::search::linear_search_if(IIterator p_first, IIterator p_last, Pr
 }
 
 template <typename RIterator, typename Value>
-RIterator dsaa::search::binary_search(RIterator p_first, RIterator p_last, Value p_value)
+RIterator dsaa::binary_search(RIterator p_first, RIterator p_last, Value p_value)
 {
 	RIterator low(p_first), mid(p_first), high(p_last);
 
@@ -61,15 +58,13 @@ RIterator dsaa::search::binary_search(RIterator p_first, RIterator p_last, Value
 				high = mid;
 			else
 				low = mid;
-
 		}
 	}
 	return p_last;
 }
 
-
 template <typename RIterator, typename OrderBy, typename Predicate>
-RIterator dsaa::search::binary_search(RIterator p_first, RIterator p_last, OrderBy p_orderBy, Predicate p_predicate)
+RIterator dsaa::binary_search(RIterator p_first, RIterator p_last, OrderBy p_orderBy, Predicate p_predicate)
 {
 	RIterator low(p_first), mid(p_first), high(p_last);
 
@@ -93,7 +88,6 @@ RIterator dsaa::search::binary_search(RIterator p_first, RIterator p_last, Order
 				high = mid;
 			else
 				low = mid;
-
 		}
 	}
 	return p_last;

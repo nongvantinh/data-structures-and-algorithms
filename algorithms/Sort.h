@@ -7,30 +7,27 @@
 
 namespace dsaa
 {
-	namespace sort
-	{
-		template <typename IIterator, typename SortBy = std::less_equal<typename std::iterator_traits<IIterator>::value_type>>
-		bool is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by);
+	template <typename IIterator, typename SortBy = std::less_equal<typename std::iterator_traits<IIterator>::value_type>>
+	bool is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by);
 
-		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
-		FIterator buble_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
+	template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
+	FIterator buble_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
 
-		template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
-		FIterator selection_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
+	template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
+	FIterator selection_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
 
-		template <typename BIterator, typename Compare = std::less<typename std::iterator_traits<BIterator>::value_type>>
-		BIterator insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare = Compare());
+	template <typename BIterator, typename Compare = std::less<typename std::iterator_traits<BIterator>::value_type>>
+	BIterator insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare = Compare());
 
-		template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
-		RIterator merge_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator merge_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
-		template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
-		RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
-	}
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename IIterator, typename SortBy>
-bool dsaa::sort::is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by)
+bool dsaa::is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by)
 {
 	if (p_first == p_last)
 		return true;
@@ -47,7 +44,7 @@ bool dsaa::sort::is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by
 }
 
 template <typename FIterator, typename Compare>
-FIterator dsaa::sort::buble_sort(FIterator p_first, FIterator p_last, Compare p_compare)
+FIterator dsaa::buble_sort(FIterator p_first, FIterator p_last, Compare p_compare)
 {
 	while (p_first != p_last)
 	{
@@ -65,7 +62,7 @@ FIterator dsaa::sort::buble_sort(FIterator p_first, FIterator p_last, Compare p_
 }
 
 template <typename FIterator, typename Compare>
-FIterator dsaa::sort::selection_sort(FIterator p_first, FIterator p_last, Compare p_compare)
+FIterator dsaa::selection_sort(FIterator p_first, FIterator p_last, Compare p_compare)
 {
 	while (p_first != p_last)
 	{
@@ -85,7 +82,7 @@ FIterator dsaa::sort::selection_sort(FIterator p_first, FIterator p_last, Compar
 }
 
 template <typename BIterator, typename Compare>
-BIterator dsaa::sort::insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare)
+BIterator dsaa::insertion_sort(BIterator p_first, BIterator p_last, Compare p_compare)
 {
 	if (p_first == p_last)
 		return p_first;
@@ -121,7 +118,7 @@ BIterator dsaa::sort::insertion_sort(BIterator p_first, BIterator p_last, Compar
 }
 
 template <typename RIterator, typename Compare>
-RIterator dsaa::sort::merge_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+RIterator dsaa::merge_sort(RIterator p_first, RIterator p_last, Compare p_compare)
 {
 	if (p_first == p_last)
 		return p_first;
@@ -137,7 +134,7 @@ RIterator dsaa::sort::merge_sort(RIterator p_first, RIterator p_last, Compare p_
 }
 
 template <typename RIterator, typename Compare>
-RIterator dsaa::sort::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare)
+RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare)
 {
 	if (p_first == p_last)
 		return p_first;
