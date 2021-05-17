@@ -1,5 +1,7 @@
-#ifndef SEARCH_H
-#define SEARCH_H
+#ifndef DSAA_SEARCH_H
+#define DSAA_SEARCH_H
+
+#include <iostream>
 
 namespace dsaa
 {
@@ -38,14 +40,22 @@ RIterator dsaa::binary_search(RIterator p_first, RIterator p_last, Value p_value
 {
 	RIterator low(p_first), mid(p_first), high(p_last);
 
-	while (low <= high)
+	while (low < high)
 	{
-		mid = low + (high - low) / 2;
-		if (mid == p_last)
-			return p_last;
-		else if (*mid == p_value)
+		mid = low + ((high - low) / 2);
+		if (*mid == p_value)
 			return mid;
-		else if (*p_first < *(p_last - 1))
+		// Corner case. Value not found in list.
+		if (mid + 1 == high)
+		{
+			if (*low == p_value)
+				return low;
+			if (*high == p_value)
+				return high;
+			return p_last;
+		}
+
+		if (*p_first <= *(p_last - 1))
 		{
 			if (*mid < p_value)
 				low = mid;
@@ -93,4 +103,4 @@ RIterator dsaa::binary_search(RIterator p_first, RIterator p_last, OrderBy p_ord
 	return p_last;
 }
 
-#endif SEARCH_H
+#endif // !DSAA_SEARCH_H
