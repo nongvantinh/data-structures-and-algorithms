@@ -140,8 +140,8 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 		return p_first;
 	size_t arr1_size = p_mid - p_first;
 	size_t arr2_size = p_last - p_mid;
-	std::vector<std::iterator_traits<RIterator>::value_type> left(arr1_size);
-	std::vector<std::iterator_traits<RIterator>::value_type> right(arr2_size);
+	std::vector<typename std::iterator_traits<RIterator>::value_type> left(arr1_size);
+	std::vector<typename std::iterator_traits<RIterator>::value_type> right(arr2_size);
 
 	for (size_t i(0); i < arr1_size; ++i)
 		left[i] = *(p_first + i);
@@ -175,4 +175,4 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 	}
 	return p_last;
 }
-#endif // ! SORT_H
+#endif // !SORT_H
