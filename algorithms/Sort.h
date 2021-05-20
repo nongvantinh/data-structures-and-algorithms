@@ -1,5 +1,5 @@
-#ifndef SORT_H
-#define SORT_H
+#ifndef DSAA_SORT_H
+#define DSAA_SORT_H
 
 #include <memory>
 #include <functional>
@@ -175,4 +175,4 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 	}
 	return p_last;
 }
-#endif // !SORT_H
+#endif // !DSAA_SORT_H
