@@ -23,11 +23,11 @@ struct verify;
 class tester
 {
 	friend verify;
-	static int livecount;
 	const tester *self;
 	double m_value;
 
 public:
+	static int livecount;
 	tester() : self(this), m_value(0) { ++livecount; }
 	tester(double p_value) : self(this), m_value(p_value) { ++livecount; }
 	tester(const tester &p_other) noexcept : self(this), m_value(p_other.m_value) { ++livecount; }
