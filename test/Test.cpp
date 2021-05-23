@@ -1,5 +1,9 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "Catch2/Catch.hpp"
+#include "test/Test.h"
 
-// warning: Do not write your tests in header files!/
-// It causes compile time increase greatly, because the way Catch2 single header file work.
+unsigned int dsaa::random_range(unsigned int start, unsigned int end)
+{
+    std::random_device device;
+    std::mt19937 engine(device());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(start, end); // distribution in range [1, 6]
+    return dist6(engine);
+}
