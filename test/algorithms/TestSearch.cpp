@@ -60,7 +60,7 @@ TEST_CASE("test binary search", "[search]")
 	{
 		dsaa::Array<int> arr(222);
 		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = random_range();
+			arr[i] = dsaa::random_range();
 		std::sort(arr.begin(), arr.end());
 		REQUIRE((*dsaa::binary_search(arr.begin(), arr.end(), 75) == 75 || dsaa::binary_search(arr.begin(), arr.end(), 75) == arr.end()));
 	}
@@ -119,14 +119,14 @@ TEST_CASE("test linear search", "[search]")
 	{
 		dsaa::Array<int> arr(222);
 		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = random_range();
+			arr[i] = dsaa::random_range();
 		REQUIRE((*dsaa::linear_search(arr.begin(), arr.end(), 75) == 75 || dsaa::linear_search(arr.begin(), arr.end(), 75) == arr.end()));
 	}
 	SECTION("Some sequences with random elements (but still ordered)..")
 	{
 		dsaa::Array<int> arr(222);
 		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = random_range();
+			arr[i] = dsaa::random_range();
 		std::sort(arr.begin(), arr.end());
 
 		REQUIRE((*dsaa::linear_search(arr.begin(), arr.end(), 75) == 75 || dsaa::linear_search(arr.begin(), arr.end(), 75) == arr.end()));
