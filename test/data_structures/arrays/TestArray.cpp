@@ -702,6 +702,28 @@ TEST_CASE("Array insert last methods", "[array]")
         REQUIRE(arr.size() == size);
     }
 
+    SECTION("Insert last by std::initializer_list ")
+    {
+        std::initializer_list<tester> list{2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4,
+                                           2.4};
+
+        arr.insert_last(list);
+        REQUIRE(arr.capacity() == list.size());
+        REQUIRE(arr.size() == list.size());
+
+        auto list_iter(list.begin());
+        for(auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
+            REQUIRE(*iter == *list_iter);
+    }
+
     SECTION("Insert last by a pair of IIterator")
     {
         std::initializer_list<tester> list{2.4,
@@ -716,8 +738,12 @@ TEST_CASE("Array insert last methods", "[array]")
                                            2.4};
 
         arr.insert_last(list.begin(), list.end());
-        REQUIRE(arr.capacity() >= list.size());
+        REQUIRE(arr.capacity() == list.size());
         REQUIRE(arr.size() == list.size());
+                auto list_iter(list.begin());
+        for(auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
+            REQUIRE(*iter == *list_iter);
+
     }
 }
 
