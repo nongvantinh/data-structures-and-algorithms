@@ -64,6 +64,10 @@ if env['platform'] == '':
 
 if env['bits'] == '':
     env['bits'] = struct.calcsize("P") * 8
+if env['build'] == 'd':
+    env['build'] = 'debug'
+if env['build'] == 'r':
+    env['build'] = 'release'
 
 if env['build'] in ('d', 'debug'):
     # Debugging Your Program.
@@ -137,12 +141,8 @@ if env['target'] == 'run_test':
     # subprocess.call(
     #     result_name + env['PROGSUFFIX'] + ' --reporter compact --success')
 else:
-    if(env['platform'] == 'windows'):
-        env.Tool('mslink')
-        env.Tool('mslib')
     if env['target'] == 'shared_library':
         print("Build SharedLibrary for: ", env['target_name'])
-        env.Append(CXXFLAGS=['-shared'])
         env.SharedLibrary(target=result_name, source=src_files)
     else:
         print("Build StaticLibrary for: ", env['target_name'])
