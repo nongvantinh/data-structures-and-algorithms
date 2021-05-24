@@ -3,9 +3,13 @@
 
   This project is meant to use C++ programming language to implement various data structure and algorithms. It's fully implemented in C++17 and intended to port to C++20.
 ## Getting project
-  Clone the latest release branch by using git command.
+**development** branch is unstable branch.
+
+**master** branch store the latest update that can be used to create a realease branch.
+
+  Clone the project by using git command.
   
-  `git clone https://github.com/nongvantinh/dsaa -b latest-release`
+  `git clone https://github.com/nongvantinh/dsaa -b master`
 ## Prerequisite
   You need the following prerequisites installed on your platform:
 
