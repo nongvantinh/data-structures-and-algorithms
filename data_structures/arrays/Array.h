@@ -26,7 +26,6 @@ namespace dsaa
 		using iterator = Iterator;			  // A random access iterator to value_type.
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-		// An unsigned integral type that can represent any non-negative value of difference_type.
 		using difference_type = typename std::iterator_traits<iterator>::difference_type; // usually the same as ptrdiff_t.
 		using size_type = size_t;
 
@@ -49,18 +48,18 @@ namespace dsaa
 
 		// Creates a container with no element.
 		constexpr Array(const allocator_type &p_allocator = allocator_type()) noexcept;
-		// Creates a container of p_size with default value.
+		// Creates a container's p_size elements with default value.
 		constexpr explicit Array(const size_type &p_size, const allocator_type &p_allocator = allocator_type());
-		// Creates a container of p_size and init its element by p_value.
+		// Creates a container's p_size elements and init its element by p_value.
 		constexpr Array(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator = allocator_type());
-		// Creates a container with size of p_elements and init its elements by p_elements's element.
+		// Creates a container's size equal to p_elements's size and init its elements by p_elements's element.
 		constexpr Array(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator = allocator_type());
 		// Creates a container and init its elements by content of IIterator in range (first, last].
 		template <typename IIterator>
 		constexpr Array(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator = allocator_type());
-		// Creates a container by copy all emements from p_other.
+		// Creates a container and copy all emements from p_other.
 		constexpr Array(const Array &p_other);
-		// Creates a container by copy all emements from p_other.
+		// Creates a container and copy all emements from p_other.
 		constexpr Array(const Array &p_other, const allocator_type &p_allocator);
 		// Moves all elements from p_other into this.
 		constexpr Array(Array &&p_other) noexcept;
@@ -70,7 +69,7 @@ namespace dsaa
 		constexpr Array &operator=(const Array &p_other);
 		// Destroys old elements and moves all emements from p_other into this.
 		constexpr Array &operator=(Array &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value);
-		// Destroys old elements and copy all elements from initializer_list.
+		// Destroys old elements and copy all elements from p_elements.
 		constexpr Array &operator=(const std::initializer_list<value_type> &p_elements);
 		// Destroys all elements and clean used space.
 		virtual ~Array();
@@ -138,19 +137,19 @@ namespace dsaa
 		constexpr iterator emplace_at(const const_iterator &p_position, Args &&...p_args);
 
 		// Destroy element at p_position and reduce size of container.
-		constexpr iterator erase_at(const const_iterator &p_position);
+		constexpr void erase_at(const const_iterator &p_position);
 		// Destroy element in range (first,last] and reduce size of container.
-		constexpr iterator erase(const const_iterator &p_first, const const_iterator &p_last);
+		constexpr void erase(const const_iterator &p_first, const const_iterator &p_last);
 		// Removes the last element in the vector, effectively reducing the container size by one.
-		constexpr void erase_last() noexcept;
+		constexpr inline void erase_last() noexcept;
 		// Destroys all elements from the container, leaving the size of 0.
-		constexpr void clear() noexcept;
+		constexpr inline void clear() noexcept;
 
 		// Exchanges the content of the container by the content of p_other,
 		// which is another Array object of the same type. Sizes may differ.
 		constexpr void swap(Array &p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_swap::value || std::allocator_traits<allocator_type>::is_always_equal::value);
 
-	private:
+	protected:
 		allocator_type m_allocator;
 		size_type m_capacity;
 		size_type m_size;
@@ -958,11 +957,12 @@ template <typename Elem, typename Alloc>
 template <class... Args>
 constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::emplace_last(Args &&...p_args)
 {
-	// if (size() == capacity())
-	// 	reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
-	// std::allocator_traits<allocator_type>::construct(m_allocator, end(), p_args);
-	// ++m_size;
-	// return end() - 1;
+	if (size() == capacity())
+		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
+
+	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), p_args...);
+	++m_size;
+	return iterator(end() - 1);
 }
 
 template <typename Elem, typename Alloc>
@@ -1105,10 +1105,26 @@ template <typename Elem, typename Alloc>
 template <class... Args>
 constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::emplace_at(const const_iterator &p_position, Args &&...p_args)
 {
+	size_t index{get_index(p_position)}; // reserve can make iterator to p_position become invalid.
+	if (size() == capacity())
+		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
+
+	// First copy last element into uninitialized space.
+	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), last());
+	++m_size;
+
+	iterator desired{get_iterator(index)}; // The place to put value.
+	for (iterator last_elem{&last()}; last_elem != desired; --last_elem)
+		*last_elem = *(last_elem - 1); // Copy element one position to the right.
+
+	std::allocator_traits<allocator_type>::destroy(m_allocator, desired.content());
+	std::allocator_traits<allocator_type>::construct(m_allocator, desired.content(), p_args...);
+
+	return desired;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::erase_at(const const_iterator &p_position)
+constexpr void dsaa::Array<Elem, Alloc>::erase_at(const const_iterator &p_position)
 {
 	iterator position(p_position + 1);
 	for (; position != end(); ++position)
@@ -1117,11 +1133,10 @@ constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::
 	}
 
 	erase_last();
-	return position;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
+constexpr void dsaa::Array<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
 {
 	iterator first(p_first), last(p_last);
 
@@ -1134,7 +1149,6 @@ constexpr typename dsaa::Array<Elem, Alloc>::iterator dsaa::Array<Elem, Alloc>::
 
 	while (first != end())
 		erase_last();
-	return first;
 }
 
 template <typename Elem, typename Alloc>

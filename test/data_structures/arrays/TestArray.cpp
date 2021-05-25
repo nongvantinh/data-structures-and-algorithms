@@ -720,7 +720,7 @@ TEST_CASE("Array insert last methods", "[array]")
         REQUIRE(arr.size() == list.size());
 
         auto list_iter(list.begin());
-        for(auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
+        for (auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
             REQUIRE(*iter == *list_iter);
     }
 
@@ -740,10 +740,21 @@ TEST_CASE("Array insert last methods", "[array]")
         arr.insert_last(list.begin(), list.end());
         REQUIRE(arr.capacity() == list.size());
         REQUIRE(arr.size() == list.size());
-                auto list_iter(list.begin());
-        for(auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
+        auto list_iter(list.begin());
+        for (auto iter(arr.begin()); iter != arr.end(); ++iter, ++list_iter)
             REQUIRE(*iter == *list_iter);
+    }
 
+    SECTION("Emplace last using parameter pack")
+    {
+        arr.emplace_last(92.2);
+        arr.emplace_last(tester(92.2));
+        arr.emplace_last(92.2);
+        REQUIRE(arr.capacity() >= 3);
+        REQUIRE(arr.size() == 3);
+
+        for (auto iter(arr.begin()); iter != arr.end(); ++iter)
+            REQUIRE(*iter == 92.2);
     }
 }
 
@@ -837,6 +848,19 @@ TEST_CASE("Array insert at methods", "[array]")
         size_t index{0};
         for (auto i(list.begin()); i != list.end(); ++i, ++index)
             REQUIRE(arr[index] == *i);
+    }
+
+    SECTION("Emplace at using parameter pack")
+    {
+        size_t size(3), old_size(arr.size());
+
+        arr.emplace_at(arr.begin(), 92.2);
+        arr.emplace_at(arr.begin(), tester(92.2));
+        arr.emplace_at(arr.begin(), 92.2);
+        REQUIRE(arr.capacity() >= old_size + size);
+        REQUIRE(arr.size() == old_size + size);
+        for (auto iter(arr.begin()); iter != arr.begin() + size; ++iter)
+            REQUIRE(*iter == 92.2);
     }
 }
 
