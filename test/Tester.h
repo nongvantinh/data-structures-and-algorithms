@@ -12,10 +12,10 @@ class tester
 
 public:
 	static int livecount;
-	tester() : self(this), m_value(0.0) { ++livecount; }
-	tester(double p_value) : self(this), m_value(p_value) { ++livecount; }
-	tester(const tester &p_other) noexcept : self(this), m_value(p_other.m_value) { ++livecount; }
-	tester(tester &&p_other) noexcept : self(this), m_value(p_other.m_value)
+	constexpr tester() noexcept: self(this), m_value(0.0) { ++livecount; }
+	constexpr tester(double p_value) noexcept : self(this), m_value(p_value) { ++livecount; }
+	constexpr tester(const tester &p_other) noexcept : self(this), m_value(p_other.m_value) { ++livecount; }
+	constexpr tester(tester &&p_other) noexcept : self(this), m_value(p_other.m_value)
 	{
 		++livecount;
 		p_other.m_value = 0.0;
