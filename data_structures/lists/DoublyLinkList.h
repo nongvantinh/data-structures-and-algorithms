@@ -816,22 +816,20 @@ template <typename Elem, typename Alloc>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const size_type &p_size, const_reference p_value)
 {
 	size_type num_elem(p_size);
-	iterator result(insert_last(p_value));
-	--num_elem;
+	iterator result;
 	while (num_elem--)
-		result = insert_before(result, *p_value);
+		result = insert_last(p_value);
 	return result;
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const std::initializer_list<Elem> &p_elements)
 {
-	auto iter(p_elements.begin());
-	iterator result(insert_last(*iter));
-	++iter;
-
-	for (; iter != p_elements.end(); ++iter)
-		result = insert_before(result, *iter);
+	iterator result;
+	for (auto iter(p_elements.begin()); p_elements.end() != iter; ++iter)
+	{
+		result = insert_last(*iter);
+	}
 	return result;
 }
 
@@ -839,12 +837,9 @@ template <typename Elem, typename Alloc>
 template <class IIterator>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const IIterator &p_first, const IIterator &p_last)
 {
-	auto iter(p_first);
-	iterator result(insert_last(*iter));
-	++iter;
-
-	for (; iter != p_last; ++iter)
-		result = insert_before(result, *iter);
+	iterator result;
+	for (auto iter(p_first); p_last != iter; ++iter)
+		result = insert_last(*iter);
 	return result;
 }
 
