@@ -574,22 +574,22 @@ template <typename Elem, typename Alloc>
 template <typename IIterator>
 constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
 {
-	for (auto i(p_first); i != p_last; ++i)
-		insert_last(*i);
+	clean();
+	insert_last(p_first, p_last);
 }
 
 template <typename Elem, typename Alloc>
 constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const size_type &p_size, const_reference p_value)
 {
-	for (size_type i(0); i < p_size; ++i)
-		insert_last(p_value);
+	clean();
+	insert_last(p_size, p_value);
 }
 
 template <typename Elem, typename Alloc>
 constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const std::initializer_list<Elem> &p_elements)
 {
-	for (auto i(p_elements.begin()); i != p_elements.end(); ++i)
-		insert_last(*i);
+	clean();
+	insert_last(p_elements);
 }
 
 template <typename Elem, typename Alloc>
