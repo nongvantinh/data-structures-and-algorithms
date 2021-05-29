@@ -7,8 +7,6 @@
 
 namespace dsaa
 {
-	unsigned int random_range(unsigned int start = 0, unsigned int end = 678);
-
 	template <class Iterator>
 	void print_elem(Iterator p_first, Iterator p_last);
 }
