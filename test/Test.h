@@ -14,13 +14,14 @@ namespace dsaa
 template <class Iterator>
 void dsaa::print_elem(Iterator p_first, Iterator p_last)
 {
-	std::cout << "{ ";
+	std::cout << "{";
 	while (p_first != p_last)
 	{
-		std::cout << *p_first << ",";
-		++p_first;
+		std::cout << *p_first;
+		if (++p_first != p_last)
+			std::cout << ", ";
 	}
-	std::cout << " }" << std::endl;
+	std::cout << "}" << std::endl;
 }
 
 #endif // !DSAA_TEST_H
