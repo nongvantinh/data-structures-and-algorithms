@@ -3,134 +3,306 @@
 
 #include "Catch2/Catch.hpp"
 #include "algorithms/Search.h"
-#include "arrays/Array.h"
-#include <algorithm>
-#include "Test.h"
+#include "algorithms/Sort.h"
+#include "arrays/DynamicArray.h"
+#include "algorithms/Random.h"
+#include "test/TestObject.h"
 
-TEST_CASE("test binary search", "[search]")
+TEST_CASE("Test binary_search.", "[Search]")
 {
-	SECTION("An ordinary sequence")
+	SECTION("An ordinary sequence.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 5, 8, 13, 21};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 3) == 3);
+		size_t arr_size(4);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]); // Element in array could be duplicate.
 	}
-	SECTION("The empty sequence")
+
+	SECTION("The empty sequence.")
 	{
-		dsaa::Array<int> arr;
-		REQUIRE(dsaa::binary_search(arr.begin(), arr.end(), 5) == arr.end());
+		dsaa::DynamicArray<TestObject<int>> arr;
+		REQUIRE(dsaa::binary_search(arr.begin(), arr.end(), TestObject<int>(dsaa::random::random_range_int<int>())) == arr.end());
 	}
-	SECTION("Just one element")
+
+	SECTION("Just one element.")
 	{
-		dsaa::Array<int> arr{1};
-		REQUIRE(dsaa::binary_search(arr.begin(), arr.end(), 1) != arr.end());
+		dsaa::DynamicArray<TestObject<int>> arr;
+		arr.insert_last(TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(0);
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Even number of elements")
+
+	SECTION("Even number of elements.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 4};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 4) == 4);
+		size_t arr_size(6);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Odd number of elements")
+
+	SECTION("Odd number of elements.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 4, 5};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(7);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("All elements equal: ")
+
+	SECTION("All elements equal.")
 	{
-		dsaa::Array<int> arr{1, 1, 1, 1, 1, 1, 1};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(8);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+		// binary_search property will eleminate half of the array. Thus it will returns the midle index.
+		REQUIRE(dsaa::binary_search(arr.begin(), arr.end(), arr[index]) == arr.get_iterator(arr.size() / 2));
 	}
-	SECTION("Difference element at begining: ")
+
+	SECTION("Difference element at begining.")
 	{
-		dsaa::Array<int> arr{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 0) == 0);
+		size_t arr_size(9);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(0);
+		while (arr[index] >= arr[index + 1]) // binary_search requires array must be sort.
+			arr[index] = TestObject<int>(dsaa::random::random_range_int<int>());
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Difference element at end: ")
+
+	SECTION("Difference element at end.")
 	{
-		dsaa::Array<int> arr{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(10);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(arr.size() - 1);
+		while (arr[index] <= arr[index - 1]) // binary_search requires array must be sort.
+			arr[index] = TestObject<int>(dsaa::random::random_range_int<int>());
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
+
 	SECTION("A very large ordered sequence.")
 	{
-		dsaa::Array<int> arr(101);
-		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = i;
-		REQUIRE(*dsaa::binary_search(arr.begin(), arr.end(), 75) == 75);
+		size_t arr_size(679);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::merge_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Some sequences with a random number of elements (but still ordered)..")
+
+	SECTION("Some sequences with a random number of elements (but still ordered).")
 	{
-		dsaa::Array<int> arr(222);
-		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = dsaa::random_range();
-		std::sort(arr.begin(), arr.end());
-		REQUIRE((*dsaa::binary_search(arr.begin(), arr.end(), 75) == 75 || dsaa::binary_search(arr.begin(), arr.end(), 75) == arr.end()));
+		size_t arr_size(234);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::merge_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::binary_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
 }
 
-TEST_CASE("test linear search", "[search]")
+TEST_CASE("Test linear_search.", "[Search]")
 {
-	SECTION("An ordinary sequence")
+	SECTION("An ordinary sequence.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 5, 8, 13, 21};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 3) == 3);
+		size_t arr_size(4);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("The empty sequence")
+
+	SECTION("The empty sequence.")
 	{
-		dsaa::Array<int> arr;
-		REQUIRE(dsaa::linear_search(arr.begin(), arr.end(), 5) == arr.end());
+		dsaa::DynamicArray<TestObject<int>> arr;
+		REQUIRE(dsaa::linear_search(arr.begin(), arr.end(), TestObject<int>(dsaa::random::random_range_int<int>())) == arr.end());
 	}
-	SECTION("Just one element")
+
+	SECTION("Just one element.")
 	{
-		dsaa::Array<int> arr{1};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 1) == 1);
+		dsaa::DynamicArray<TestObject<int>> arr;
+		arr.insert_last(TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(0);
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Even number of elements")
+
+	SECTION("Even number of elements.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 4};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 4) == 4);
+		size_t arr_size(6);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Odd number of elements")
+
+	SECTION("Odd number of elements.")
 	{
-		dsaa::Array<int> arr{1, 2, 3, 4, 5};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(7);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::insertion_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("All elements equal: ")
+
+	SECTION("All elements equal.")
 	{
-		dsaa::Array<int> arr{1, 1, 1, 1, 1, 1, 1};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(8);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+		// linear_search property will find from begining to end. Thus it will return the begining.
+		REQUIRE(dsaa::linear_search(arr.begin(), arr.end(), arr[index]) == arr.begin());
 	}
-	SECTION("Difference element at begining: ")
+
+	SECTION("Difference element at begining.")
 	{
-		dsaa::Array<int> arr{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 0) == 0);
+		size_t arr_size(9);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(0);
+		while (arr[index] == arr[index + 1])
+			arr[index] = TestObject<int>(dsaa::random::random_range_int<int>());
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
-	SECTION("Difference element at end: ")
+
+	SECTION("Difference element at end.")
 	{
-		dsaa::Array<int> arr{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 1) == 1);
+		size_t arr_size(10);
+
+		dsaa::DynamicArray<TestObject<int>> arr(arr_size, TestObject<int>(dsaa::random::random_range_int<int>()));
+
+		int64_t index(arr.size() - 1);
+		while (arr[index] == arr[index - 1])
+			arr[index] = TestObject<int>(dsaa::random::random_range_int<int>());
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
+
 	SECTION("A very large ordered sequence.")
 	{
-		dsaa::Array<int> arr(101);
-		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = i;
-		REQUIRE(*dsaa::linear_search(arr.begin(), arr.end(), 75) == 75);
+		size_t arr_size(679);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::merge_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
+
 	SECTION("Some sequences with a random number of elements.")
 	{
-		dsaa::Array<int> arr(222);
-		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = dsaa::random_range();
-		REQUIRE((*dsaa::linear_search(arr.begin(), arr.end(), 75) == 75 || dsaa::linear_search(arr.begin(), arr.end(), 75) == arr.end()));
-	}
-	SECTION("Some sequences with random elements (but still ordered)..")
-	{
-		dsaa::Array<int> arr(222);
-		for (size_t i(0); i < arr.size(); ++i)
-			arr[i] = dsaa::random_range();
-		std::sort(arr.begin(), arr.end());
+		size_t arr_size(156);
 
-		REQUIRE((*dsaa::linear_search(arr.begin(), arr.end(), 75) == 75 || dsaa::linear_search(arr.begin(), arr.end(), 75) == arr.end()));
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
+	}
+
+	SECTION("Some sequences with a random number of elements (but still ordered).")
+	{
+		size_t arr_size(234);
+
+		dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+		dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
+
+		dsaa::merge_sort(arr.begin(), arr.end());
+
+		int64_t index(dsaa::random::random_range_int<int>(0, arr.size() - 1));
+
+		auto result(dsaa::linear_search(arr.begin(), arr.end(), arr[index]));
+		CHECK(result != arr.end());
+		CHECK(*result == arr[index]);
 	}
 }
-
 #endif //!DSAA_TEST_SEARCH_H
