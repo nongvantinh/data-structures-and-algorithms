@@ -35,10 +35,8 @@ bool dsaa::is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by)
 	++succ_first;
 	while (succ_first != p_last)
 	{
-		if (!p_sort_by(*p_first, *succ_first))
+		if (!p_sort_by(*p_first++, *succ_first++))
 			return false;
-		++p_first;
-		++succ_first;
 	}
 	return true;
 }
