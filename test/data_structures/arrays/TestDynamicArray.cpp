@@ -291,6 +291,17 @@ TEST_CASE("Test DynamicArray move constructor.", "[DynamicArray]")
     REQUIRE(arr2.size() <= arr2.capacity());
     REQUIRE(arr2.size() == copy_arr.size());
 
+    REQUIRE(iterator() == arr.begin());
+    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(iterator() == arr.end());
+    REQUIRE(iterator() == arr.cend());
+
+    REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
+    REQUIRE(iterator().content() == arr.data());
+    REQUIRE(arr.empty());
+    REQUIRE(0 == arr.capacity());
+    REQUIRE(0 == arr.size());
+
     auto arr_iter(copy_arr.begin());
     auto arr2_iter(arr2.begin());
     for (; copy_arr.end() != arr_iter; ++arr_iter, ++arr2_iter)
@@ -316,6 +327,17 @@ TEST_CASE("Test DynamicArray move constructor with std::allocator.", "[DynamicAr
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.size() <= arr2.capacity());
     REQUIRE(arr2.size() == copy_arr.size());
+
+    REQUIRE(iterator() == arr.begin());
+    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(iterator() == arr.end());
+    REQUIRE(iterator() == arr.cend());
+
+    REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
+    REQUIRE(iterator().content() == arr.data());
+    REQUIRE(arr.empty());
+    REQUIRE(0 == arr.capacity());
+    REQUIRE(0 == arr.size());
 
     auto arr_iter(copy_arr.begin());
     auto arr2_iter(arr2.begin());
@@ -371,6 +393,17 @@ TEST_CASE("Test DynamicArray move assigment.", "[DynamicArray]")
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.size() <= arr2.capacity());
     REQUIRE(arr2.size() == copy_arr.size());
+
+    REQUIRE(iterator() == arr.begin());
+    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(iterator() == arr.end());
+    REQUIRE(iterator() == arr.cend());
+
+    REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
+    REQUIRE(iterator().content() == arr.data());
+    REQUIRE(arr.empty());
+    REQUIRE(0 == arr.capacity());
+    REQUIRE(0 == arr.size());
 
     auto arr_iter(copy_arr.begin());
     auto arr2_iter(arr2.begin());
@@ -471,6 +504,24 @@ TEST_CASE("Test DynamicArray assign function using std::initializer_list.", "[Dy
     auto list_iter(list.begin());
     for (; list.end() != list_iter; ++list_iter, ++arr_iter)
         REQUIRE(*list_iter == *arr_iter);
+}
+
+TEST_CASE("Test DynamicArray get_index function.", "[DynamicArray]")
+{
+    size_t size(99);
+    dsaa::DynamicArray<TestObject<int>> arr(size);
+
+    REQUIRE(0 == arr.get_index(arr.begin()));
+    REQUIRE(size == arr.get_index(arr.end()));
+}
+
+TEST_CASE("Test DynamicArray get_iterator function.", "[DynamicArray]")
+{
+    size_t size(99);
+    dsaa::DynamicArray<TestObject<int>> arr(size);
+
+    REQUIRE(arr.begin() == arr.get_iterator(0));
+    REQUIRE(arr.end() == arr.get_iterator(size));
 }
 
 TEST_CASE("Test DynamicArray reserve function.", "[DynamicArray]")
