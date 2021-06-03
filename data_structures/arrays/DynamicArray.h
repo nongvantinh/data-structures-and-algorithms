@@ -405,37 +405,37 @@ public:
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::begin() noexcept
 {
-	return m_elements ? iterator(&m_elements[0]) : iterator(nullptr);
+	return size() ? iterator(&m_elements[0]) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::begin() const noexcept
 {
-	return m_elements ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
+	return size() ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cbegin() const noexcept
 {
-	return m_elements ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
+	return size() ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::end() noexcept
 {
-	return m_elements ? iterator(&m_elements[size()]) : iterator(nullptr);
+	return size() ? iterator(&m_elements[size()]) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::end() const noexcept
 {
-	return m_elements ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
+	return size() ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cend() const noexcept
 {
-	return m_elements ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
+	return size() ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
@@ -519,7 +519,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const IIterator &p_first
 
 	for (auto iter{p_first}; iter != p_last; ++iter)
 	{
-		std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), *iter);
+		std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], *iter);
 		++m_size;
 	}
 }
@@ -659,14 +659,21 @@ template <typename Elem, typename Alloc>
 template <typename IIterator>
 constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
 {
-	for (iterator i{begin()}; i != end(); ++i)
+	for (iterator i(begin()); end() != i; ++i)
 		std::allocator_traits<allocator_type>::destroy(m_allocator, i.content());
 
-	std::allocator_traits<allocator_type>::deallocate(m_allocator, m_elements, capacity());
+	m_size = 0;
 
-	for (auto first(p_first); first != p_last; ++first)
+	size_type count_size(0);
+	for (auto iter(p_first); iter != p_last; ++iter)
+		++count_size;
+
+	reserve(count_size);
+
+	for (auto iter(p_first); iter != p_last; ++iter)
 	{
-		insert_last(*first);
+		std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], *iter);
+		++m_size;
 	}
 }
 
@@ -808,7 +815,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, 
 	reserve(p_size);
 	if (size() <= p_size)
 	{
-		iterator from{end()}, to{get_iterator(size() + p_size)};
+		iterator from(&m_elements[size()]), to(get_iterator(size() + p_size));
 		while (from != to)
 		{
 			std::allocator_traits<allocator_type>::construct(m_allocator, from.content(), p_value);
@@ -817,7 +824,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, 
 	}
 	else
 	{
-		iterator from{get_iterator(p_size)}, to{end()};
+		iterator from(get_iterator(p_size)), to(end());
 		while (from != to)
 		{
 			std::allocator_traits<allocator_type>::destroy(m_allocator, from.content());
@@ -874,13 +881,13 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::shrink_to_fit()
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::get_index(const const_iterator &p_position)
 {
-	return p_position - begin();
+	return p_position - iterator(&m_elements[0]);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index)
 {
-	return begin() + p_index;
+	return iterator(&m_elements[0]) + p_index;
 }
 
 template <typename Elem, typename Alloc>
@@ -889,7 +896,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
 
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), p_value);
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], p_value);
 	++m_size;
 	return iterator(end() - 1);
 }
@@ -899,7 +906,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 {
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), std::move(p_value));
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], std::move(p_value));
 	++m_size;
 	return end() - 1;
 }
@@ -913,7 +920,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	size_type num_elem(p_size);
 	while (num_elem--)
 	{
-		std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), p_value);
+		std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], p_value);
 		++m_size;
 	}
 	return end() - 1;
@@ -927,7 +934,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 	for (auto iter{p_elements.begin()}; iter != p_elements.end(); ++iter)
 	{
-		std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), *iter);
+		std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], *iter);
 		++m_size;
 	}
 	return end() - 1;
@@ -946,7 +953,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 	for (auto iter{p_first}; iter != p_last; ++iter)
 	{
-		std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), *iter);
+		std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], *iter);
 		++m_size;
 	}
 
@@ -960,7 +967,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
 
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), p_args...);
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], p_args...);
 	++m_size;
 	return iterator(end() - 1);
 }
@@ -973,7 +980,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
 
 	// First copy last element into uninitialized space.
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), last());
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], last());
 	++m_size;
 
 	iterator desired{get_iterator(index)}; // The place to put value.
@@ -993,7 +1000,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
 
 	// First copy last element into uninitialized space.
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), last());
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], last());
 	++m_size;
 
 	iterator position{get_iterator(index)}; // The place to put value.
@@ -1110,7 +1117,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
 
 	// First copy last element into uninitialized space.
-	std::allocator_traits<allocator_type>::construct(m_allocator, end().content(), last());
+	std::allocator_traits<allocator_type>::construct(m_allocator, &m_elements[m_size], last());
 	++m_size;
 
 	iterator desired{get_iterator(index)}; // The place to put value.
@@ -1126,8 +1133,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 template <typename Elem, typename Alloc>
 constexpr void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p_position)
 {
-	iterator position(p_position + 1);
-	for (; position != end(); ++position)
+	for (iterator position(p_position + 1); position != end(); ++position)
 	{
 		*(position - 1) = *position;
 	}
@@ -1147,14 +1153,19 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_fi
 		++last;
 	}
 
+	int offset(end() - first);
 	while (first != end())
-		erase_last();
+	{
+		std::allocator_traits<allocator_type>::destroy(m_allocator, first.content());
+		++first;
+	}
+	m_size -= offset;
 }
 
 template <typename Elem, typename Alloc>
 constexpr void dsaa::DynamicArray<Elem, Alloc>::erase_last() noexcept
 {
-	std::allocator_traits<allocator_type>::destroy(m_allocator, iterator(&last()).content());
+	std::allocator_traits<allocator_type>::destroy(m_allocator, &m_elements[size() - 1]);
 	--m_size;
 }
 
