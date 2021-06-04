@@ -308,7 +308,7 @@ public:
 	}
 
 	constexpr inline reference operator*() const { return m_link->value(); }
-	constexpr inline pointer content() const { return m_link; }
+	constexpr inline pointer const &content() const { return m_link; }
 
 	constexpr inline bool operator==(const ConstIterator &p_iterator) const { return m_link == p_iterator.m_link; }
 	constexpr inline bool operator!=(const ConstIterator &p_iterator) const { return m_link != p_iterator.m_link; }
@@ -361,11 +361,12 @@ public:
 	}
 
 	constexpr inline bool operator==(const Iterator &other) const noexcept { return content() == other.content(); }
-	constexpr inline bool operator!=(const Iterator &other) const noexcept { return content() != other.content(); }
+	constexpr inline bool operator!=(const Iterator &other) const noexcept { return !(*this == other); }
 
 	constexpr inline reference operator*() { return ConstIterator::m_link->value(); }
+	constexpr inline const_reference operator*() const { return ConstIterator::m_link->value(); }
 	constexpr inline pointer &content() { return ConstIterator::m_link; }
-	constexpr inline pointer content() const { return ConstIterator::m_link; }
+	constexpr inline pointer const &content() const { return ConstIterator::m_link; }
 };
 
 template <typename Elem, typename Alloc>
@@ -389,19 +390,19 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::Doubl
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::end() noexcept
 {
-	return size() ? iterator(m_last->next()) : iterator(nullptr);
+	return size() ? iterator(nullptr) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::end() const noexcept
 {
-	return size() ? const_iterator(m_last->next()) : const_iterator(nullptr);
+	return size() ? const_iterator(nullptr) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
 constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::cend() const noexcept
 {
-	return size() ? const_iterator(m_last->next()) : const_iterator(nullptr);
+	return size() ? const_iterator(nullptr) : const_iterator(nullptr);
 }
 
 // template <typename Elem, typename Alloc>
@@ -868,14 +869,15 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
-	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_value);
-	new_node->previous() = iter.content()->previous();
-	new_node->next() = iter.content();
-
-	iter.content()->previous() = new_node;
+	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_value, iter.content()->previous(), iter.content());
 
 	if (iter.content() == m_first)
 		m_first = new_node;
+	else
+		iter.content()->previous()->next() = new_node;
+
+	iter.content()->previous() = new_node;
+
 	++m_size;
 	return --iter;
 }
@@ -885,14 +887,15 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
-	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, std::move(p_value));
-	new_node->previous() = iter.content()->previous();
-	new_node->next() = iter.content();
-
-	iter.content()->previous() = new_node;
+	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, std::move(p_value), iter.content()->previous(), iter.content());
 
 	if (iter.content() == m_first)
 		m_first = new_node;
+	else
+		iter.content()->previous()->next() = new_node;
+
+	iter.content()->previous() = new_node;
+
 	++m_size;
 	return --iter;
 }
@@ -952,13 +955,17 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_args...);
+	
 	new_node->previous() = iter.content()->previous();
 	new_node->next() = iter.content();
 
-	iter.content()->previous() = new_node;
-
 	if (iter.content() == m_first)
 		m_first = new_node;
+	else
+		iter.content()->previous()->next() = new_node;
+
+	iter.content()->previous() = new_node;
+
 	++m_size;
 	return --iter;
 }
