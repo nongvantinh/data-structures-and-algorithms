@@ -7,7 +7,9 @@ namespace dsaa
 {
 	namespace TestObject
 	{
-		static int livecount(0);
+		inline int livecount(0); // C++17
+		// or: extern int livecount;
+		// and put definittion in TestObject.cpp: int livecount(0);
 	}
 }
 
