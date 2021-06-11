@@ -30,13 +30,28 @@ opts.Add(PathVariable(key='target_name', help="The library name",
 opts.Add(EnumVariable(key='target', help="Project is inteded to build: ", default='run_test',
          allowed_values=['run_test', 'static_library', 'shared_library'], map={}, ignorecase=0))
 
+# Build options.
+opts.Add(BoolVariable(key='nodiscard',
+         help="Add nodiscard modifier to some function.", default='yes'))
+
+opts.Add(BoolVariable(key='constexpr',
+         help="Add constexpr modifier to function.", default='yes'))
+
+opts.Add(EnumVariable(key='inline', help="Makes some function inline.",
+         default='yes', allowed_values=['force', 'yes', 'no'], map={}, ignorecase=0))
+
+opts.Add(BoolVariable(key='param_check',
+         help="Allows to check for valid arguments.", default='yes'))
+
 # Update environment with opts variables.
 opts.Update(env)
 
 # Local includes paths.
 test_arrays_path = 'test/data_structures/arrays/'
 test_lists_path = 'test/data_structures/lists/'
-test_data_structures_paths = [test_arrays_path, test_lists_path]
+test_heaps_path = 'test/data_structures//trees/heaps/'
+test_data_structures_paths = [
+    test_arrays_path, test_lists_path, test_heaps_path]
 
 test_cases_paths = ['modules/', 'test/', 'test/algorithms/']
 test_cases_paths += test_data_structures_paths
@@ -87,8 +102,6 @@ if env['build'] in ('d', 'debug'):
     # Controlling C++ Dialect.
     env.Append(CXXFLAGS=['-Wcomma-subscript'])
     env.Append(CXXFLAGS=['-Wctor-dtor-privacy'])
-    # env.Append(CXXFLAGS=['-Wenum-conversion'])
-    # env.Append(CXXFLAGS=['-Winvalid-imported-macros'])
     env.Append(CXXFLAGS=['-Wnoexcept'])
     env.Append(CXXFLAGS=['-Wreorder'])
     env.Append(CXXFLAGS=['-Wredundant-tags'])
@@ -97,8 +110,6 @@ if env['build'] in ('d', 'debug'):
     env.Append(CXXFLAGS=['-Wold-style-cast'])
     env.Append(CXXFLAGS=['-Woverloaded-virtual'])
     env.Append(CXXFLAGS=['-Wsign-promo'])
-    # env.Append(CXXFLAGS=['-Wno-mismatched-new-delete'])
-    # env.Append(CXXFLAGS=['-Wmismatched-dealloc'])
     env.Append(CXXFLAGS=['-Wmismatched-tags'])
     env.Append(CXXFLAGS=['-Wzero-as-null-pointer-constant'])
     env.Append(CXXFLAGS=['-Wextra-semi'])
@@ -108,6 +119,21 @@ if env['build'] in ('d', 'debug'):
     env.Append(CXXFLAGS=['-Wuseless-cast'])
 else:
     env.Append(CXXFLAGS=['-O3'])
+
+
+if env['nodiscard']:
+    env.Append(CPPDEFINES='DSAA_NODISCARD')
+
+if env['constexpr']:
+    env.Append(CPPDEFINES='DSAA_CONSTEXPR')
+
+if env['inline'] == 'force':
+    env.Append(CPPDEFINES='DSAA_FORCE_INLINE')
+elif env['inline'] == 'yes':
+    env.Append(CPPDEFINES='DSAA_INLINE')
+
+if env['param_check']:
+    env.Append(CPPDEFINES='DSAA_PARAM_CHECK')
 
 # Controlling C Dialect.
 env.Append(CXXFLAGS=['-std=c++20'])

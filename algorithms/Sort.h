@@ -8,7 +8,7 @@
 namespace dsaa
 {
 	template <typename IIterator, typename SortBy = std::less_equal<typename std::iterator_traits<IIterator>::value_type>>
-	bool is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by);
+	bool is_sorted(IIterator p_first, IIterator p_last, SortBy p_sort_by = SortBy());
 
 	template <typename FIterator, typename Compare = std::less<typename std::iterator_traits<FIterator>::value_type>>
 	FIterator buble_sort(FIterator p_first, FIterator p_last, Compare p_compare = Compare());
