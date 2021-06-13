@@ -8,6 +8,8 @@
 #include <iterator>			// std::iterator_traits
 #include <cassert>
 
+#include "dsaaTypedefs.h"
+
 namespace dsaa
 {
 	template <typename T>
@@ -34,125 +36,125 @@ namespace dsaa
 		using size_type = size_t;
 
 		// Returns an iterator pointing to the first element in the container.
-		[[nodiscard]] constexpr inline iterator begin() noexcept;
-		[[nodiscard]] constexpr inline const_iterator begin() const noexcept;
-		[[nodiscard]] constexpr inline const_iterator cbegin() const noexcept;
+		NODISCARD CONSTEXPR INLINE iterator begin() noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator begin() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator cbegin() const noexcept;
 		// Returns an iterator referring to the past-the-end element in the container.
-		[[nodiscard]] constexpr inline iterator end() noexcept;
-		[[nodiscard]] constexpr inline const_iterator end() const noexcept;
-		[[nodiscard]] constexpr inline const_iterator cend() const noexcept;
+		NODISCARD CONSTEXPR INLINE iterator end() noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator end() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator cend() const noexcept;
 		// Returns a reverse_iterator pointing to the last element in the container.
-		// [[nodiscard]] constexpr inline reverse_iterator rbegin() noexcept;
-		// [[nodiscard]] constexpr inline const_reverse_iterator rbegin() const noexcept;
-		// [[nodiscard]] constexpr inline const_reverse_iterator crbegin() const noexcept;
+		// NODISCARD CONSTEXPR INLINE reverse_iterator rbegin() noexcept;
+		// NODISCARD CONSTEXPR INLINE const_reverse_iterator rbegin() const noexcept;
+		// NODISCARD CONSTEXPR INLINE const_reverse_iterator crbegin() const noexcept;
 		// // Returns a reverse iterator pointing to the theoretical element preceding the first element in the container.
-		// [[nodiscard]] constexpr inline reverse_iterator rend() noexcept;
-		// [[nodiscard]] constexpr inline const_reverse_iterator rend() const noexcept;
-		// [[nodiscard]] constexpr inline const_reverse_iterator crend() const noexcept;
+		// NODISCARD CONSTEXPR INLINE reverse_iterator rend() noexcept;
+		// NODISCARD CONSTEXPR INLINE const_reverse_iterator rend() const noexcept;
+		// NODISCARD CONSTEXPR INLINE const_reverse_iterator crend() const noexcept;
 
 		// Creates a container with no element.
-		constexpr DoublyLinkList(const allocator_type &p_allocator = allocator_type()) noexcept;
+		CONSTEXPR DoublyLinkList(const allocator_type &p_allocator = allocator_type()) noexcept;
 		// Creates a container's p_size elements with default value.
-		constexpr explicit DoublyLinkList(const size_type &p_size, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR explicit DoublyLinkList(const size_type &p_size, const allocator_type &p_allocator = allocator_type());
 		// Creates a container's p_size elements and init its element by p_value.
-		constexpr DoublyLinkList(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DoublyLinkList(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator = allocator_type());
 		// Creates a container's size eual to p_elements's size and init its elements by p_elements's element.
-		constexpr DoublyLinkList(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DoublyLinkList(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator = allocator_type());
 		// Creates a container and init its elements by content of IIterator in range (first, last].
 		template <typename IIterator>
-		constexpr DoublyLinkList(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DoublyLinkList(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator = allocator_type());
 		// Creates a container and copy all emements from p_other.
-		constexpr DoublyLinkList(const DoublyLinkList &p_other);
+		CONSTEXPR DoublyLinkList(const DoublyLinkList &p_other);
 		// Creates a container and copy all emements from p_other.
-		constexpr DoublyLinkList(const DoublyLinkList &p_other, const allocator_type &p_allocator);
+		CONSTEXPR DoublyLinkList(const DoublyLinkList &p_other, const allocator_type &p_allocator);
 		// Moves all elements from p_other into this.
-		constexpr DoublyLinkList(DoublyLinkList &&p_other) noexcept;
+		CONSTEXPR DoublyLinkList(DoublyLinkList &&p_other) noexcept;
 		// Moves all elements from p_other into this.
-		constexpr DoublyLinkList(DoublyLinkList &&p_other, const allocator_type &p_allocator) noexcept;
+		CONSTEXPR DoublyLinkList(DoublyLinkList &&p_other, const allocator_type &p_allocator) noexcept;
 		// Destroys old elements and copy all emements from p_other into this.
-		constexpr DoublyLinkList &operator=(const DoublyLinkList &p_other);
+		CONSTEXPR DoublyLinkList &operator=(const DoublyLinkList &p_other);
 		// Destroys old elements and moves all emements from p_other into this.
-		constexpr DoublyLinkList &operator=(DoublyLinkList &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value);
+		CONSTEXPR DoublyLinkList &operator=(DoublyLinkList &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value);
 		// Destroys old elements and copy all elements from p_elements.
-		constexpr DoublyLinkList &operator=(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR DoublyLinkList &operator=(const std::initializer_list<value_type> &p_elements);
 		// Destroys all elements and clean used space.
 		virtual ~DoublyLinkList();
 
 		// Assigns new contents to the DoublyLinkList container, replacing its current contents, and modifying its size accordingly.
 		template <typename IIterator>
-		constexpr void assign(const IIterator &p_first, const IIterator &p_last);
-		constexpr void assign(const size_type &p_size, const_reference p_value = value_type());
-		constexpr void assign(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR void assign(const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR void assign(const size_type &p_size, const_reference p_value = value_type());
+		CONSTEXPR void assign(const std::initializer_list<value_type> &p_elements);
 
 		// Returns a reference to the first element in the DoublyLinkList container.
-		[[nodiscard]] constexpr inline DoublyLinkListNode<value_type> &first();
-		[[nodiscard]] constexpr inline DoublyLinkListNode<value_type> const &first() const;
+		NODISCARD CONSTEXPR INLINE DoublyLinkListNode<value_type> &first();
+		NODISCARD CONSTEXPR INLINE DoublyLinkListNode<value_type> const &first() const;
 		// Returns a reference to the last element in the DoublyLinkList container.
-		[[nodiscard]] constexpr inline DoublyLinkListNode<value_type> &last();
-		[[nodiscard]] constexpr inline DoublyLinkListNode<value_type> const &last() const;
+		NODISCARD CONSTEXPR INLINE DoublyLinkListNode<value_type> &last();
+		NODISCARD CONSTEXPR INLINE DoublyLinkListNode<value_type> const &last() const;
 		// Returns a copy of the allocator object associated with the DoublyLinkList container.
-		[[nodiscard]] constexpr inline allocator_type get_allocator() const noexcept;
+		NODISCARD CONSTEXPR INLINE allocator_type get_allocator() const noexcept;
 		// Test whether container is empty.
-		[[nodiscard]] constexpr inline bool empty() const noexcept;
+		NODISCARD CONSTEXPR INLINE bool empty() const noexcept;
 		// Returns the number of elements in the DoublyLinkList container.
-		[[nodiscard]] constexpr inline size_type size() const noexcept;
+		NODISCARD CONSTEXPR INLINE size_type size() const noexcept;
 		// Returns the maximum number of elements that the DoublyLinkList container can hold.
-		[[nodiscard]] constexpr inline size_type max_size() const noexcept;
-		[[nodiscard]] constexpr inline size_type get_index(const_iterator p_iterator);
-		[[nodiscard]] constexpr inline iterator get_iterator(size_type p_index);
+		NODISCARD CONSTEXPR INLINE size_type max_size() const noexcept;
+		NODISCARD CONSTEXPR INLINE size_type get_index(const_iterator p_iterator);
+		NODISCARD CONSTEXPR INLINE iterator get_iterator(size_type p_index);
 		// Resizes the container so that it contains n elements.
-		constexpr void resize(const size_type &p_size, const_reference p_value = value_type());
+		CONSTEXPR void resize(const size_type &p_size, const_reference p_value = value_type());
 
 		// Insert new element(s) at the begining.
-		constexpr iterator insert_first(const_reference p_value);
-		constexpr iterator insert_first(value_type &&p_value);
-		constexpr iterator insert_first(const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_first(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_first(const_reference p_value);
+		CONSTEXPR iterator insert_first(value_type &&p_value);
+		CONSTEXPR iterator insert_first(const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_first(const std::initializer_list<value_type> &p_elements);
 		template <class IIterator>
-		constexpr iterator insert_first(const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_first(const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_first(Args &&...p_args);
+		CONSTEXPR iterator emplace_first(Args &&...p_args);
 
 		// Insert new element(s) at the ends.
-		constexpr iterator insert_last(const_reference p_value);
-		constexpr iterator insert_last(value_type &&p_value);
-		constexpr iterator insert_last(const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_last(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_last(const_reference p_value);
+		CONSTEXPR iterator insert_last(value_type &&p_value);
+		CONSTEXPR iterator insert_last(const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_last(const std::initializer_list<value_type> &p_elements);
 		template <class IIterator>
-		constexpr iterator insert_last(const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_last(const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_last(Args &&...p_args);
+		CONSTEXPR iterator emplace_last(Args &&...p_args);
 
 		// Insert new element(s) before the specified position.
-		constexpr iterator insert_before(const const_iterator &p_position, const_reference p_value);
-		constexpr iterator insert_before(const const_iterator &p_position, value_type &&p_value);
-		constexpr iterator insert_before(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_before(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_before(const const_iterator &p_position, const_reference p_value);
+		CONSTEXPR iterator insert_before(const const_iterator &p_position, value_type &&p_value);
+		CONSTEXPR iterator insert_before(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_before(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
 		template <class IIterator>
-		constexpr iterator insert_before(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_before(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_before(const const_iterator &p_position, Args &&...p_args);
+		CONSTEXPR iterator emplace_before(const const_iterator &p_position, Args &&...p_args);
 
 		// Insert new element(s) after the specified position.
-		constexpr iterator insert_after(const const_iterator &p_position, const_reference p_value);
-		constexpr iterator insert_after(const const_iterator &p_position, value_type &&p_value);
-		constexpr iterator insert_after(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_after(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_after(const const_iterator &p_position, const_reference p_value);
+		CONSTEXPR iterator insert_after(const const_iterator &p_position, value_type &&p_value);
+		CONSTEXPR iterator insert_after(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_after(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
 		template <typename IIterator>
-		constexpr iterator insert_after(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_after(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_after(const const_iterator &p_position, Args &&...p_args);
+		CONSTEXPR iterator emplace_after(const const_iterator &p_position, Args &&...p_args);
 
 		// Deletes the first element.
-		constexpr inline void erase_first();
+		CONSTEXPR INLINE void erase_first();
 		// Deletes the last element.
-		constexpr inline void erase_last();
+		CONSTEXPR INLINE void erase_last();
 		// Deletes the element at specified position.
-		constexpr inline void erase(const const_iterator &p_position);
+		CONSTEXPR INLINE void erase(const const_iterator &p_position);
 		// Deletes elements in range [first, last)
-		constexpr void erase(const const_iterator &p_first, const const_iterator &p_last);
+		CONSTEXPR void erase(const const_iterator &p_first, const const_iterator &p_last);
 		// Cleans all elements and deallocate allocated space.
-		constexpr inline void clean() noexcept;
+		CONSTEXPR INLINE void clean() noexcept;
 
 		// Exchanges the content of the container by the content of p_other,
 		// which is another DoublyLinkList of the same type. Sizes may differ.
@@ -175,13 +177,13 @@ public:
 	using const_reference = const value_type &;
 	using size_type = size_t;
 
-	constexpr DoublyLinkListNode(const_reference p_value = value_type()) noexcept : m_value(p_value), m_prev(nullptr), m_next(nullptr) {}
-	constexpr DoublyLinkListNode(value_type &&p_value) noexcept : m_value(std::move(p_value)), m_prev(nullptr), m_next(nullptr) {}
-	constexpr DoublyLinkListNode(const_reference p_value, DoublyLinkListNode *p_prev, DoublyLinkListNode *p_next) noexcept : m_value(p_value), m_prev(p_prev), m_next(p_next) {}
-	constexpr DoublyLinkListNode(value_type &&p_value, DoublyLinkListNode *p_prev, DoublyLinkListNode *p_next) noexcept : m_value(std::move(p_value)), m_prev(p_prev), m_next(p_next) { p_value = value_type(); }
+	CONSTEXPR DoublyLinkListNode(const_reference p_value = value_type()) noexcept : m_value(p_value), m_prev(nullptr), m_next(nullptr) {}
+	CONSTEXPR DoublyLinkListNode(value_type &&p_value) noexcept : m_value(std::move(p_value)), m_prev(nullptr), m_next(nullptr) {}
+	CONSTEXPR DoublyLinkListNode(const_reference p_value, DoublyLinkListNode *p_prev, DoublyLinkListNode *p_next) noexcept : m_value(p_value), m_prev(p_prev), m_next(p_next) {}
+	CONSTEXPR DoublyLinkListNode(value_type &&p_value, DoublyLinkListNode *p_prev, DoublyLinkListNode *p_next) noexcept : m_value(std::move(p_value)), m_prev(p_prev), m_next(p_next) { p_value = value_type(); }
 
-	constexpr DoublyLinkListNode(const DoublyLinkListNode &p_other) noexcept : m_value(p_other.m_value), m_prev(p_other.m_prev), m_next(p_other.m_next) {}
-	constexpr DoublyLinkListNode(DoublyLinkListNode &&p_other) noexcept : m_value(std::move(p_other.m_value)), m_prev(p_other.m_prev), m_next(p_other.m_next)
+	CONSTEXPR DoublyLinkListNode(const DoublyLinkListNode &p_other) noexcept : m_value(p_other.m_value), m_prev(p_other.m_prev), m_next(p_other.m_next) {}
+	CONSTEXPR DoublyLinkListNode(DoublyLinkListNode &&p_other) noexcept : m_value(std::move(p_other.m_value)), m_prev(p_other.m_prev), m_next(p_other.m_next)
 	{
 		p_other.m_value = value_type();
 		p_other.m_prev = nullptr;
@@ -190,16 +192,16 @@ public:
 
 	virtual ~DoublyLinkListNode() {}
 
-	constexpr DoublyLinkListNode &operator=(const DoublyLinkListNode &p_other)
+	CONSTEXPR DoublyLinkListNode &operator=(const DoublyLinkListNode &p_other)
 	{
 		m_value = p_other.m_value;
 		m_prev = p_other.m_prev;
 		m_next = p_other.m_next;
 	}
 
-	constexpr DoublyLinkListNode &operator=(DoublyLinkListNode &&p_other)
+	CONSTEXPR DoublyLinkListNode &operator=(DoublyLinkListNode &&p_other)
 	{
-		m_value = p_other.m_value;
+		m_value = std::move(p_other.m_value);
 		m_prev = p_other.m_prev;
 		m_next = p_other.m_next;
 
@@ -208,26 +210,26 @@ public:
 		p_other.m_next = nullptr;
 	}
 
-	constexpr inline DoublyLinkListNode &operator++()
+	CONSTEXPR INLINE DoublyLinkListNode &operator++()
 	{
 		*this = *m_next;
 		return *this;
 	}
 
-	constexpr inline DoublyLinkListNode operator++(int)
+	CONSTEXPR INLINE DoublyLinkListNode operator++(int)
 	{
 		DoublyLinkListNode old(*this); // copy old value
 		operator++();				   // prefix increment
 		return old;					   // return old value
 	}
 
-	constexpr inline DoublyLinkListNode &operator--()
+	CONSTEXPR INLINE DoublyLinkListNode &operator--()
 	{
 		*this = *m_prev;
 		return *this;
 	}
 
-	constexpr inline DoublyLinkListNode operator--(int)
+	CONSTEXPR INLINE DoublyLinkListNode operator--(int)
 	{
 		DoublyLinkListNode old(*this); // copy old value
 		operator--();				   // prefix increment
@@ -235,23 +237,23 @@ public:
 	}
 
 	// Dereference that allows us to write/read into m_value.
-	constexpr inline reference operator*() { return m_value; }
-	constexpr inline const_reference operator*() const { return m_value; }
+	CONSTEXPR INLINE reference operator*() { return m_value; }
+	CONSTEXPR INLINE const_reference operator*() const { return m_value; }
 
-	constexpr inline DoublyLinkListNode *&previous() { return m_prev; }
-	constexpr inline DoublyLinkListNode *const &previous() const { return m_prev; }
+	CONSTEXPR INLINE DoublyLinkListNode *&previous() { return m_prev; }
+	CONSTEXPR INLINE DoublyLinkListNode *const &previous() const { return m_prev; }
 
-	constexpr inline DoublyLinkListNode *&next() { return m_next; }
-	constexpr inline DoublyLinkListNode *const &next() const { return m_next; }
+	CONSTEXPR INLINE DoublyLinkListNode *&next() { return m_next; }
+	CONSTEXPR INLINE DoublyLinkListNode *const &next() const { return m_next; }
 
-	constexpr inline reference value() { return m_value; }
-	constexpr inline const_reference value() const { return m_value; }
+	CONSTEXPR INLINE reference value() { return m_value; }
+	CONSTEXPR INLINE const_reference value() const { return m_value; }
 
-	constexpr inline bool operator==(const DoublyLinkListNode &p_other) const
+	CONSTEXPR INLINE bool operator==(const DoublyLinkListNode &p_other) const
 	{
 		return m_prev == p_other.m_prev && m_next == p_other.m_next && m_value == p_other.m_value;
 	}
-	constexpr inline bool operator!=(const DoublyLinkListNode &p_other) const { return !(*this == p_other); }
+	CONSTEXPR INLINE bool operator!=(const DoublyLinkListNode &p_other) const { return !(*this == p_other); }
 
 protected:
 	value_type m_value;
@@ -270,11 +272,11 @@ public:
 	using pointer = DoublyLinkList::pointer;
 	using difference_type = DoublyLinkList::difference_type;
 
-	constexpr ConstIterator() noexcept : m_link{nullptr} {}
-	constexpr ConstIterator(pointer p_link) noexcept : m_link{p_link} {}
-	constexpr ConstIterator(const ConstIterator &p_iterator) noexcept : m_link{p_iterator.content()} {}
+	CONSTEXPR ConstIterator() noexcept : m_link{nullptr} {}
+	CONSTEXPR ConstIterator(pointer p_link) noexcept : m_link{p_link} {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_link{p_iterator.content()} {}
 
-	constexpr ConstIterator &operator=(const ConstIterator &p_iterator)
+	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator)
 	{
 		m_link = p_iterator.content();
 		return *this;
@@ -282,36 +284,36 @@ public:
 
 	virtual ~ConstIterator() {}
 
-	constexpr inline ConstIterator &operator++()
+	CONSTEXPR INLINE ConstIterator &operator++()
 	{
 		m_link = m_link->next();
 		return *this;
 	}
-	constexpr inline ConstIterator operator++(int)
+	CONSTEXPR INLINE ConstIterator operator++(int)
 	{
 		ConstIterator old(*this);
 		operator++();
 		return old;
 	}
 
-	constexpr inline ConstIterator &operator--()
+	CONSTEXPR INLINE ConstIterator &operator--()
 	{
 		m_link = m_link->previous();
 		return *this;
 	}
 
-	constexpr inline ConstIterator operator--(int)
+	CONSTEXPR INLINE ConstIterator operator--(int)
 	{
 		ConstIterator old(*this);
 		operator--();
 		return old;
 	}
 
-	constexpr inline reference operator*() const { return m_link->value(); }
-	constexpr inline pointer const &content() const { return m_link; }
+	CONSTEXPR INLINE reference operator*() const { return m_link->value(); }
+	CONSTEXPR INLINE pointer const &content() const { return m_link; }
 
-	constexpr inline bool operator==(const ConstIterator &p_iterator) const { return m_link == p_iterator.m_link; }
-	constexpr inline bool operator!=(const ConstIterator &p_iterator) const { return m_link != p_iterator.m_link; }
+	CONSTEXPR INLINE bool operator==(const ConstIterator &p_iterator) const { return m_link == p_iterator.m_link; }
+	CONSTEXPR INLINE bool operator!=(const ConstIterator &p_iterator) const { return m_link != p_iterator.m_link; }
 
 protected:
 	pointer m_link;
@@ -321,132 +323,132 @@ template <typename Elem, typename Alloc>
 class dsaa::DoublyLinkList<Elem, Alloc>::Iterator : public dsaa::DoublyLinkList<Elem, Alloc>::ConstIterator
 {
 public:
-	constexpr Iterator() noexcept : ConstIterator() {}
-	constexpr Iterator(pointer p_link) noexcept : ConstIterator(p_link) {}
-	constexpr Iterator(const Iterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
-	constexpr Iterator(const ConstIterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
+	CONSTEXPR Iterator() noexcept : ConstIterator() {}
+	CONSTEXPR Iterator(pointer p_link) noexcept : ConstIterator(p_link) {}
+	CONSTEXPR Iterator(const Iterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
+	CONSTEXPR Iterator(const ConstIterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
 
-	constexpr Iterator &operator=(const Iterator &p_iterator)
+	CONSTEXPR Iterator &operator=(const Iterator &p_iterator)
 	{
 		content() = p_iterator.content();
 		return *this;
 	}
 
-	~Iterator() {}
+	virtual ~Iterator() {}
 
-	constexpr inline Iterator &operator++()
+	CONSTEXPR INLINE Iterator &operator++()
 	{
 		content() = content()->next();
 		return *this;
 	}
 
-	constexpr inline Iterator operator++(int)
+	CONSTEXPR INLINE Iterator operator++(int)
 	{
 		Iterator old(*this);
 		operator++();
 		return old;
 	}
 
-	constexpr inline Iterator &operator--()
+	CONSTEXPR INLINE Iterator &operator--()
 	{
 		content() = content()->previous();
 		return *this;
 	}
 
-	constexpr inline Iterator operator--(int)
+	CONSTEXPR INLINE Iterator operator--(int)
 	{
 		Iterator old(*this);
 		operator--();
 		return old;
 	}
 
-	constexpr inline bool operator==(const Iterator &other) const noexcept { return content() == other.content(); }
-	constexpr inline bool operator!=(const Iterator &other) const noexcept { return !(*this == other); }
+	CONSTEXPR INLINE bool operator==(const Iterator &other) const noexcept { return content() == other.content(); }
+	CONSTEXPR INLINE bool operator!=(const Iterator &other) const noexcept { return !(*this == other); }
 
-	constexpr inline reference operator*() { return ConstIterator::m_link->value(); }
-	constexpr inline const_reference operator*() const { return ConstIterator::m_link->value(); }
-	constexpr inline pointer &content() { return ConstIterator::m_link; }
-	constexpr inline pointer const &content() const { return ConstIterator::m_link; }
+	CONSTEXPR INLINE reference operator*() { return ConstIterator::m_link->value(); }
+	CONSTEXPR INLINE const_reference operator*() const { return ConstIterator::m_link->value(); }
+	CONSTEXPR INLINE pointer &content() { return ConstIterator::m_link; }
+	CONSTEXPR INLINE pointer const &content() const { return ConstIterator::m_link; }
 };
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::begin() noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::begin() noexcept
 {
 	return iterator(m_first);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::begin() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::begin() const noexcept
 {
 	return const_iterator(m_first);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::cbegin() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::cbegin() const noexcept
 {
 	return const_iterator(m_first);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::end() noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::end() noexcept
 {
 	return size() ? iterator(nullptr) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::end() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::end() const noexcept
 {
 	return size() ? const_iterator(nullptr) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::cend() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_iterator dsaa::DoublyLinkList<Elem, Alloc>::cend() const noexcept
 {
 	return size() ? const_iterator(nullptr) : const_iterator(nullptr);
 }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rbegin() noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rbegin() noexcept
 // {
 // 	return reverse_iterator(end());
 // }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rbegin() const noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rbegin() const noexcept
 // {
 // 	return const_reverse_iterator(end());
 // }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::crbegin() const noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::crbegin() const noexcept
 // {
 // 	return rbegin();
 // }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rend() noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rend() noexcept
 // {
 // 	return reverse_iterator(begin());
 // }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rend() const noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::rend() const noexcept
 // {
 // 	return const_reverse_iterator(begin());
 // }
 
 // template <typename Elem, typename Alloc>
-// constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::crend() const noexcept
+// CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::const_reverse_iterator dsaa::DoublyLinkList<Elem, Alloc>::crend() const noexcept
 // {
 // 	return rend();
 // }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const allocator_type &p_allocator) noexcept
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const allocator_type &p_allocator) noexcept
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr) {}
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_size, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_size, const allocator_type &p_allocator)
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr)
 {
 	for (size_type i(0); i < p_size; ++i)
@@ -454,7 +456,7 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_s
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator)
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr)
 {
 	for (size_type i(0); i < p_size; ++i)
@@ -462,7 +464,7 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const size_type &p_s
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator)
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr)
 {
 	for (auto i(p_elements.begin()); i != p_elements.end(); ++i)
@@ -471,7 +473,7 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const std::initializ
 
 template <typename Elem, typename Alloc>
 template <typename IIterator>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator)
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr)
 {
 	for (auto i(p_first); p_last != i; ++i)
@@ -479,24 +481,24 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const IIterator &p_f
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const DoublyLinkList &p_other)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const DoublyLinkList &p_other)
 	: m_allocator(std::allocator_traits<allocator_type>::select_on_container_copy_construction(p_other.m_allocator)),
 	  m_size(0), m_first(nullptr), m_last(nullptr)
 {
-	for (auto i(p_other.begin()); i != p_other.end(); ++i)
+	for (auto i(p_other.begin()); p_other.end() != i; ++i)
 		insert_last(*i);
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const DoublyLinkList &p_other, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(const DoublyLinkList &p_other, const allocator_type &p_allocator)
 	: m_allocator(p_allocator), m_size(0), m_first(nullptr), m_last(nullptr)
 {
-	for (auto i(p_other.begin()); i != p_other.end(); ++i)
+	for (auto i(p_other.begin()); p_other.end() != i; ++i)
 		insert_last(*i);
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_other) noexcept
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_other) noexcept
 	: m_allocator(std::allocator_traits<allocator_type>::select_on_container_copy_construction(p_other.m_allocator)),
 	  m_size(p_other.size()), m_first(p_other.m_first), m_last(p_other.m_last)
 {
@@ -507,7 +509,7 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_o
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_other, const allocator_type &p_allocator) noexcept
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_other, const allocator_type &p_allocator) noexcept
 	: m_allocator{p_allocator}, m_size(p_other.size()), m_first(p_other.m_first), m_last(p_other.m_last)
 {
 	p_other.m_allocator = allocator_type();
@@ -517,7 +519,7 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc>::DoublyLinkList(DoublyLinkList &&p_o
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(const DoublyLinkList &p_other)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(const DoublyLinkList &p_other)
 {
 	// Avoid self-reference.
 	if (this == &p_other)
@@ -525,14 +527,14 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::
 
 	clean();
 
-	for (auto i(p_other.begin()); i != p_other.end(); ++i)
+	for (auto i(p_other.begin()); p_other.end() != i; ++i)
 		insert_last(*i);
 
 	return *this;
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(DoublyLinkList &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(DoublyLinkList &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value)
 {
 	clean();
 
@@ -550,10 +552,10 @@ constexpr dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::operator=(const std::initializer_list<value_type> &p_elements)
 {
 	clean();
-	for (auto i(p_elements.begin()); i != p_elements.end(); ++i)
+	for (auto i(p_elements.begin()); p_elements.end() != i; ++i)
 		insert_last(*i);
 	return *this;
 }
@@ -573,100 +575,120 @@ dsaa::DoublyLinkList<Elem, Alloc>::~DoublyLinkList()
 
 template <typename Elem, typename Alloc>
 template <typename IIterator>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
 {
 	clean();
 	insert_last(p_first, p_last);
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const size_type &p_size, const_reference p_value)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::assign(const size_type &p_size, const_reference p_value)
 {
 	clean();
 	insert_last(p_size, p_value);
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::assign(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::assign(const std::initializer_list<value_type> &p_elements)
 {
 	clean();
 	insert_last(p_elements);
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkListNode<Elem> &dsaa::DoublyLinkList<Elem, Alloc>::first()
+CONSTEXPR dsaa::DoublyLinkListNode<Elem> &dsaa::DoublyLinkList<Elem, Alloc>::first()
 {
+#ifdef PARAM_CHECK
+	if (nullptr == m_first)
+		throw std::runtime_error("m_first is nullptr.\n");
+#endif
+
 	return *m_first;
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkListNode<Elem> const &dsaa::DoublyLinkList<Elem, Alloc>::first() const
+CONSTEXPR dsaa::DoublyLinkListNode<Elem> const &dsaa::DoublyLinkList<Elem, Alloc>::first() const
 {
+#ifdef PARAM_CHECK
+	if (nullptr == m_first)
+		throw std::runtime_error("m_first is nullptr.\n");
+#endif
+
 	return *m_first;
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkListNode<Elem> &dsaa::DoublyLinkList<Elem, Alloc>::last()
+CONSTEXPR dsaa::DoublyLinkListNode<Elem> &dsaa::DoublyLinkList<Elem, Alloc>::last()
 {
+#ifdef PARAM_CHECK
+	if (nullptr == m_last)
+		throw std::runtime_error("m_last is nullptr.\n");
+#endif
+
 	return *m_last;
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DoublyLinkListNode<Elem> const &dsaa::DoublyLinkList<Elem, Alloc>::last() const
+CONSTEXPR dsaa::DoublyLinkListNode<Elem> const &dsaa::DoublyLinkList<Elem, Alloc>::last() const
 {
+#ifdef PARAM_CHECK
+	if (nullptr == m_last)
+		throw std::runtime_error("m_last is nullptr.\n");
+#endif
+
 	return *m_last;
 }
 
 // Returns a copy of the allocator object associated with the DoublyLinkList container.
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::allocator_type dsaa::DoublyLinkList<Elem, Alloc>::get_allocator() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::allocator_type dsaa::DoublyLinkList<Elem, Alloc>::get_allocator() const noexcept
 {
 	return m_allocator;
 }
 
 template <typename Elem, typename Alloc>
-constexpr bool dsaa::DoublyLinkList<Elem, Alloc>::empty() const noexcept
+CONSTEXPR bool dsaa::DoublyLinkList<Elem, Alloc>::empty() const noexcept
 {
 	return !size();
 }
 
 // Returns the number of elements in the DoublyLinkList container.
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::size() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::size() const noexcept
 {
 	return m_size;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::max_size() const noexcept
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::max_size() const noexcept
 {
 	return std::numeric_limits<size_type>::max() / sizeof(value_type);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::get_index(const_iterator p_iterator)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::get_index(const_iterator p_iterator)
 {
 	size_type index(0);
-	for (auto i(begin()); i != end(); ++i, ++index)
+	for (auto i(begin()); end() != i; ++i, ++index)
 		if (i == p_iterator)
 			break;
 	return index;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::get_iterator(size_type p_index)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::get_iterator(size_type p_index)
 {
 	iterator iter(begin());
-	for (size_type i(0); i != size(); ++i, ++iter)
+	for (size_type i(0); size() != i; ++i, ++iter)
 		if (i == p_index)
 			break;
 	return iter;
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::resize(const size_type &p_size, const_reference p_value)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::resize(const size_type &p_size, const_reference p_value)
 {
-	if (size() < p_size)
+	if (size() <= p_size)
 	{
 		size_type num_elements{p_size - size()};
 		while (num_elements--)
@@ -680,7 +702,7 @@ constexpr void dsaa::DoublyLinkList<Elem, Alloc>::resize(const size_type &p_size
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const_reference p_value)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_value);
@@ -699,7 +721,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(value_type &&p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(value_type &&p_value)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, std::move(p_value));
@@ -718,7 +740,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const size_type &p_size, const_reference p_value)
 {
 	size_type num_elem(p_size);
 	iterator result(insert_first(p_value));
@@ -729,33 +751,33 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const std::initializer_list<value_type> &p_elements)
 {
 	auto iter(p_elements.begin());
 	iterator result(insert_first(*iter));
 	++iter;
 
-	for (; iter != p_elements.end(); ++iter)
+	for (; p_elements.end() != iter; ++iter)
 		result = insert_after(result, *iter);
 	return result;
 }
 
 template <typename Elem, typename Alloc>
 template <class IIterator>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_first(const IIterator &p_first, const IIterator &p_last)
 {
 	auto iter(p_first);
 	iterator result(insert_first(*iter));
 	++iter;
 
-	for (; iter != p_last; ++iter)
+	for (; p_last != iter; ++iter)
 		result = insert_after(result, *iter);
 	return result;
 }
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_first(Args &&...p_args)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_first(Args &&...p_args)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_args...);
@@ -774,7 +796,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const_reference p_value)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_value);
@@ -794,7 +816,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(value_type &&p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(value_type &&p_value)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, std::move(p_value));
@@ -814,7 +836,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const size_type &p_size, const_reference p_value)
 {
 	size_type num_elem(p_size);
 	iterator result;
@@ -824,7 +846,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const std::initializer_list<value_type> &p_elements)
 {
 	iterator result;
 	for (auto iter(p_elements.begin()); p_elements.end() != iter; ++iter)
@@ -836,7 +858,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 
 template <typename Elem, typename Alloc>
 template <class IIterator>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_last(const IIterator &p_first, const IIterator &p_last)
 {
 	iterator result;
 	for (auto iter(p_first); p_last != iter; ++iter)
@@ -846,7 +868,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_last(Args &&...p_args)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_last(Args &&...p_args)
 {
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
 	std::allocator_traits<allocator_type>::construct(m_allocator, new_node, p_args...);
@@ -865,7 +887,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const_reference p_value)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -883,7 +905,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, value_type &&p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, value_type &&p_value)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -901,7 +923,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
 {
 	iterator iter = insert_before(p_position, p_value);
 	size_type size(p_size - 1);
@@ -913,7 +935,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
 {
 	iterator iter(p_position);
 	auto i(p_elements.begin());
@@ -932,7 +954,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 
 template <typename Elem, typename Alloc>
 template <class IIterator>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_before(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
 {
 	iterator iter(p_position);
 	IIterator i(p_first);
@@ -950,7 +972,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_before(const const_iterator &p_position, Args &&...p_args)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_before(const const_iterator &p_position, Args &&...p_args)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -971,7 +993,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const_reference p_value)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -990,7 +1012,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, value_type &&p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, value_type &&p_value)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -1009,7 +1031,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
 {
 	size_type size(p_size);
 	iterator iter(p_position);
@@ -1019,11 +1041,11 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
 {
 	iterator iter(p_position);
 
-	for (auto i{p_elements.begin()}; i != p_elements.end(); ++i)
+	for (auto i(p_elements.begin()); p_elements.end() != i; ++i)
 		iter = insert_after(iter, *i);
 
 	return iter;
@@ -1031,22 +1053,18 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 
 template <typename Elem, typename Alloc>
 template <typename IIterator>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::insert_after(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
 {
 	iterator iter(p_position);
-	IIterator i(p_first);
-	while (i != p_last)
-	{
+	for (auto i(p_first); p_last != i; ++i)
 		iter = insert_after(iter, *i);
-		++i;
-	}
 
 	return iter;
 }
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_after(const const_iterator &p_position, Args &&...p_args)
+CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkList<Elem, Alloc>::emplace_after(const const_iterator &p_position, Args &&...p_args)
 {
 	iterator iter(p_position);
 	pointer new_node = std::allocator_traits<allocator_type>::allocate(m_allocator, 1);
@@ -1065,7 +1083,7 @@ constexpr typename dsaa::DoublyLinkList<Elem, Alloc>::iterator dsaa::DoublyLinkL
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase_first()
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase_first()
 {
 	iterator iter(first().next());
 	std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
@@ -1084,7 +1102,7 @@ constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase_first()
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase_last()
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase_last()
 {
 	iterator iter(last().previous());
 
@@ -1104,7 +1122,7 @@ constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase_last()
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_position)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_position)
 {
 	if (p_position.content() == m_first)
 	{
@@ -1127,7 +1145,7 @@ constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
 {
 	iterator i(p_first);
 	while (i != p_last)
@@ -1137,7 +1155,7 @@ constexpr void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DoublyLinkList<Elem, Alloc>::clean() noexcept
+CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::clean() noexcept
 {
 	while (size())
 		erase_first();

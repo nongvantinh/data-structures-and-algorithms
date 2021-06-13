@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <iterator>
 
+#include "dsaaTypedefs.h"
+
 namespace dsaa
 {
 	template <typename Elem, typename Alloc = std::allocator<Elem>>
@@ -30,124 +32,124 @@ namespace dsaa
 		using size_type = size_t;
 
 		// Returns an iterator pointing to the first element in the container.
-		[[nodiscard]] constexpr inline iterator begin() noexcept;
-		[[nodiscard]] constexpr inline const_iterator begin() const noexcept;
-		[[nodiscard]] constexpr inline const_iterator cbegin() const noexcept;
+		NODISCARD CONSTEXPR INLINE iterator begin() noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator begin() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator cbegin() const noexcept;
 		// Returns an iterator referring to the past-the-end element in the container.
-		[[nodiscard]] constexpr inline iterator end() noexcept;
-		[[nodiscard]] constexpr inline const_iterator end() const noexcept;
-		[[nodiscard]] constexpr inline const_iterator cend() const noexcept;
+		NODISCARD CONSTEXPR INLINE iterator end() noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator end() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_iterator cend() const noexcept;
 		// Returns a reverse_iterator pointing to the last element in the container.
-		[[nodiscard]] constexpr inline reverse_iterator rbegin() noexcept;
-		[[nodiscard]] constexpr inline const_reverse_iterator rbegin() const noexcept;
-		[[nodiscard]] constexpr inline const_reverse_iterator crbegin() const noexcept;
+		NODISCARD CONSTEXPR INLINE reverse_iterator rbegin() noexcept;
+		NODISCARD CONSTEXPR INLINE const_reverse_iterator rbegin() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_reverse_iterator crbegin() const noexcept;
 		// Returns a reverse iterator pointing to the theoretical element preceding the first element in the container.
-		[[nodiscard]] constexpr inline reverse_iterator rend() noexcept;
-		[[nodiscard]] constexpr inline const_reverse_iterator rend() const noexcept;
-		[[nodiscard]] constexpr inline const_reverse_iterator crend() const noexcept;
+		NODISCARD CONSTEXPR INLINE reverse_iterator rend() noexcept;
+		NODISCARD CONSTEXPR INLINE const_reverse_iterator rend() const noexcept;
+		NODISCARD CONSTEXPR INLINE const_reverse_iterator crend() const noexcept;
 
 		// Creates a container with no element.
-		constexpr DynamicArray(const allocator_type &p_allocator = allocator_type()) noexcept;
+		CONSTEXPR DynamicArray(const allocator_type &p_allocator = allocator_type()) noexcept;
 		// Creates a container's p_size elements with default value.
-		constexpr explicit DynamicArray(const size_type &p_size, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR explicit DynamicArray(const size_type &p_size, const allocator_type &p_allocator = allocator_type());
 		// Creates a container's p_size elements and init its element by p_value.
-		constexpr DynamicArray(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DynamicArray(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator = allocator_type());
 		// Creates a container's size equal to p_elements's size and init its elements by p_elements's element.
-		constexpr DynamicArray(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DynamicArray(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator = allocator_type());
 		// Creates a container and init its elements by content of IIterator in range (first, last].
 		template <typename IIterator>
-		constexpr DynamicArray(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator = allocator_type());
+		CONSTEXPR DynamicArray(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator = allocator_type());
 		// Creates a container and copy all emements from p_other.
-		constexpr DynamicArray(const DynamicArray &p_other);
+		CONSTEXPR DynamicArray(const DynamicArray &p_other);
 		// Creates a container and copy all emements from p_other.
-		constexpr DynamicArray(const DynamicArray &p_other, const allocator_type &p_allocator);
+		CONSTEXPR DynamicArray(const DynamicArray &p_other, const allocator_type &p_allocator);
 		// Moves all elements from p_other into this.
-		constexpr DynamicArray(DynamicArray &&p_other) noexcept;
+		CONSTEXPR DynamicArray(DynamicArray &&p_other) noexcept;
 		// Moves all elements from p_other into this.
-		constexpr DynamicArray(DynamicArray &&p_other, const allocator_type &p_allocator) noexcept;
+		CONSTEXPR DynamicArray(DynamicArray &&p_other, const allocator_type &p_allocator) noexcept;
 		// Destroys old elements and copy all emements from p_other into this.
-		constexpr DynamicArray &operator=(const DynamicArray &p_other);
+		CONSTEXPR DynamicArray &operator=(const DynamicArray &p_other);
 		// Destroys old elements and moves all emements from p_other into this.
-		constexpr DynamicArray &operator=(DynamicArray &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value);
+		CONSTEXPR DynamicArray &operator=(DynamicArray &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value);
 		// Destroys old elements and copy all elements from p_elements.
-		constexpr DynamicArray &operator=(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR DynamicArray &operator=(const std::initializer_list<value_type> &p_elements);
 		// Destroys all elements and clean used space.
 		virtual ~DynamicArray();
 
 		// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 		template <typename IIterator>
-		constexpr void assign(const IIterator &p_first, const IIterator &p_last);
-		constexpr void assign(const size_type &p_size, const value_type &p_value = value_type());
-		constexpr void assign(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR void assign(const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR void assign(const size_type &p_size, const value_type &p_value = value_type());
+		CONSTEXPR void assign(const std::initializer_list<value_type> &p_elements);
 
 		// Returns a reference to the element at position p_index in the container.
-		[[nodiscard]] constexpr inline reference operator[](const size_type &p_index);
-		[[nodiscard]] constexpr inline const_reference operator[](const size_type &p_index) const;
+		NODISCARD CONSTEXPR INLINE reference operator[](const size_type &p_index);
+		NODISCARD CONSTEXPR INLINE const_reference operator[](const size_type &p_index) const;
 		// Bounds checking that returns a reference to the element at position p_index in the container.
-		[[nodiscard]] constexpr inline reference at(const size_type &p_index);
-		[[nodiscard]] constexpr inline const_reference at(const size_type &p_index) const;
+		NODISCARD CONSTEXPR INLINE reference at(const size_type &p_index);
+		NODISCARD CONSTEXPR INLINE const_reference at(const size_type &p_index) const;
 		// Returns a reference to the first element in the container.
-		[[nodiscard]] constexpr inline reference first();
-		[[nodiscard]] constexpr inline const_reference first() const;
+		NODISCARD CONSTEXPR INLINE reference first();
+		NODISCARD CONSTEXPR INLINE const_reference first() const;
 		// Returns a reference to the last element in the container.
-		[[nodiscard]] constexpr inline reference last();
-		[[nodiscard]] constexpr inline const_reference last() const;
+		NODISCARD CONSTEXPR INLINE reference last();
+		NODISCARD CONSTEXPR INLINE const_reference last() const;
 		// Returns a direct pointer to the memory array used internally by the container to store its owned elements.
-		[[nodiscard]] constexpr inline pointer data() noexcept;
-		[[nodiscard]] constexpr inline const_pointer data() const noexcept;
+		NODISCARD CONSTEXPR INLINE pointer data() noexcept;
+		NODISCARD CONSTEXPR INLINE const_pointer data() const noexcept;
 		// Returns a copy of the allocator object associated with the container.
-		[[nodiscard]] constexpr inline allocator_type get_allocator() const noexcept;
+		NODISCARD CONSTEXPR INLINE allocator_type get_allocator() const noexcept;
 
 		// Test whether container is empty.
-		[[nodiscard]] constexpr inline bool empty() const noexcept;
+		NODISCARD CONSTEXPR INLINE bool empty() const noexcept;
 		// Returns the size of the storage space currently allocated for the container.
-		[[nodiscard]] constexpr inline size_type capacity() const noexcept;
+		NODISCARD CONSTEXPR INLINE size_type capacity() const noexcept;
 		// Returns the number of elements in the container.
-		[[nodiscard]] constexpr inline size_type size() const noexcept;
+		NODISCARD CONSTEXPR INLINE size_type size() const noexcept;
 		// Returns the maximum number of elements that the container can hold.
-		[[nodiscard]] constexpr inline size_type max_size() const noexcept;
+		NODISCARD CONSTEXPR INLINE size_type max_size() const noexcept;
 		// Gets the corresponding index for given iterator.
-		[[nodiscard]] constexpr inline size_type get_index(const const_iterator &p_position);
+		NODISCARD CONSTEXPR INLINE size_type get_index(const const_iterator &p_position);
 		// Gets the corresponding iterator for given index.
-		[[nodiscard]] constexpr inline iterator get_iterator(const size_type &p_index);
+		NODISCARD CONSTEXPR INLINE iterator get_iterator(const size_type &p_index);
 		// Resizes the container so that it contains p_size elements.
-		constexpr void resize(const size_type &p_size, const_reference p_value = value_type());
+		CONSTEXPR void resize(const size_type &p_size, const_reference p_value = value_type());
 		// Allocates new space and copy elements to new space.
-		constexpr void reserve(const size_type &p_capacity);
+		CONSTEXPR void reserve(const size_type &p_capacity);
 		// Requests the container to reduce its capacity to fit its size.
-		constexpr void shrink_to_fit();
+		CONSTEXPR void shrink_to_fit();
 
 		// Increase DynamicArray size by one, initialize new element with p_value.
-		constexpr iterator insert_last(const_reference p_value);
-		constexpr iterator insert_last(value_type &&p_value);
-		constexpr iterator insert_last(const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_last(const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_last(const_reference p_value);
+		CONSTEXPR iterator insert_last(value_type &&p_value);
+		CONSTEXPR iterator insert_last(const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_last(const std::initializer_list<value_type> &p_elements);
 		template <class IIterator>
-		constexpr iterator insert_last(const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_last(const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_last(Args &&...p_args);
+		CONSTEXPR iterator emplace_last(Args &&...p_args);
 
-		constexpr iterator insert_at(const const_iterator &p_position, const_reference p_value);
-		constexpr iterator insert_at(const const_iterator &p_position, value_type &&p_value);
-		constexpr iterator insert_at(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
-		constexpr iterator insert_at(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
+		CONSTEXPR iterator insert_at(const const_iterator &p_position, const_reference p_value);
+		CONSTEXPR iterator insert_at(const const_iterator &p_position, value_type &&p_value);
+		CONSTEXPR iterator insert_at(const const_iterator &p_position, const size_type &p_size, const_reference p_value);
+		CONSTEXPR iterator insert_at(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements);
 		template <class IIterator>
-		constexpr iterator insert_at(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
+		CONSTEXPR iterator insert_at(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last);
 		template <class... Args>
-		constexpr iterator emplace_at(const const_iterator &p_position, Args &&...p_args);
+		CONSTEXPR iterator emplace_at(const const_iterator &p_position, Args &&...p_args);
 
 		// Destroy element at p_position and reduce size of container.
-		constexpr void erase_at(const const_iterator &p_position);
+		CONSTEXPR void erase_at(const const_iterator &p_position);
 		// Destroy element in range (first,last] and reduce size of container.
-		constexpr void erase(const const_iterator &p_first, const const_iterator &p_last);
+		CONSTEXPR void erase(const const_iterator &p_first, const const_iterator &p_last);
 		// Removes the last element in the vector, effectively reducing the container size by one.
-		constexpr inline void erase_last() noexcept;
+		CONSTEXPR INLINE void erase_last() noexcept;
 		// Destroys all elements from the container, leaving the size of 0.
-		constexpr inline void clear() noexcept;
+		CONSTEXPR INLINE void clear() noexcept;
 
 		// Exchanges the content of the container by the content of p_other,
 		// which is another DynamicArray object of the same type. Sizes may differ.
-		constexpr void swap(DynamicArray &p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_swap::value || std::allocator_traits<allocator_type>::is_always_equal::value);
+		CONSTEXPR void swap(DynamicArray &p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_swap::value || std::allocator_traits<allocator_type>::is_always_equal::value);
 
 	protected:
 		allocator_type m_allocator;
@@ -167,11 +169,11 @@ public:
 	using pointer = Elem *;
 	using reference = Elem &;
 
-	constexpr ConstIterator() noexcept : m_pointer{nullptr} {}
-	constexpr explicit ConstIterator(pointer p_pointer) noexcept : m_pointer{p_pointer} {}
-	constexpr ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer{p_iterator.content()} {}
+	CONSTEXPR ConstIterator() noexcept : m_pointer{nullptr} {}
+	CONSTEXPR explicit ConstIterator(pointer p_pointer) noexcept : m_pointer{p_pointer} {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer{p_iterator.content()} {}
 
-	constexpr ConstIterator &operator=(const ConstIterator &p_iterator) noexcept
+	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator) noexcept
 	{
 		m_pointer = p_iterator.content();
 		return *this;
@@ -179,104 +181,104 @@ public:
 
 	virtual ~ConstIterator() {}
 
-	[[nodiscard]] constexpr inline bool operator==(const ConstIterator &p_iterator) const noexcept { return m_pointer == p_iterator.m_pointer; }
-	[[nodiscard]] constexpr inline bool operator!=(const ConstIterator &p_iterator) const noexcept { return m_pointer != p_iterator.m_pointer; }
+	NODISCARD CONSTEXPR INLINE bool operator==(const ConstIterator &p_iterator) const noexcept { return m_pointer == p_iterator.m_pointer; }
+	NODISCARD CONSTEXPR INLINE bool operator!=(const ConstIterator &p_iterator) const noexcept { return m_pointer != p_iterator.m_pointer; }
 
-	constexpr inline ConstIterator &operator++()
+	CONSTEXPR INLINE ConstIterator &operator++()
 	{
 		++m_pointer;
 		return *this;
 	}
 
-	constexpr inline ConstIterator operator++(int)
+	CONSTEXPR INLINE ConstIterator operator++(int)
 	{
 		ConstIterator old(*this); // copy old value
 		operator++();			  // prefix increment
 		return old;				  // return old value
 	}
 
-	constexpr inline ConstIterator &operator--()
+	CONSTEXPR INLINE ConstIterator &operator--()
 	{
 		--m_pointer;
 		return *this;
 	}
 
-	constexpr inline ConstIterator operator--(int) const
+	CONSTEXPR INLINE ConstIterator operator--(int) const
 	{
 		ConstIterator old(*this);
 		operator--();
 		return old;
 	}
 
-	[[nodiscard]] constexpr inline ConstIterator operator+(const int64_t &p_rhs) const
+	NODISCARD CONSTEXPR INLINE ConstIterator operator+(const int64_t &p_rhs) const
 	{
 		ConstIterator result;
 		result.m_pointer = m_pointer + p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline ConstIterator operator-(const int64_t &p_rhs) const
+	NODISCARD CONSTEXPR INLINE ConstIterator operator-(const int64_t &p_rhs) const
 	{
 		ConstIterator result;
 		result.m_pointer = m_pointer - p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline ConstIterator operator*(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE ConstIterator operator*(const ConstIterator &p_rhs) const
 	{
 		ConstIterator result;
 		result.m_pointer = m_pointer * p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline ConstIterator operator/(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE ConstIterator operator/(const ConstIterator &p_rhs) const
 	{
 		ConstIterator result;
 		result.m_pointer = m_pointer / p_rhs;
 		return result;
 	}
 
-	constexpr inline ConstIterator &operator+=(const int64_t &p_rhs)
+	CONSTEXPR INLINE ConstIterator &operator+=(const int64_t &p_rhs)
 	{
 		m_pointer += p_rhs;
 		return *this;
 	}
 
-	constexpr inline ConstIterator &operator-=(const int64_t &p_rhs)
+	CONSTEXPR INLINE ConstIterator &operator-=(const int64_t &p_rhs)
 	{
 		m_pointer -= p_rhs;
 		return *this;
 	}
 
-	[[nodiscard]] constexpr inline int64_t operator-(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE int64_t operator-(const ConstIterator &p_rhs) const
 	{
 		int64_t result{m_pointer - p_rhs.m_pointer};
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline bool operator<(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator<(const ConstIterator &p_rhs) const
 	{
 		return (m_pointer - p_rhs.m_pointer) < 0;
 	}
 
-	[[nodiscard]] constexpr inline bool operator>(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator>(const ConstIterator &p_rhs) const
 	{
 		return 0 < (m_pointer - p_rhs.m_pointer);
 	}
 
-	[[nodiscard]] constexpr inline bool operator<=(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator<=(const ConstIterator &p_rhs) const
 	{
 		return (m_pointer - p_rhs.m_pointer) <= 0;
 	}
 
-	[[nodiscard]] constexpr inline bool operator>=(const ConstIterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator>=(const ConstIterator &p_rhs) const
 	{
 		return 0 <= (m_pointer - p_rhs.m_pointer);
 	}
 
-	[[nodiscard]] constexpr inline const reference operator*() const { return *m_pointer; }
-	[[nodiscard]] constexpr inline const reference operator[](const int64_t &p_index) const { return m_pointer[p_index]; }
-	[[nodiscard]] constexpr inline pointer const &content() const noexcept { return m_pointer; }
+	NODISCARD CONSTEXPR INLINE const reference operator*() const { return *m_pointer; }
+	NODISCARD CONSTEXPR INLINE const reference operator[](const int64_t &p_index) const { return m_pointer[p_index]; }
+	NODISCARD CONSTEXPR INLINE pointer const &content() const noexcept { return m_pointer; }
 
 protected:
 	pointer m_pointer;
@@ -286,14 +288,14 @@ template <typename Elem, typename Alloc>
 class dsaa::DynamicArray<Elem, Alloc>::Iterator : public dsaa::DynamicArray<Elem, Alloc>::ConstIterator
 {
 public:
-	constexpr Iterator() noexcept : ConstIterator() {}
-	constexpr Iterator(pointer p_pointer) noexcept
+	CONSTEXPR Iterator() noexcept : ConstIterator() {}
+	CONSTEXPR Iterator(pointer p_pointer) noexcept
 		: ConstIterator(p_pointer) {}
 
-	constexpr Iterator(const Iterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
-	constexpr Iterator(const ConstIterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
+	CONSTEXPR Iterator(const Iterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
+	CONSTEXPR Iterator(const ConstIterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
 
-	constexpr Iterator &operator=(const Iterator &p_iterator) noexcept
+	CONSTEXPR Iterator &operator=(const Iterator &p_iterator) noexcept
 	{
 		content() = p_iterator.content();
 		return *this;
@@ -301,185 +303,185 @@ public:
 
 	~Iterator() {}
 
-	[[nodiscard]] constexpr inline bool operator==(const Iterator &p_iterator) const noexcept { return content() == p_iterator.content(); }
-	[[nodiscard]] constexpr inline bool operator!=(const Iterator &p_iterator) const noexcept { return content() != p_iterator.content(); }
+	NODISCARD CONSTEXPR INLINE bool operator==(const Iterator &p_iterator) const noexcept { return content() == p_iterator.content(); }
+	NODISCARD CONSTEXPR INLINE bool operator!=(const Iterator &p_iterator) const noexcept { return content() != p_iterator.content(); }
 
-	constexpr inline Iterator &operator++()
+	CONSTEXPR INLINE Iterator &operator++()
 	{
 		++content();
 		return *this;
 	}
 
-	constexpr inline Iterator operator++(int)
+	CONSTEXPR INLINE Iterator operator++(int)
 	{
 		Iterator old(*this); // copy old value
 		operator++();		 // prefix increment
 		return old;			 // return old value
 	}
 
-	constexpr inline Iterator &operator--()
+	CONSTEXPR INLINE Iterator &operator--()
 	{
 		--content();
 		return *this;
 	}
 
-	constexpr inline Iterator operator--(int) const
+	CONSTEXPR INLINE Iterator operator--(int) const
 	{
 		Iterator old(*this);
 		operator--();
 		return old;
 	}
 
-	[[nodiscard]] constexpr inline Iterator operator+(const int64_t &p_rhs) const
+	NODISCARD CONSTEXPR INLINE Iterator operator+(const int64_t &p_rhs) const
 	{
 		Iterator result;
 		result.content() = content() + p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline Iterator operator-(const int64_t &p_rhs) const
+	NODISCARD CONSTEXPR INLINE Iterator operator-(const int64_t &p_rhs) const
 	{
 		Iterator result;
 		result.content() = content() - p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline Iterator operator*(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE Iterator operator*(const Iterator &p_rhs) const
 	{
 		Iterator result;
 		result.content() = content() * p_rhs;
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline Iterator operator/(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE Iterator operator/(const Iterator &p_rhs) const
 	{
 		Iterator result;
 		result.content() = content() / p_rhs;
 		return result;
 	}
 
-	constexpr inline Iterator &operator+=(const int64_t &p_rhs)
+	CONSTEXPR INLINE Iterator &operator+=(const int64_t &p_rhs)
 	{
 		content() += p_rhs;
 		return *this;
 	}
 
-	constexpr inline Iterator &operator-=(const int64_t &p_rhs)
+	CONSTEXPR INLINE Iterator &operator-=(const int64_t &p_rhs)
 	{
 		content() -= p_rhs;
 		return *this;
 	}
 
-	[[nodiscard]] constexpr inline int64_t operator-(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE int64_t operator-(const Iterator &p_rhs) const
 	{
 		int64_t result{content() - p_rhs.content()};
 		return result;
 	}
 
-	[[nodiscard]] constexpr inline bool operator<(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator<(const Iterator &p_rhs) const
 	{
 		return (content() - p_rhs.content()) < 0;
 	}
 
-	[[nodiscard]] constexpr inline bool operator>(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator>(const Iterator &p_rhs) const
 	{
 		return 0 < (content() - p_rhs.content());
 	}
 
-	[[nodiscard]] constexpr inline bool operator<=(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator<=(const Iterator &p_rhs) const
 	{
 		return (content() - p_rhs.content()) <= 0;
 	}
 
-	[[nodiscard]] constexpr inline bool operator>=(const Iterator &p_rhs) const
+	NODISCARD CONSTEXPR INLINE bool operator>=(const Iterator &p_rhs) const
 	{
 		return 0 <= (content() - p_rhs.content());
 	}
 
-	[[nodiscard]] constexpr inline reference operator*() { return *ConstIterator::m_pointer; }
-	[[nodiscard]] constexpr inline reference operator[](const int64_t &p_index) { return ConstIterator::m_pointer[p_index]; }
-	[[nodiscard]] constexpr inline pointer &content() { return ConstIterator::m_pointer; }
-	[[nodiscard]] constexpr inline pointer content() const { return ConstIterator::m_pointer; }
+	NODISCARD CONSTEXPR INLINE reference operator*() { return *ConstIterator::m_pointer; }
+	NODISCARD CONSTEXPR INLINE reference operator[](const int64_t &p_index) { return ConstIterator::m_pointer[p_index]; }
+	NODISCARD CONSTEXPR INLINE pointer &content() { return ConstIterator::m_pointer; }
+	NODISCARD CONSTEXPR INLINE pointer content() const { return ConstIterator::m_pointer; }
 };
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::begin() noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::begin() noexcept
 {
 	return size() ? iterator(&m_elements[0]) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::begin() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::begin() const noexcept
 {
 	return size() ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cbegin() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cbegin() const noexcept
 {
 	return size() ? const_iterator(&m_elements[0]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::end() noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::end() noexcept
 {
 	return size() ? iterator(&m_elements[size()]) : iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::end() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::end() const noexcept
 {
 	return size() ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cend() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_iterator dsaa::DynamicArray<Elem, Alloc>::cend() const noexcept
 {
 	return size() ? const_iterator(&m_elements[size()]) : const_iterator(nullptr);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rbegin() noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rbegin() noexcept
 {
 	return reverse_iterator(end());
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rbegin() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rbegin() const noexcept
 {
 	return const_reverse_iterator(end());
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::crbegin() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::crbegin() const noexcept
 {
 	return const_reverse_iterator(end());
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rend() noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rend() noexcept
 {
 	return reverse_iterator(begin());
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rend() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::rend() const noexcept
 {
 	return const_reverse_iterator(begin());
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::crend() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reverse_iterator dsaa::DynamicArray<Elem, Alloc>::crend() const noexcept
 {
 	return const_reverse_iterator(begin());
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const allocator_type &p_allocator) noexcept
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const allocator_type &p_allocator) noexcept
 	: m_allocator{p_allocator}, m_capacity{0}, m_size{0}, m_elements{nullptr} {}
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size, const allocator_type &p_allocator)
 	: m_allocator{p_allocator}, m_capacity{p_size}, m_size{p_size}, m_elements{nullptr}
 {
 	m_elements = std::allocator_traits<allocator_type>::allocate(m_allocator, capacity());
@@ -488,7 +490,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size,
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size, const_reference p_value, const allocator_type &p_allocator)
 	: m_allocator{p_allocator}, m_capacity{p_size}, m_size{p_size}, m_elements{nullptr}
 {
 	m_elements = std::allocator_traits<allocator_type>::allocate(m_allocator, capacity());
@@ -497,7 +499,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const size_type &p_size,
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const std::initializer_list<value_type> &p_elements, const allocator_type &p_allocator)
 	: m_allocator{p_allocator}, m_capacity{p_elements.size()}, m_size{p_elements.size()}, m_elements{nullptr}
 {
 	m_elements = std::allocator_traits<allocator_type>::allocate(m_allocator, capacity());
@@ -508,7 +510,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const std::initializer_l
 
 template <typename Elem, typename Alloc>
 template <typename IIterator>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const IIterator &p_first, const IIterator &p_last, const allocator_type &p_allocator)
 	: m_allocator{p_allocator}, m_capacity{0}, m_size{0}, m_elements{nullptr}
 {
 	size_type count_size{0};
@@ -525,7 +527,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const IIterator &p_first
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_other)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_other)
 	: m_allocator{std::allocator_traits<allocator_type>::select_on_container_copy_construction(p_other.get_allocator())},
 	  m_capacity{p_other.size()}, m_size{p_other.size()}, m_elements{nullptr}
 {
@@ -536,7 +538,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_ot
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_other, const allocator_type &p_allocator)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_other, const allocator_type &p_allocator)
 	: m_allocator{p_allocator}, m_capacity{p_other.size()}, m_size{p_other.size()}, m_elements{nullptr}
 {
 	m_elements = std::allocator_traits<allocator_type>::allocate(m_allocator, capacity());
@@ -546,7 +548,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(const DynamicArray &p_ot
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other) noexcept
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other) noexcept
 	: m_allocator{std::allocator_traits<allocator_type>::select_on_container_copy_construction(p_other.get_allocator())},
 	  m_capacity{p_other.capacity()}, m_size{p_other.size()}, m_elements{p_other.m_elements}
 {
@@ -557,7 +559,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other) 
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other, const allocator_type &p_allocator) noexcept
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other, const allocator_type &p_allocator) noexcept
 	: m_allocator{p_allocator}, m_capacity{p_other.capacity()}, m_size{p_other.size()}, m_elements{p_other.m_elements}
 {
 	p_other.m_allocator = allocator_type();
@@ -567,7 +569,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc>::DynamicArray(DynamicArray &&p_other, 
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(const DynamicArray &p_other)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(const DynamicArray &p_other)
 {
 	// Avoid self-reference.
 	if (this == &p_other)
@@ -604,7 +606,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::oper
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(DynamicArray &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(DynamicArray &&p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_move_assignment::value || std::allocator_traits<allocator_type>::is_always_equal::value)
 {
 	for (iterator i{begin()}; i != end(); ++i)
 		std::allocator_traits<allocator_type>::destroy(m_allocator, i.content());
@@ -626,7 +628,7 @@ constexpr dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::oper
 }
 
 template <typename Elem, typename Alloc>
-constexpr dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR dsaa::DynamicArray<Elem, Alloc> &dsaa::DynamicArray<Elem, Alloc>::operator=(const std::initializer_list<value_type> &p_elements)
 {
 	// Quarantees elements are copies and no error happens before delete old elements.
 	pointer elements = std::allocator_traits<allocator_type>::allocate(m_allocator, p_elements.size());
@@ -657,7 +659,7 @@ dsaa::DynamicArray<Elem, Alloc>::~DynamicArray()
 // Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 template <typename Elem, typename Alloc>
 template <typename IIterator>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::assign(const IIterator &p_first, const IIterator &p_last)
 {
 	for (iterator i(begin()); end() != i; ++i)
 		std::allocator_traits<allocator_type>::destroy(m_allocator, i.content());
@@ -678,7 +680,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const IIterator &p_first,
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const size_type &p_size, const value_type &p_value)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::assign(const size_type &p_size, const value_type &p_value)
 {
 	// Allocate new space.
 	pointer elements = std::allocator_traits<allocator_type>::allocate(m_allocator, p_size);
@@ -695,7 +697,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const size_type &p_size, 
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::assign(const std::initializer_list<value_type> &p_elements)
 {
 	// Quarantees elements are copies and no error happens before delete old elements.
 	pointer elements = std::allocator_traits<allocator_type>::allocate(m_allocator, p_elements.size());
@@ -714,19 +716,29 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::assign(const std::initializer_li
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index)
 {
+#ifdef PARAM_CHECK
+	if (size() <= p_index)
+		throw std::out_of_range("p_index out of range exception.\n;");
+#endif
+
 	return m_elements[p_index];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) const
 {
+#ifdef PARAM_CHECK
+	if (p_index < 0 || size() <= p_index)
+		throw std::out_of_range("p_index out of range exception.\n;");
+#endif
+
 	return m_elements[p_index];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index)
 {
 	if (p_index < 0 || size() <= p_index)
 		throw std::out_of_range("p_index out of range exception.\n;");
@@ -735,7 +747,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index) const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index) const
 {
 	if (p_index < 0 || size() <= p_index)
 		throw std::out_of_range("p_index out of range exception.\n");
@@ -744,73 +756,93 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::Dynami
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::first()
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::first()
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+#endif
+
 	return m_elements[0];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::first() const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::first() const
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+#endif
+
 	return m_elements[0];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::last()
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::last()
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+#endif
+
 	return m_elements[size() - 1];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::last() const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::last() const
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+#endif
+
 	return m_elements[size() - 1];
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::pointer dsaa::DynamicArray<Elem, Alloc>::data() noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::pointer dsaa::DynamicArray<Elem, Alloc>::data() noexcept
 {
 	return m_elements;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::const_pointer dsaa::DynamicArray<Elem, Alloc>::data() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_pointer dsaa::DynamicArray<Elem, Alloc>::data() const noexcept
 {
 	return m_elements;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::allocator_type dsaa::DynamicArray<Elem, Alloc>::get_allocator() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::allocator_type dsaa::DynamicArray<Elem, Alloc>::get_allocator() const noexcept
 {
 	return m_allocator;
 }
 
 template <typename Elem, typename Alloc>
-constexpr bool dsaa::DynamicArray<Elem, Alloc>::empty() const noexcept
+CONSTEXPR bool dsaa::DynamicArray<Elem, Alloc>::empty() const noexcept
 {
 	return size() == 0;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::capacity() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::capacity() const noexcept
 {
 	return m_capacity;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::size() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::size() const noexcept
 {
 	return m_size;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::max_size() const noexcept
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::max_size() const noexcept
 {
 	return std::numeric_limits<value_type>::max() / sizeof(value_type);
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, const value_type &p_value)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, const value_type &p_value)
 {
 	reserve(p_size);
 	if (size() <= p_size)
@@ -836,7 +868,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, 
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::reserve(const size_type &p_capacity)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::reserve(const size_type &p_capacity)
 {
 	// Never decrease allocation.
 	if (p_capacity <= m_capacity)
@@ -858,7 +890,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::reserve(const size_type &p_capac
 
 // Requests the container to reduce its capacity to fit its size.
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::shrink_to_fit()
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::shrink_to_fit()
 {
 	if (size() == capacity())
 		return;
@@ -879,19 +911,28 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::shrink_to_fit()
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::get_index(const const_iterator &p_position)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::get_index(const const_iterator &p_position)
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+	if (p_position < begin())
+		throw std::range_error("Specified position is smaller than the index in array.\n");
+	if (end() < p_position)
+		throw std::range_error("Specified position is larger than the index in array.\n");
+#endif
+
 	return p_position - iterator(&m_elements[0]);
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index)
 {
 	return iterator(&m_elements[0]) + p_index;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const_reference p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const_reference p_value)
 {
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -902,7 +943,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(value_type &&p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(value_type &&p_value)
 {
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -912,7 +953,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const size_type &p_size, const_reference p_value)
 {
 	if (capacity() < size() + p_size)
 		reserve(size() + p_size);
@@ -927,7 +968,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const std::initializer_list<value_type> &p_elements)
 {
 	if (capacity() < size() + p_elements.size())
 		reserve(size() + p_elements.size());
@@ -942,7 +983,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 template <typename Elem, typename Alloc>
 template <class IIterator>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_last(const IIterator &p_first, const IIterator &p_last)
 {
 	size_type count_size{0};
 	for (auto iter{p_first}; iter != p_last; ++iter)
@@ -962,7 +1003,7 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::emplace_last(Args &&...p_args)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::emplace_last(Args &&...p_args)
 {
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -973,8 +1014,15 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const_reference p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const_reference p_value)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	size_t index{get_index(p_position)}; // reserve can make iterator to p_position become invalid.
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -993,8 +1041,15 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, value_type &&p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, value_type &&p_value)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	size_t index{get_index(p_position)};
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -1012,42 +1067,54 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	return position;
 }
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const size_type &p_size, const_reference p_value)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
+	size_type index{get_index(p_position)};
+
+	if (capacity() < size() + p_size)
+		reserve(size() + p_size);
+
+	iterator pivot{get_iterator(index)};
+	iterator convey{get_iterator(size() - 1)};
+	iterator target{get_iterator(size() + p_size - 1)};
+
+	while (pivot <= convey)
 	{
-		size_type index{get_index(p_position)};
-
-		if (capacity() < size() + p_size)
-			reserve(size() + p_size);
-
-		iterator pivot{get_iterator(index)};
-		iterator convey{get_iterator(size() - 1)};
-		iterator target{get_iterator(size() + p_size - 1)};
-
-		while (pivot <= convey)
-		{
-			std::allocator_traits<allocator_type>::construct(m_allocator, target.content(), *convey);
-			std::allocator_traits<allocator_type>::destroy(m_allocator, convey.content());
-			--target;
-			--convey;
-		}
-		++convey;
-		++target;
-		while (convey != target)
-		{
-			std::allocator_traits<allocator_type>::construct(m_allocator, convey.content(), p_value);
-			++convey;
-		}
-
-		m_size += p_size;
-
-		return --convey;
+		std::allocator_traits<allocator_type>::construct(m_allocator, target.content(), *convey);
+		std::allocator_traits<allocator_type>::destroy(m_allocator, convey.content());
+		--target;
+		--convey;
 	}
+	++convey;
+	++target;
+	while (convey != target)
+	{
+		std::allocator_traits<allocator_type>::construct(m_allocator, convey.content(), p_value);
+		++convey;
+	}
+
+	m_size += p_size;
+
+	return --convey;
 }
 
 template <typename Elem, typename Alloc>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const std::initializer_list<value_type> &p_elements)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	size_type index{get_index(p_position)};
 
 	if (capacity() < size() + p_elements.size())
@@ -1076,8 +1143,15 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 template <typename Elem, typename Alloc>
 template <class IIterator>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::insert_at(const const_iterator &p_position, const IIterator &p_first, const IIterator &p_last)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	size_type index{get_index(p_position)};
 	size_type count_size{0};
 	for (auto i{p_first}; i != p_last; ++i)
@@ -1110,8 +1184,15 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 template <typename Elem, typename Alloc>
 template <class... Args>
-constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::emplace_at(const const_iterator &p_position, Args &&...p_args)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::emplace_at(const const_iterator &p_position, Args &&...p_args)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	size_t index{get_index(p_position)}; // reserve can make iterator to p_position become invalid.
 	if (size() == capacity())
 		reserve(size() == 0 ? 8 : 2 * size()); // Make sure we have enough space.
@@ -1131,8 +1212,15 @@ constexpr typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p_position)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p_position)
 {
+#ifdef PARAM_CHECK
+	if (p_position < begin())
+		throw std::invalid_argument("p_position can not less than begin().\n");
+	if (end() < p_position)
+		throw std::invalid_argument("p_position can not larger than end().\n");
+#endif
+
 	for (iterator position(p_position + 1); position != end(); ++position)
 	{
 		*(position - 1) = *position;
@@ -1142,8 +1230,13 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
 {
+#ifdef PARAM_CHECK
+	if (p_last < p_first)
+		throw std::invalid_argument("p_first can not less than p_last.\n");
+#endif
+
 	iterator first(p_first), last(p_last);
 
 	while (last != end())
@@ -1163,14 +1256,19 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_fi
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::erase_last() noexcept
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_last() noexcept
 {
+#ifdef PARAM_CHECK
+	if (size() == 0)
+		std::terminate();
+#endif
+
 	std::allocator_traits<allocator_type>::destroy(m_allocator, &m_elements[size() - 1]);
 	--m_size;
 }
 
 template <typename Elem, typename Alloc>
-constexpr void dsaa::DynamicArray<Elem, Alloc>::clear() noexcept
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::clear() noexcept
 {
 	// Clean up all elements.
 	for (iterator i{begin()}; i != end(); ++i)
@@ -1180,7 +1278,7 @@ constexpr void dsaa::DynamicArray<Elem, Alloc>::clear() noexcept
 }
 
 // template <typename Elem, typename Alloc>
-// constexpr void dsaa::DynamicArray<Elem, Alloc>::swap(DynamicArray &p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_swap::value || std::allocator_traits<allocator_type>::is_always_equal::value)
+// CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::swap(DynamicArray &p_other) noexcept(std::allocator_traits<allocator_type>::propagate_on_container_swap::value || std::allocator_traits<allocator_type>::is_always_equal::value)
 // {
 // }
 
