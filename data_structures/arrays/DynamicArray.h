@@ -167,11 +167,12 @@ public:
 	using value_type = Elem;
 	using difference_type = std::ptrdiff_t;
 	using pointer = Elem *;
+	using const_pointer = Elem const *;
 	using reference = Elem &;
 
-	CONSTEXPR ConstIterator() noexcept : m_pointer{nullptr} {}
-	CONSTEXPR explicit ConstIterator(pointer p_pointer) noexcept : m_pointer{p_pointer} {}
-	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer{p_iterator.content()} {}
+	CONSTEXPR ConstIterator() noexcept : m_pointer(nullptr) {}
+	CONSTEXPR explicit ConstIterator(const_pointer p_pointer) noexcept : m_pointer(const_cast<pointer>(p_pointer)) {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer(const_cast<pointer>(p_iterator.content())) {}
 
 	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator) noexcept
 	{
@@ -278,7 +279,7 @@ public:
 
 	NODISCARD CONSTEXPR INLINE const reference operator*() const { return *m_pointer; }
 	NODISCARD CONSTEXPR INLINE const reference operator[](const int64_t &p_index) const { return m_pointer[p_index]; }
-	NODISCARD CONSTEXPR INLINE pointer const &content() const noexcept { return m_pointer; }
+	NODISCARD CONSTEXPR INLINE const_pointer content() const noexcept { return m_pointer; }
 
 protected:
 	pointer m_pointer;
@@ -289,9 +290,7 @@ class dsaa::DynamicArray<Elem, Alloc>::Iterator : public dsaa::DynamicArray<Elem
 {
 public:
 	CONSTEXPR Iterator() noexcept : ConstIterator() {}
-	CONSTEXPR Iterator(pointer p_pointer) noexcept
-		: ConstIterator(p_pointer) {}
-
+	CONSTEXPR Iterator(pointer p_pointer) noexcept : ConstIterator(p_pointer) {}
 	CONSTEXPR Iterator(const Iterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
 	CONSTEXPR Iterator(const ConstIterator &p_iterator) noexcept : ConstIterator(p_iterator) {}
 
