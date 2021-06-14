@@ -730,7 +730,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) const
 {
 #ifdef PARAM_CHECK
-	if (p_index < 0 || size() <= p_index)
+	if (size() <= p_index)
 		throw std::out_of_range("p_index out of range exception.\n;");
 #endif
 
@@ -740,7 +740,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::Dynami
 template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index)
 {
-	if (p_index < 0 || size() <= p_index)
+	if (size() <= p_index)
 		throw std::out_of_range("p_index out of range exception.\n;");
 
 	return m_elements[p_index];
@@ -749,7 +749,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray
 template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::at(const size_type &p_index) const
 {
-	if (p_index < 0 || size() <= p_index)
+	if (size() <= p_index)
 		throw std::out_of_range("p_index out of range exception.\n");
 
 	return m_elements[p_index];
