@@ -172,11 +172,11 @@ public:
 
 	CONSTEXPR ConstIterator() noexcept : m_pointer(nullptr) {}
 	CONSTEXPR explicit ConstIterator(const_pointer p_pointer) noexcept : m_pointer(const_cast<pointer>(p_pointer)) {}
-	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer(const_cast<pointer>(p_iterator.content())) {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_pointer(p_iterator.m_pointer) {}
 
 	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator) noexcept
 	{
-		m_pointer = p_iterator.content();
+		m_pointer = p_iterator.m_pointer;
 		return *this;
 	}
 
@@ -224,7 +224,7 @@ public:
 		result.m_pointer = m_pointer - p_rhs;
 		return result;
 	}
-
+	
 	NODISCARD CONSTEXPR INLINE ConstIterator operator*(const ConstIterator &p_rhs) const
 	{
 		ConstIterator result;
