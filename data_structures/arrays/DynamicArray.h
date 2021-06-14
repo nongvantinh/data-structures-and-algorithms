@@ -224,20 +224,6 @@ public:
 		result.m_pointer = m_pointer - p_rhs;
 		return result;
 	}
-	
-	NODISCARD CONSTEXPR INLINE ConstIterator operator*(const ConstIterator &p_rhs) const
-	{
-		ConstIterator result;
-		result.m_pointer = m_pointer * p_rhs;
-		return result;
-	}
-
-	NODISCARD CONSTEXPR INLINE ConstIterator operator/(const ConstIterator &p_rhs) const
-	{
-		ConstIterator result;
-		result.m_pointer = m_pointer / p_rhs;
-		return result;
-	}
 
 	CONSTEXPR INLINE ConstIterator &operator+=(const int64_t &p_rhs)
 	{
