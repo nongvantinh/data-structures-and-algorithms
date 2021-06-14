@@ -57,10 +57,23 @@ test_cases_paths = ['modules/', 'test/', 'test/algorithms/']
 test_cases_paths += test_data_structures_paths
 
 root_path = './'
+# algorithms paths.
+algorithms_path = "algorithms/"
 
-data_structures_paths = 'data_structures/'
+# data structure paths.
+arrays_path = "data_structures/arrays/"
+lists_path = "data_structures/lists/"
+trees_path = "data_structures/trees/"
+b_trees_path = "data_structures/trees/b_trees/"
+binary_trees_path = "data_structures/trees/binary_trees/"
+heaps_path = "data_structures/trees/heaps/"
+multi_way_trees_path = "data_structures/trees/multi_way_trees/"
 
-library_paths = [root_path, data_structures_paths]
+data_structures_paths = ['data_structures/', arrays_path, lists_path,
+                         trees_path, b_trees_path, binary_trees_path, heaps_path, multi_way_trees_path]
+
+library_paths = [root_path, algorithms_path]
+library_paths += (data_structures_paths)
 
 if env['use_llvm']:
     env['CC'] = 'clang'
