@@ -286,7 +286,7 @@ public:
 		return *this;
 	}
 
-	~Iterator() {}
+	virtual ~Iterator() {}
 
 	NODISCARD CONSTEXPR INLINE bool operator==(const Iterator &p_iterator) const noexcept { return content() == p_iterator.content(); }
 	NODISCARD CONSTEXPR INLINE bool operator!=(const Iterator &p_iterator) const noexcept { return content() != p_iterator.content(); }
