@@ -204,7 +204,7 @@ public:
 		return *this;
 	}
 
-	CONSTEXPR INLINE ConstIterator operator--(int) const
+	CONSTEXPR INLINE ConstIterator operator--(int)
 	{
 		ConstIterator old(*this);
 		operator--();
@@ -324,7 +324,7 @@ public:
 		return *this;
 	}
 
-	CONSTEXPR INLINE Iterator operator--(int) const
+	CONSTEXPR INLINE Iterator operator--(int)
 	{
 		Iterator old(*this);
 		operator--();
