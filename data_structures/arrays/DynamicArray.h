@@ -832,7 +832,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, 
 	reserve(p_size);
 	if (size() <= p_size)
 	{
-		iterator from(&m_elements[size()]), to(get_iterator(size() + p_size));
+		iterator from(&m_elements[size()]), to(&m_elements[size() + p_size]);
 		while (from != to)
 		{
 			std::allocator_traits<allocator_type>::construct(m_allocator, from.content(), p_value);
@@ -913,6 +913,13 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray
 template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index) NOEXCEPT
 {
+#ifdef PARAM_CHECK
+	if (!size())
+		throw std::runtime_error("size() is zero, which means DynamicArray currently empty.");
+	if (size() < p_index)
+		throw std::range_error("Specified position is greater than the index in array.\n");
+#endif
+
 	return iterator(&m_elements[0]) + p_index;
 }
 
@@ -1068,7 +1075,8 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 	iterator pivot(get_iterator(index));
 	iterator convey(get_iterator(size() - 1));
-	iterator target(get_iterator(size() + p_size - 1));
+	// Have to access element directly, get_iterator when add bound check will cause problem.
+	iterator target(&m_elements[size() + p_size - 1]);
 
 	while (pivot <= convey)
 	{
@@ -1107,7 +1115,8 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 	iterator pivot(get_iterator(index));
 	iterator convey(get_iterator(size() - 1));
-	iterator target(get_iterator(size() + p_elements.size() - 1));
+	// Have to access element directly, get_iterator when add bound check will cause problem.
+	iterator target(&m_elements[size() + p_elements.size() - 1]);
 
 	while (pivot <= convey)
 	{
@@ -1146,7 +1155,8 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 
 	iterator pivot(get_iterator(index));
 	iterator convey(get_iterator(size() - 1));
-	iterator target(get_iterator(size() + count_size - 1));
+	// Have to access element directly, get_iterator when add bound check will cause problem.
+	iterator target(&m_elements[size() + count_size - 1]);
 
 	while (pivot <= convey)
 	{
@@ -1202,7 +1212,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p
 #ifdef PARAM_CHECK
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
-	if (end() < p_position)
+	if (end() <= p_position)
 		throw std::invalid_argument("p_position can not greater than last().\n");
 #endif
 
@@ -1220,6 +1230,10 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_fi
 #ifdef PARAM_CHECK
 	if (p_last < p_first)
 		throw std::invalid_argument("p_first can not less than p_last.\n");
+	if (p_first < begin())
+		throw std::invalid_argument("p_first can not less than begin().\n");
+	if (end() < p_last)
+		throw std::invalid_argument("p_last can not greater than end().\n");
 #endif
 
 	iterator first(p_first), last(p_last);
@@ -1246,6 +1260,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_last() noexcept
 #ifdef PARAM_CHECK
 	if (size() == 0)
 		std::terminate();
+		// throw std::runtime_error("size is 0, there is nothing to erase.\n");
 #endif
 
 	std::allocator_traits<allocator_type>::destroy(m_allocator, &m_elements[size() - 1]);
