@@ -904,7 +904,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray
 	if (p_position < begin())
 		throw std::range_error("Specified position is smaller than the index in array.\n");
 	if (end() < p_position)
-		throw std::range_error("Specified position is larger than the index in array.\n");
+		throw std::range_error("Specified position is greater than the index in array.\n");
 #endif
 
 	return p_position - iterator(&m_elements[0]);
@@ -1005,7 +1005,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_t index(get_index(p_position)); // reserve can make iterator to p_position become invalid.
@@ -1032,7 +1032,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_t index(get_index(p_position));
@@ -1058,7 +1058,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_type index(get_index(p_position));
@@ -1097,7 +1097,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_type index(get_index(p_position));
@@ -1134,7 +1134,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_type index(get_index(p_position));
@@ -1175,7 +1175,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than end().\n");
 #endif
 
 	size_t index(get_index(p_position)); // reserve can make iterator to p_position become invalid.
@@ -1203,7 +1203,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p
 	if (p_position < begin())
 		throw std::invalid_argument("p_position can not less than begin().\n");
 	if (end() < p_position)
-		throw std::invalid_argument("p_position can not larger than end().\n");
+		throw std::invalid_argument("p_position can not greater than last().\n");
 #endif
 
 	for (iterator position(p_position + 1); position != end(); ++position)
