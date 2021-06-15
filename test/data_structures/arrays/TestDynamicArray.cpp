@@ -7,7 +7,179 @@
 #include "test/TestObject.h"
 
 using iterator = dsaa::DynamicArray<TestObject<int>>::iterator;
+using const_iterator = dsaa::DynamicArray<TestObject<int>>::const_iterator;
 using reserve_iterator = dsaa::DynamicArray<TestObject<int>>::reverse_iterator;
+
+TEST_CASE("Test DynamicArray const_iterator default constructor.", "[DynamicArray]")
+{
+    const_iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test DynamicArray const_iterator constructor with const_pointer.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        const_iterator iter(&arr[0]);
+        REQUIRE(&arr[0] == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        const_iterator iter(&arr.data()[num_elem]);
+        REQUIRE(&arr.data()[num_elem] == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test DynamicArray const_iterator copy constructor.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr[0]);
+    const_iterator iter2(iter);
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DynamicArray const_iterator copy assignment.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr[0]);
+    const_iterator iter2;
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DynamicArray const_iterator operator.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr[0]);
+    const_iterator iter2(iter);
+    const_iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter != iter3);
+
+    REQUIRE(++iter == ++iter2);
+    REQUIRE(--iter == --iter2);
+
+    REQUIRE(iter++ == iter2++);
+    REQUIRE(iter-- == iter2--);
+
+    REQUIRE(arr.begin() + num_elem == arr.end());
+    REQUIRE(arr.end() - num_elem == arr.begin());
+
+    REQUIRE((iter += 5) == (iter2 += 5));
+    REQUIRE((iter -= 5) == (iter2 -= 5));
+
+    REQUIRE(iter - iter2 == 0);
+
+    REQUIRE(arr.begin() < arr.end());
+    REQUIRE(arr.end() > arr.begin());
+
+    REQUIRE(arr.begin() <= arr.begin());
+    REQUIRE(arr.begin() >= arr.begin());
+
+    REQUIRE(arr.end() <= arr.end());
+    REQUIRE(arr.end() >= arr.end());
+}
+
+TEST_CASE("Test DynamicArray iterator default constructor.", "[DynamicArray]")
+{
+    iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test DynamicArray iterator constructor with const_pointer.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        const_iterator iter(&arr[0]);
+        REQUIRE(&arr[0] == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        const_iterator iter(&arr.data()[num_elem]);
+        REQUIRE(&arr.data()[num_elem] == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test DynamicArray iterator copy constructor.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr[0]);
+    iterator iter2(iter);
+    iterator iter3(iter2);
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter2 == iter3);
+}
+
+TEST_CASE("Test DynamicArray iterator copy assignment.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr[0]);
+    iterator iter2;
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DynamicArray iterator operator.", "[DynamicArray]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DynamicArray<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr[0]);
+    iterator iter2(iter);
+    iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter2 != iter3);
+
+    REQUIRE(++iter == ++iter2);
+    REQUIRE(--iter == --iter2);
+
+    REQUIRE(iter++ == iter2++);
+    REQUIRE(iter-- == iter2--);
+
+    REQUIRE(arr.begin() + num_elem == arr.end());
+    REQUIRE(arr.end() - num_elem == arr.begin());
+
+    REQUIRE((iter += 5) == (iter2 += 5));
+    REQUIRE((iter -= 5) == (iter2 -= 5));
+
+    REQUIRE(iter - iter2 == 0);
+
+    REQUIRE(arr.begin() < arr.end());
+    REQUIRE(arr.end() > arr.begin());
+
+    REQUIRE(arr.begin() <= arr.begin());
+    REQUIRE(arr.begin() >= arr.begin());
+
+    REQUIRE(arr.end() <= arr.end());
+    REQUIRE(arr.end() >= arr.end());
+
+    *iter = TestObject<int>(555);
+    REQUIRE(TestObject<int>(555) == *iter);
+}
 
 TEST_CASE("Test DynamicArray default constructor.", "[DynamicArray]")
 {
@@ -600,7 +772,7 @@ TEST_CASE("Test DynamicArray resize function.", "[DynamicArray]")
 
 TEST_CASE("Test DynamicArray insert_last with parameter value.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
     TestObject<int> value(dsaa::random::random_range_int<int>());
@@ -623,7 +795,7 @@ TEST_CASE("Test DynamicArray insert_last with parameter value.", "[DynamicArray]
 
 TEST_CASE("Test DynamicArray insert_last by move value.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
 
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
@@ -701,7 +873,7 @@ TEST_CASE("Test DynamicArray insert_last by std::initializer_list.", "[DynamicAr
 
 TEST_CASE("Test DynamicArray insert_last by a pair of IIterator.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
     dsaa::DynamicArray<TestObject<int>> copy_arr(arr);
@@ -728,7 +900,7 @@ TEST_CASE("Test DynamicArray insert_last by a pair of IIterator.", "[DynamicArra
 
 TEST_CASE("Test DynamicArray emplace_last using parameter pack.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
     TestObject<int> value(dsaa::random::random_range_int<int>());
@@ -751,7 +923,7 @@ TEST_CASE("Test DynamicArray emplace_last using parameter pack.", "[DynamicArray
 
 TEST_CASE("Test DynamicArray insert_at with one parameter's value.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
@@ -858,7 +1030,7 @@ TEST_CASE("Test DynamicArray insert_at with one parameter's value.", "[DynamicAr
 
 TEST_CASE("Test DynamicArray insert_at by move a value.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
@@ -969,7 +1141,7 @@ TEST_CASE("Test DynamicArray insert_at by move a value.", "[DynamicArray]")
 
 TEST_CASE("Test DynamicArray insert_at by a mount of size's value.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
@@ -1080,7 +1252,7 @@ TEST_CASE("Test DynamicArray insert_at by a mount of size's value.", "[DynamicAr
 
 TEST_CASE("Test DynamicArray insert_at by a std::initializer_list.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
@@ -1187,7 +1359,7 @@ TEST_CASE("Test DynamicArray insert_at by a std::initializer_list.", "[DynamicAr
 
 TEST_CASE("Test DynamicArray insert_at by a pair of IIterator.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
@@ -1294,7 +1466,7 @@ TEST_CASE("Test DynamicArray insert_at by a pair of IIterator.", "[DynamicArray]
 
 TEST_CASE("Test DynamicArray emplace_at using parameter pack.", "[DynamicArray]")
 {
-    size_t arr_size(13);
+    size_t arr_size(dsaa::random::random_range_int<int>(10, 20));
     dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
     dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
