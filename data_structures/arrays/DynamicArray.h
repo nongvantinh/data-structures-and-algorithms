@@ -83,17 +83,17 @@ namespace dsaa
 		CONSTEXPR void assign(const std::initializer_list<value_type> &p_elements);
 
 		// Returns a reference to the element at position p_index in the container.
-		NODISCARD CONSTEXPR INLINE reference operator[](const size_type &p_index);
-		NODISCARD CONSTEXPR INLINE const_reference operator[](const size_type &p_index) const;
+		NODISCARD CONSTEXPR INLINE reference operator[](const size_type &p_index) NOEXCEPT;
+		NODISCARD CONSTEXPR INLINE const_reference operator[](const size_type &p_index) const NOEXCEPT;
 		// Bounds checking that returns a reference to the element at position p_index in the container.
 		NODISCARD CONSTEXPR INLINE reference at(const size_type &p_index);
 		NODISCARD CONSTEXPR INLINE const_reference at(const size_type &p_index) const;
 		// Returns a reference to the first element in the container.
-		NODISCARD CONSTEXPR INLINE reference first();
-		NODISCARD CONSTEXPR INLINE const_reference first() const;
+		NODISCARD CONSTEXPR INLINE reference first() NOEXCEPT;
+		NODISCARD CONSTEXPR INLINE const_reference first() const NOEXCEPT;
 		// Returns a reference to the last element in the container.
-		NODISCARD CONSTEXPR INLINE reference last();
-		NODISCARD CONSTEXPR INLINE const_reference last() const;
+		NODISCARD CONSTEXPR INLINE reference last() NOEXCEPT;
+		NODISCARD CONSTEXPR INLINE const_reference last() const NOEXCEPT;
 		// Returns a direct pointer to the memory array used internally by the container to store its owned elements.
 		NODISCARD CONSTEXPR INLINE pointer data() noexcept;
 		NODISCARD CONSTEXPR INLINE const_pointer data() const noexcept;
@@ -109,9 +109,9 @@ namespace dsaa
 		// Returns the maximum number of elements that the container can hold.
 		NODISCARD CONSTEXPR INLINE size_type max_size() const noexcept;
 		// Gets the corresponding index for given iterator.
-		NODISCARD CONSTEXPR INLINE size_type get_index(const const_iterator &p_position);
+		NODISCARD CONSTEXPR INLINE size_type get_index(const const_iterator &p_position) NOEXCEPT;
 		// Gets the corresponding iterator for given index.
-		NODISCARD CONSTEXPR INLINE iterator get_iterator(const size_type &p_index);
+		NODISCARD CONSTEXPR INLINE iterator get_iterator(const size_type &p_index) NOEXCEPT;
 		// Resizes the container so that it contains p_size elements.
 		CONSTEXPR void resize(const size_type &p_size, const_reference p_value = value_type());
 		// Allocates new space and copy elements to new space.
@@ -139,9 +139,9 @@ namespace dsaa
 		CONSTEXPR iterator emplace_at(const const_iterator &p_position, Args &&...p_args);
 
 		// Destroy element at p_position and reduce size of container.
-		CONSTEXPR void erase_at(const const_iterator &p_position);
+		CONSTEXPR void erase_at(const const_iterator &p_position) NOEXCEPT;
 		// Destroy element in range (first,last] and reduce size of container.
-		CONSTEXPR void erase(const const_iterator &p_first, const const_iterator &p_last);
+		CONSTEXPR void erase(const const_iterator &p_first, const const_iterator &p_last) NOEXCEPT;
 		// Removes the last element in the vector, effectively reducing the container size by one.
 		CONSTEXPR INLINE void erase_last() noexcept;
 		// Destroys all elements from the container, leaving the size of 0.
@@ -701,7 +701,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::assign(const std::initializer_li
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (size() <= p_index)
@@ -712,7 +712,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::operator[](const size_type &p_index) const NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (size() <= p_index)
@@ -741,7 +741,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::Dynami
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::first()
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::first() NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (!size())
@@ -752,7 +752,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::first() const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::first() const NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (!size())
@@ -763,7 +763,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::Dynami
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::last()
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray<Elem, Alloc>::last() NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (!size())
@@ -774,7 +774,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::reference dsaa::DynamicArray
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::last() const
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::const_reference dsaa::DynamicArray<Elem, Alloc>::last() const NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (!size())
@@ -896,7 +896,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::shrink_to_fit()
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::get_index(const const_iterator &p_position)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray<Elem, Alloc>::get_index(const const_iterator &p_position) NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (!size())
@@ -911,7 +911,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::size_type dsaa::DynamicArray
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index)
+CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<Elem, Alloc>::get_iterator(const size_type &p_index) NOEXCEPT
 {
 	return iterator(&m_elements[0]) + p_index;
 }
@@ -1197,7 +1197,7 @@ CONSTEXPR typename dsaa::DynamicArray<Elem, Alloc>::iterator dsaa::DynamicArray<
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p_position)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p_position) NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (p_position < begin())
@@ -1215,7 +1215,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase_at(const const_iterator &p
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
+CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last) NOEXCEPT
 {
 #ifdef PARAM_CHECK
 	if (p_last < p_first)
