@@ -4,6 +4,9 @@
 #include <memory>
 #include <functional>
 #include <algorithm>
+#include <iterator>
+
+#include "Heap.h"
 
 namespace dsaa
 {
@@ -24,6 +27,9 @@ namespace dsaa
 
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::greater_equal<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator sort_heap(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename IIterator, typename SortBy>
@@ -171,6 +177,21 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 			++m;
 		}
 	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::sort_heap(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	for (auto i(p_last - 1); p_first != i; --i)
+	{
+		std::swap(*p_first, *i);
+		dsaa::heapify(p_first, i, p_first, p_compare);
+	}
+
 	return p_last;
 }
 #endif // !DSAA_SORT_H
