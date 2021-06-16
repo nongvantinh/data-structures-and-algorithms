@@ -169,6 +169,7 @@ public:
 	{
 		m_value = p_other.m_value;
 		m_next = p_other.m_next;
+		return *this;
 	}
 
 	CONSTEXPR SinglyLinkListNode &operator=(SinglyLinkListNode &&p_other)
@@ -178,6 +179,7 @@ public:
 
 		p_other.m_value = value_type();
 		p_other.m_next = nullptr;
+		return *this;
 	}
 
 	CONSTEXPR INLINE SinglyLinkListNode &operator++()
@@ -223,15 +225,16 @@ public:
 	using reference = SinglyLinkList::reference;
 	using const_reference = SinglyLinkList::const_reference;
 	using pointer = SinglyLinkList::pointer;
+	using const_pointer = SinglyLinkList::const_pointer;
 	using difference_type = SinglyLinkList::difference_type;
 
-	CONSTEXPR ConstIterator() noexcept : m_link{nullptr} {}
-	CONSTEXPR ConstIterator(pointer p_link) noexcept : m_link{p_link} {}
-	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_link{p_iterator.content()} {}
+	CONSTEXPR ConstIterator() noexcept : m_link(nullptr) {}
+	CONSTEXPR ConstIterator(const_pointer p_link) noexcept : m_link(const_cast<pointer>(p_link)) {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_link(p_iterator.m_link) {}
 
 	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator)
 	{
-		m_link = p_iterator.content();
+		m_link = p_iterator.m_link;
 		return *this;
 	}
 
@@ -250,7 +253,7 @@ public:
 	}
 
 	CONSTEXPR INLINE const_reference operator*() const { return m_link->value(); }
-	CONSTEXPR INLINE pointer content() const { return m_link; }
+	CONSTEXPR INLINE const_pointer content() const { return m_link; }
 
 	CONSTEXPR INLINE bool operator==(const ConstIterator &p_iterator) const { return m_link == p_iterator.m_link; }
 	CONSTEXPR INLINE bool operator!=(const ConstIterator &p_iterator) const { return m_link != p_iterator.m_link; }
@@ -270,7 +273,7 @@ public:
 
 	CONSTEXPR Iterator &operator=(const Iterator &p_iterator)
 	{
-		content() = p_iterator.content();
+		ConstIterator::m_link = p_iterator.ConstIterator::m_link;
 		return *this;
 	}
 
@@ -289,8 +292,8 @@ public:
 		return old;
 	}
 
-	CONSTEXPR INLINE bool operator==(const Iterator &other) const noexcept { return content() == other.content(); }
-	CONSTEXPR INLINE bool operator!=(const Iterator &other) const noexcept { return content() != other.content(); }
+	CONSTEXPR INLINE bool operator==(const Iterator &p_other) const noexcept { return ConstIterator::m_link == p_other.ConstIterator::m_link; }
+	CONSTEXPR INLINE bool operator!=(const Iterator &p_other) const noexcept { return ConstIterator::m_link != p_other.ConstIterator::m_link; }
 
 	CONSTEXPR INLINE reference operator*() { return ConstIterator::m_link->value(); }
 	CONSTEXPR INLINE const_reference operator*() const { return ConstIterator::m_link->value(); }
