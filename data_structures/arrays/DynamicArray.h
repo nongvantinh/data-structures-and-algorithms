@@ -331,20 +331,6 @@ public:
 		return result;
 	}
 
-	NODISCARD CONSTEXPR INLINE Iterator operator*(const Iterator &p_rhs) const
-	{
-		Iterator result;
-		result.content() = content() * p_rhs;
-		return result;
-	}
-
-	NODISCARD CONSTEXPR INLINE Iterator operator/(const Iterator &p_rhs) const
-	{
-		Iterator result;
-		result.content() = content() / p_rhs;
-		return result;
-	}
-
 	CONSTEXPR INLINE Iterator &operator+=(const int64_t &p_rhs)
 	{
 		content() += p_rhs;
