@@ -197,6 +197,8 @@ public:
 		m_value = p_other.m_value;
 		m_prev = p_other.m_prev;
 		m_next = p_other.m_next;
+
+		return *this;
 	}
 
 	CONSTEXPR DoublyLinkListNode &operator=(DoublyLinkListNode &&p_other)
@@ -208,6 +210,8 @@ public:
 		p_other.m_value = value_type();
 		p_other.m_prev = nullptr;
 		p_other.m_next = nullptr;
+		
+		return *this;
 	}
 
 	CONSTEXPR INLINE DoublyLinkListNode &operator++()
@@ -270,15 +274,16 @@ public:
 	using reference = DoublyLinkList::reference;
 	using const_reference = DoublyLinkList::const_reference;
 	using pointer = DoublyLinkList::pointer;
+	using const_pointer = DoublyLinkList::const_pointer;
 	using difference_type = DoublyLinkList::difference_type;
 
-	CONSTEXPR ConstIterator() noexcept : m_link{nullptr} {}
-	CONSTEXPR ConstIterator(pointer p_link) noexcept : m_link{p_link} {}
-	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_link{p_iterator.content()} {}
+	CONSTEXPR ConstIterator() noexcept : m_link(nullptr) {}
+	CONSTEXPR ConstIterator(const_pointer p_link) noexcept : m_link(const_cast<pointer>(p_link)) {}
+	CONSTEXPR ConstIterator(const ConstIterator &p_iterator) noexcept : m_link(p_iterator.m_link) {}
 
 	CONSTEXPR ConstIterator &operator=(const ConstIterator &p_iterator)
 	{
-		m_link = p_iterator.content();
+		m_link = p_iterator.m_link;
 		return *this;
 	}
 
@@ -310,7 +315,7 @@ public:
 	}
 
 	CONSTEXPR INLINE reference operator*() const { return m_link->value(); }
-	CONSTEXPR INLINE pointer const &content() const { return m_link; }
+	CONSTEXPR INLINE const_pointer content() const { return m_link; }
 
 	CONSTEXPR INLINE bool operator==(const ConstIterator &p_iterator) const { return m_link == p_iterator.m_link; }
 	CONSTEXPR INLINE bool operator!=(const ConstIterator &p_iterator) const { return m_link != p_iterator.m_link; }
@@ -330,7 +335,7 @@ public:
 
 	CONSTEXPR Iterator &operator=(const Iterator &p_iterator)
 	{
-		content() = p_iterator.content();
+		ConstIterator::m_link = p_iterator.ConstIterator::m_link;
 		return *this;
 	}
 
@@ -362,13 +367,13 @@ public:
 		return old;
 	}
 
-	CONSTEXPR INLINE bool operator==(const Iterator &other) const noexcept { return content() == other.content(); }
-	CONSTEXPR INLINE bool operator!=(const Iterator &other) const noexcept { return !(*this == other); }
+	CONSTEXPR INLINE bool operator==(const Iterator &p_other) const noexcept { return ConstIterator::m_link == p_other.ConstIterator::m_link; }
+	CONSTEXPR INLINE bool operator!=(const Iterator &p_other) const noexcept { return ConstIterator::m_link != p_other.ConstIterator::m_link; }
 
 	CONSTEXPR INLINE reference operator*() { return ConstIterator::m_link->value(); }
 	CONSTEXPR INLINE const_reference operator*() const { return ConstIterator::m_link->value(); }
 	CONSTEXPR INLINE pointer &content() { return ConstIterator::m_link; }
-	CONSTEXPR INLINE pointer const &content() const { return ConstIterator::m_link; }
+	CONSTEXPR INLINE const_pointer content() const { return ConstIterator::m_link; }
 };
 
 template <typename Elem, typename Alloc>
@@ -1140,7 +1145,7 @@ CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_
 	iter.content()->previous()->next() = iter.content()->next();
 
 	std::allocator_traits<allocator_type>::destroy(m_allocator, p_position.content());
-	std::allocator_traits<allocator_type>::deallocate(m_allocator, p_position.content(), 1);
+	std::allocator_traits<allocator_type>::deallocate(m_allocator, const_cast<pointer>(p_position.content()), 1);
 	--m_size;
 }
 
