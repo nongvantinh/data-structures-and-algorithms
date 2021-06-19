@@ -7,6 +7,300 @@
 using iterator = dsaa::SinglyLinkList<TestObject<int>>::iterator;
 using const_iterator = dsaa::SinglyLinkList<TestObject<int>>::const_iterator;
 
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode default constructor.", "[SinglyLinkList]")
+{
+    dsaa::SinglyLinkListNode<TestObject<int>> node;
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode constructor with value.", "[SinglyLinkList]")
+{
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(value);
+
+    REQUIRE(value == node.value());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode constructor by moving a value.", "[SinglyLinkList]")
+{
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value));
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode constructor with value, next.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(value, &arr.first());
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(&arr.first() == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode constructor by move a value, next.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value), &arr.first());
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(&arr.first() == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode copy constructor.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value), &arr.first());
+    dsaa::SinglyLinkListNode<TestObject<int>> node1(node);
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.next());
+
+    REQUIRE(node == node1);
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode move constructor.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value), &arr.first());
+    dsaa::SinglyLinkListNode<TestObject<int>> node1(std::move(node));
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.next());
+
+    REQUIRE(node != node1);
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode copy assignment.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value), &arr.first());
+    dsaa::SinglyLinkListNode<TestObject<int>> node1;
+
+    node1 = node;
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.next());
+
+    REQUIRE(node == node1);
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode move assignment.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(std::move(value), &arr.first());
+    dsaa::SinglyLinkListNode<TestObject<int>> node1;
+
+    node1 = std::move(node);
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.next());
+
+    REQUIRE(node != node1);
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test SinglyLinkList SinglyLinkListNode operators.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::SinglyLinkListNode<TestObject<int>> node(value, &arr.first());
+    dsaa::SinglyLinkListNode<TestObject<int>> node2(node);
+    dsaa::SinglyLinkListNode<TestObject<int>> node3;
+
+    REQUIRE(node2 == node);
+    REQUIRE(node3 != node);
+
+    REQUIRE(++node == ++node2);
+
+    REQUIRE(node++ == node2++);
+
+    REQUIRE(*node == *node2);
+    REQUIRE(*node == node2.value());
+
+    REQUIRE(node.next() == node2.next());
+    REQUIRE(node.value() == node2.value());
+}
+
+TEST_CASE("Test SinglyLinkList const_iterator default constructor.", "[SinglyLinkList]")
+{
+    const_iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test SinglyLinkList const_iterator constructor with const_pointer.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        const_iterator iter(&arr.first());
+        REQUIRE(&arr.first() == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        const_iterator iter(nullptr);
+        REQUIRE(nullptr == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test SinglyLinkList const_iterator copy constructor.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2(iter);
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test SinglyLinkList const_iterator copy assignment.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2;
+
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test SinglyLinkList const_iterator operator.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2(iter);
+    const_iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter != iter3);
+
+    REQUIRE(++iter == ++iter2);
+
+    REQUIRE(iter++ == iter2++);
+
+    REQUIRE(*iter == arr.first().next()->next()->value());
+    REQUIRE(*iter == **arr.first().next()->next());
+
+    REQUIRE(iter.content() == arr.first().next()->next());
+}
+
+TEST_CASE("Test SinglyLinkList iterator default constructor.", "[SinglyLinkList]")
+{
+    iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test SinglyLinkList iterator constructor with const_pointer.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        iterator iter(&arr.first());
+        REQUIRE(&arr.first() == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        iterator iter(nullptr);
+        REQUIRE(nullptr == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test SinglyLinkList iterator copy constructor.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    iterator iter2(iter);
+    iterator iter3(iter2);
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter2 == iter3);
+}
+
+TEST_CASE("Test SinglyLinkList iterator copy assignment.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr.first());
+    iterator iter2;
+
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test SinglyLinkList iterator operator.", "[SinglyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::SinglyLinkList<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr.first());
+    iterator iter2(iter);
+    iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter != iter3);
+
+    REQUIRE(++iter == ++iter2);
+
+    REQUIRE(iter++ == iter2++);
+
+    REQUIRE(*iter == arr.first().next()->next()->value());
+    REQUIRE(*iter == **arr.first().next()->next());
+
+    REQUIRE(iter.content() == arr.first().next()->next());
+
+    *iter = TestObject<int>(555);
+    REQUIRE(TestObject<int>(555) == *iter);
+
+    REQUIRE(iter.content() == arr.first().next()->next());
+
+    iter = &arr.last();
+    REQUIRE(iter.content() == &arr.last());
+}
+
 TEST_CASE("Test SinglyLinkList default constructor.", "[SinglyLinkList]")
 {
     dsaa::SinglyLinkList<TestObject<int>> arr;

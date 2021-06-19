@@ -8,6 +8,313 @@ using iterator = dsaa::DoublyLinkList<TestObject<int>>::iterator;
 using const_iterator = dsaa::DoublyLinkList<TestObject<int>>::const_iterator;
 using reserve_iterator = dsaa::DoublyLinkList<TestObject<int>>::reverse_iterator;
 
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode default constructor.", "[DoublyLinkList]")
+{
+    dsaa::DoublyLinkListNode<TestObject<int>> node;
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.previous());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode constructor with value.", "[DoublyLinkList]")
+{
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(value);
+
+    REQUIRE(value == node.value());
+    REQUIRE(nullptr == node.previous());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode constructor by moving a value.", "[DoublyLinkList]")
+{
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value));
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(nullptr == node.previous());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode constructor with value, previous, next.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(value, &arr.first(), &arr.last());
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(&arr.first() == node.previous());
+    REQUIRE(&arr.last() == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode constructor by move a value, previous, next.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value), &arr.first(), &arr.last());
+
+    REQUIRE(TestObject<int>(6734) == node.value());
+    REQUIRE(&arr.first() == node.previous());
+    REQUIRE(&arr.last() == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode copy constructor.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value), &arr.first(), &arr.last());
+    dsaa::DoublyLinkListNode<TestObject<int>> node1(node);
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.previous());
+    REQUIRE(&arr.last() == node1.next());
+
+    REQUIRE(node == node1);
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode move constructor.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value), &arr.first(), &arr.last());
+    dsaa::DoublyLinkListNode<TestObject<int>> node1(std::move(node));
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.previous());
+    REQUIRE(&arr.last() == node1.next());
+
+    REQUIRE(node != node1);
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.previous());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode copy assignment.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value), &arr.first(), &arr.last());
+    dsaa::DoublyLinkListNode<TestObject<int>> node1;
+
+    node1 = node;
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.previous());
+    REQUIRE(&arr.last() == node1.next());
+
+    REQUIRE(node == node1);
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode move assignment.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(std::move(value), &arr.first(), &arr.last());
+    dsaa::DoublyLinkListNode<TestObject<int>> node1;
+
+    node1 = std::move(node);
+
+    REQUIRE(TestObject<int>(6734) == node1.value());
+    REQUIRE(&arr.first() == node1.previous());
+    REQUIRE(&arr.last() == node1.next());
+
+    REQUIRE(node != node1);
+
+    REQUIRE(TestObject<int>() == node.value());
+    REQUIRE(nullptr == node.previous());
+    REQUIRE(nullptr == node.next());
+}
+
+TEST_CASE("Test DoublyLinkList DoublyLinkListNode operators.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    TestObject<int> value(6734);
+    dsaa::DoublyLinkListNode<TestObject<int>> node(value, &arr.first(), &arr.last());
+    dsaa::DoublyLinkListNode<TestObject<int>> node2(node);
+    dsaa::DoublyLinkListNode<TestObject<int>> node3;
+
+    REQUIRE(node2 == node);
+    REQUIRE(node3 != node);
+
+    REQUIRE(++node == ++node2);
+    REQUIRE(--node == --node2);
+
+    REQUIRE(node++ == node2++);
+    REQUIRE(node-- == node2--);
+
+    REQUIRE(*node == *node2);
+    REQUIRE(*node == node2.value());
+    REQUIRE(node.previous() == node2.previous());
+    REQUIRE(node.next() == node2.next());
+    REQUIRE(node.value() == node2.value());
+}
+
+TEST_CASE("Test DoublyLinkList const_iterator default constructor.", "[DoublyLinkList]")
+{
+    const_iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test DoublyLinkList const_iterator constructor with const_pointer.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        const_iterator iter(&arr.first());
+        REQUIRE(&arr.first() == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        const_iterator iter(nullptr);
+        REQUIRE(nullptr == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test DoublyLinkList const_iterator copy constructor.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2(iter);
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DoublyLinkList const_iterator copy assignment.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2;
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DoublyLinkList const_iterator operator.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    const_iterator iter2(iter);
+    const_iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter != iter3);
+
+    REQUIRE(++iter == ++iter2);
+    REQUIRE(--iter == --iter2);
+
+    REQUIRE(iter++ == iter2++);
+    REQUIRE(iter-- == iter2--);
+
+    REQUIRE(*iter == arr.first().value());
+    REQUIRE(*iter == *arr.first());
+
+    REQUIRE(iter.content() == &arr.first());
+}
+
+TEST_CASE("Test DoublyLinkList iterator default constructor.", "[DoublyLinkList]")
+{
+    iterator iter;
+    REQUIRE(nullptr == iter.content());
+}
+
+TEST_CASE("Test DoublyLinkList iterator constructor with const_pointer.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+    SECTION("Iterator at begin")
+    {
+        iterator iter(&arr.first());
+        REQUIRE(&arr.first() == iter.content());
+        REQUIRE(arr.begin() == iter);
+    }
+    SECTION("Iterator at end")
+    {
+        iterator iter(nullptr);
+        REQUIRE(nullptr == iter.content());
+        REQUIRE(arr.end() == iter);
+    }
+}
+
+TEST_CASE("Test DoublyLinkList iterator copy constructor.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    const_iterator iter(&arr.first());
+    iterator iter2(iter);
+    iterator iter3(iter2);
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter2 == iter3);
+}
+
+TEST_CASE("Test DoublyLinkList iterator copy assignment.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(1, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr.first());
+    iterator iter2;
+    iter2 = iter;
+
+    REQUIRE(iter2 == iter);
+}
+
+TEST_CASE("Test DoublyLinkList iterator operator.", "[DoublyLinkList]")
+{
+    size_t num_elem(dsaa::random::random_range_int<int>(5, 10));
+    dsaa::DoublyLinkList<TestObject<int>> arr(num_elem);
+
+    iterator iter(&arr.first());
+    iterator iter2(iter);
+    iterator iter3;
+
+    REQUIRE(iter2 == iter);
+    REQUIRE(iter != iter3);
+
+    REQUIRE(++iter == ++iter2);
+    REQUIRE(--iter == --iter2);
+
+    REQUIRE(iter++ == iter2++);
+    REQUIRE(iter-- == iter2--);
+
+    REQUIRE(*iter == arr.first().value());
+    REQUIRE(*iter == *arr.first());
+
+    *iter = TestObject<int>(555);
+    REQUIRE(TestObject<int>(555) == *iter);
+
+    REQUIRE(iter.content() == &arr.first());
+
+    iter = &arr.last();
+    REQUIRE(iter.content() == &arr.last());
+}
+
 TEST_CASE("Test DoublyLinkList default constructor.", "[DoublyLinkList]")
 {
     dsaa::DoublyLinkList<TestObject<int>> arr;
