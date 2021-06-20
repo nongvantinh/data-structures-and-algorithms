@@ -457,11 +457,17 @@ CONSTEXPR dsaa::SinglyLinkList<Elem, Alloc> &dsaa::SinglyLinkList<Elem, Alloc>::
 template <typename Elem, typename Alloc>
 dsaa::SinglyLinkList<Elem, Alloc>::~SinglyLinkList()
 {
-	for (auto i(begin()); end() != i; ++i)
+	if (0 == size())
+		return;
+
+	for (iterator iter(m_first->next()); end() != iter; ++iter)
 	{
-		std::allocator_traits<allocator_type>::destroy(m_allocator, i.content());
-		std::allocator_traits<allocator_type>::deallocate(m_allocator, i.content(), 1);
+		std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+		std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+		m_first = iter.content();
 	}
+	std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+	std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
 
 	m_first = m_last = nullptr;
 	m_size = 0;
@@ -881,7 +887,19 @@ CONSTEXPR void dsaa::SinglyLinkList<Elem, Alloc>::erase_first()
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::SinglyLinkList<Elem, Alloc>::clean() noexcept
 {
-	while (size())
-		erase_first();
+	if (0 == size())
+		return;
+
+	for (iterator iter(m_first->next()); end() != iter; ++iter)
+	{
+		std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+		std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+		m_first = iter.content();
+	}
+	std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+	std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+
+	m_first = m_last = nullptr;
+	m_size = 0;
 }
 #endif // !DSAA_SINGLY_LINK_LIST_H

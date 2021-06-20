@@ -210,7 +210,7 @@ public:
 		p_other.m_value = value_type();
 		p_other.m_prev = nullptr;
 		p_other.m_next = nullptr;
-		
+
 		return *this;
 	}
 
@@ -568,11 +568,17 @@ CONSTEXPR dsaa::DoublyLinkList<Elem, Alloc> &dsaa::DoublyLinkList<Elem, Alloc>::
 template <typename Elem, typename Alloc>
 dsaa::DoublyLinkList<Elem, Alloc>::~DoublyLinkList()
 {
-	for (auto i(begin()); i != end(); ++i)
+	if (0 == size())
+		return;
+
+	for (iterator iter(m_first->next()); end() != iter; ++iter)
 	{
-		std::allocator_traits<allocator_type>::destroy(m_allocator, i.content());
-		std::allocator_traits<allocator_type>::deallocate(m_allocator, i.content(), 1);
+		std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+		std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+		m_first = iter.content();
 	}
+	std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+	std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
 
 	m_first = m_last = nullptr;
 	m_size = 0;
@@ -1162,7 +1168,19 @@ CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::clean() noexcept
 {
-	while (size())
-		erase_first();
+	if (0 == size())
+		return;
+
+	for (iterator iter(m_first->next()); end() != iter; ++iter)
+	{
+		std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+		std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+		m_first = iter.content();
+	}
+	std::allocator_traits<allocator_type>::destroy(m_allocator, m_first);
+	std::allocator_traits<allocator_type>::deallocate(m_allocator, m_first, 1);
+
+	m_first = m_last = nullptr;
+	m_size = 0;
 }
 #endif // !DSAA_DOUBLY_LINK_LIST_H
