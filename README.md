@@ -13,7 +13,9 @@
 ## Prerequisite
   You need the following prerequisites installed on your platform:
 
-  - llvm project with clang/clang++ or gcc/g++ compiler that support C++17.
+Compiler needed to build this library is:
+  - clang/clang++ version 12.0.0
+  - or gcc/g++ version 9.3.0.
   
   - scons build system version >= 4.1.
 
