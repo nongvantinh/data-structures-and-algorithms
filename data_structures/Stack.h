@@ -464,7 +464,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::Stack<Elem, Alloc>::size_type dsaa::Stack<Elem, Alloc>::get_index(const_iterator p_iterator)
 {
 	size_type index(0);
-	for (auto i(begin()); end() != i; ++i, ++index)
+	for (auto i(cbegin()); cend() != i; ++i, ++index)
 		if (i == p_iterator)
 			break;
 	return index;

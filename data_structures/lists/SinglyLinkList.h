@@ -569,7 +569,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::SinglyLinkList<Elem, Alloc>::size_type dsaa::SinglyLinkList<Elem, Alloc>::get_index(const_iterator p_iterator)
 {
 	size_type index(0);
-	for (auto i(begin()); end() != i; ++i, ++index)
+	for (auto i(cbegin()); cend() != i; ++i, ++index)
 		if (i == p_iterator)
 			break;
 	return index;
@@ -596,7 +596,9 @@ CONSTEXPR void dsaa::SinglyLinkList<Elem, Alloc>::resize(const size_type &p_size
 	}
 	else
 	{
-		for (auto iter(get_iterator(p_size)), iter2(iter.content()->next()); end() != iter; iter = iter2, ++iter2)
+		iterator iter(get_iterator(p_size));
+		iterator iter2(iter.content()->next());
+		for (; end() != iter; iter = iter2, ++iter2)
 		{
 			std::allocator_traits<allocator_type>::destroy(m_allocator, iter.content());
 			std::allocator_traits<allocator_type>::deallocate(m_allocator, iter.content(), 1);

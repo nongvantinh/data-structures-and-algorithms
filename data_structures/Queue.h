@@ -503,7 +503,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::Queue<Elem, Alloc>::size_type dsaa::Queue<Elem, Alloc>::get_index(const_iterator p_iterator)
 {
 	size_type index(0);
-	for (auto i(begin()); end() != i; ++i, ++index)
+	for (auto i(cbegin()); cend() != i; ++i, ++index)
 		if (i == p_iterator)
 			break;
 	return index;
