@@ -24,13 +24,13 @@ TEST_CASE("Test DynamicArray const_iterator constructor with const_pointer.", "[
     {
         const_iterator iter(&arr[0]);
         REQUIRE(&arr[0] == iter.content());
-        REQUIRE(arr.begin() == iter);
+        REQUIRE(arr.cbegin() == iter);
     }
     SECTION("Iterator at end")
     {
         const_iterator iter(&arr.data()[num_elem]);
         REQUIRE(&arr.data()[num_elem] == iter.content());
-        REQUIRE(arr.end() == iter);
+        REQUIRE(arr.cend() == iter);
     }
 }
 
@@ -105,13 +105,13 @@ TEST_CASE("Test DynamicArray iterator constructor with const_pointer.", "[Dynami
     dsaa::DynamicArray<TestObject<int>> arr(num_elem);
     SECTION("Iterator at begin")
     {
-        const_iterator iter(&arr[0]);
+        iterator iter(&arr[0]);
         REQUIRE(&arr[0] == iter.content());
         REQUIRE(arr.begin() == iter);
     }
     SECTION("Iterator at end")
     {
-        const_iterator iter(&arr.data()[num_elem]);
+        iterator iter(&arr.data()[num_elem]);
         REQUIRE(&arr.data()[num_elem] == iter.content());
         REQUIRE(arr.end() == iter);
     }
@@ -126,7 +126,6 @@ TEST_CASE("Test DynamicArray iterator copy constructor.", "[DynamicArray]")
     iterator iter2(iter);
     iterator iter3(iter2);
 
-    REQUIRE(iter2 == iter);
     REQUIRE(iter2 == iter3);
 }
 
@@ -186,9 +185,9 @@ TEST_CASE("Test DynamicArray default constructor.", "[DynamicArray]")
     dsaa::DynamicArray<TestObject<int>> arr;
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() == arr.data());
@@ -203,9 +202,9 @@ TEST_CASE("Test DynamicArray default constructor and std::allocator.", "[Dynamic
     dsaa::DynamicArray<TestObject<int>> arr(allocator);
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() == arr.data());
@@ -220,9 +219,9 @@ TEST_CASE("Test DynamicArray constructor with given size.", "[DynamicArray]")
     dsaa::DynamicArray<TestObject<int>> arr(num_elem);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -242,9 +241,9 @@ TEST_CASE("Test DynamicArray constructor with given size and std::allocator.", "
     dsaa::DynamicArray<TestObject<int>> arr(num_elem, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -263,9 +262,9 @@ TEST_CASE("Test DynamicArray constructor with given size and value.", "[DynamicA
     dsaa::DynamicArray<TestObject<int>> arr(num_elem, value);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -286,9 +285,9 @@ TEST_CASE("Test DynamicArray constructor with given size, value and std::allocat
     dsaa::DynamicArray<TestObject<int>> arr(num_elem, value, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -307,9 +306,9 @@ TEST_CASE("Test DynamicArray constructor with std::initializer_list.", "[Dynamic
     dsaa::DynamicArray<TestObject<int>> arr(list);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -331,9 +330,9 @@ TEST_CASE("Test DynamicArray constructor with std::initializer_list and std::all
     dsaa::DynamicArray<TestObject<int>> arr(list, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -353,9 +352,9 @@ TEST_CASE("Test DynamicArray constructor with a pair of IIterator.", "[DynamicAr
     dsaa::DynamicArray<TestObject<int>> arr(list.begin(), list.end());
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -376,9 +375,9 @@ TEST_CASE("Test DynamicArray constructor with a pair of IIterator and std::alloc
 
     dsaa::DynamicArray<TestObject<int>> arr(list.begin(), list.end(), allocator);
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -401,9 +400,9 @@ TEST_CASE("Test DynamicArray copy constructor.", "[DynamicArray]")
     dsaa::DynamicArray<TestObject<int>> arr2(arr);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -427,9 +426,9 @@ TEST_CASE("Test DynamicArray copy constructor and std::allocator.", "[DynamicArr
     dsaa::DynamicArray<TestObject<int>> arr2(arr, allocator);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -453,9 +452,9 @@ TEST_CASE("Test DynamicArray move constructor.", "[DynamicArray]")
     dsaa::DynamicArray<TestObject<int>> arr2(std::move(arr));
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -464,9 +463,9 @@ TEST_CASE("Test DynamicArray move constructor.", "[DynamicArray]")
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() == arr.data());
@@ -490,9 +489,9 @@ TEST_CASE("Test DynamicArray move constructor with std::allocator.", "[DynamicAr
     dsaa::DynamicArray<TestObject<int>> arr2(std::move(arr));
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -501,9 +500,9 @@ TEST_CASE("Test DynamicArray move constructor with std::allocator.", "[DynamicAr
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() == arr.data());
@@ -528,9 +527,9 @@ TEST_CASE("Test DynamicArray copy assignment.", "[DynamicArray]")
     arr2 = arr;
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -556,9 +555,9 @@ TEST_CASE("Test DynamicArray move assigment.", "[DynamicArray]")
     arr2 = std::move(arr);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(arr2.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr2.data());
@@ -567,9 +566,9 @@ TEST_CASE("Test DynamicArray move assigment.", "[DynamicArray]")
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() == arr.data());
@@ -591,9 +590,9 @@ TEST_CASE("Test DynamicArray copy assignment using std::initializer_list.", "[Dy
     arr = list;
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -615,9 +614,9 @@ TEST_CASE("Test DynamicArray assign function using pair IIterator.", "[DynamicAr
     arr.assign(list.begin(), list.end());
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -640,9 +639,9 @@ TEST_CASE("Test DynamicArray assign function with size and value.", "[DynamicArr
     arr.assign(num_elem, value);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -662,9 +661,9 @@ TEST_CASE("Test DynamicArray assign function using std::initializer_list.", "[Dy
     arr.assign(list);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(arr.get_allocator() == std::allocator<TestObject<int>>());
     REQUIRE(iterator().content() != arr.data());
@@ -1674,9 +1673,9 @@ TEST_CASE("Test DynamicArray erase function with a pair of IIterator.", "[Dynami
         REQUIRE(0 == arr.size());
 
         REQUIRE(iterator() == arr.begin());
-        REQUIRE(iterator() == arr.cbegin());
+        REQUIRE(const_iterator() == arr.cbegin());
         REQUIRE(iterator() == arr.end());
-        REQUIRE(iterator() == arr.cend());
+        REQUIRE(const_iterator() == arr.cend());
     }
 
     SECTION("Test DynamicArray erase from begining to midle.")
@@ -1723,9 +1722,9 @@ TEST_CASE("Test DynamicArray erase_last function.", "[DynamicArray]")
     REQUIRE(arr_size - 1 == arr.size());
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 }
 
 TEST_CASE("Test DynamicArray clear function.", "[DynamicArray]")
@@ -1741,9 +1740,9 @@ TEST_CASE("Test DynamicArray clear function.", "[DynamicArray]")
     REQUIRE(0 == arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 }
 
 #endif // !DSAA_TEST_DYNAMIC_ARRAY_H

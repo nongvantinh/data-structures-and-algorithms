@@ -23,7 +23,6 @@ TEST_CASE("Test MinHeap const_iterator constructor with const_pointer.", "[MinHe
     {
         const_iterator iter(&arr[0]);
         REQUIRE(&arr[0] == iter.content());
-        REQUIRE(arr.begin() == iter);
         REQUIRE(arr.cbegin() == iter);
     }
     SECTION("Iterator at end")
@@ -31,7 +30,6 @@ TEST_CASE("Test MinHeap const_iterator constructor with const_pointer.", "[MinHe
         const_iterator iter(&arr.data().data()[num_elem]);
         REQUIRE(&arr.data().data()[num_elem] == iter.content());
 
-        REQUIRE(arr.end() == iter);
         REQUIRE(arr.cend() == iter);
     }
 }
@@ -114,7 +112,6 @@ TEST_CASE("Test MinHeap iterator copy constructor.", "[MinHeap]")
     iterator iter2(iter);
     iterator iter3(iter2);
 
-    REQUIRE(iter2 == iter);
     REQUIRE(iter2 == iter3);
 }
 
@@ -174,9 +171,9 @@ TEST_CASE("Test MinHeap default constructor.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr;
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     for (int64_t i(arr.heap_size() - 1); 0 <= i; --i)
         REQUIRE(arr.min_heap_property(i));
@@ -192,9 +189,9 @@ TEST_CASE("Test MinHeap default constructor and std::allocator.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr(allocator);
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     for (int64_t i(arr.heap_size() - 1); 0 <= i; --i)
         REQUIRE(arr.min_heap_property(i));
@@ -210,9 +207,9 @@ TEST_CASE("Test MinHeap constructor with given size.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr(num_elem);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -233,9 +230,9 @@ TEST_CASE("Test MinHeap constructor with given size and std::allocator.", "[MinH
     dsaa::MinHeap<TestObject<int>> arr(num_elem, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -255,9 +252,9 @@ TEST_CASE("Test MinHeap constructor with given size and value.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr(num_elem, value);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -279,9 +276,9 @@ TEST_CASE("Test MinHeap constructor with given size, value and std::allocator.",
     dsaa::MinHeap<TestObject<int>> arr(num_elem, value, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -301,9 +298,9 @@ TEST_CASE("Test MinHeap constructor with std::initializer_list.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr(list);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -321,9 +318,9 @@ TEST_CASE("Test MinHeap constructor with std::initializer_list and std::allocato
     dsaa::MinHeap<TestObject<int>> arr(list, allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -339,9 +336,9 @@ TEST_CASE("Test MinHeap constructor with a pair of IIterator.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr(list.begin(), list.end());
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -359,9 +356,9 @@ TEST_CASE("Test MinHeap constructor with a pair of IIterator and std::allocator.
     dsaa::MinHeap<TestObject<int>> arr(list.begin(), list.end(), allocator);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -380,9 +377,9 @@ TEST_CASE("Test MinHeap copy constructor.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr2(arr);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.heap_size() == arr.heap_size());
@@ -407,9 +404,9 @@ TEST_CASE("Test MinHeap copy constructor and std::allocator.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr2(arr, allocator);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.heap_size() == arr.heap_size());
@@ -434,18 +431,18 @@ TEST_CASE("Test MinHeap move constructor.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr2(std::move(arr));
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.size() == arr2.heap_size());
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.empty());
     REQUIRE(0 == arr.heap_size());
@@ -470,18 +467,18 @@ TEST_CASE("Test MinHeap move constructor with std::allocator.", "[MinHeap]")
     dsaa::MinHeap<TestObject<int>> arr2(std::move(arr));
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.size() == arr2.heap_size());
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.empty());
     REQUIRE(0 == arr.heap_size());
@@ -507,9 +504,9 @@ TEST_CASE("Test MinHeap copy assignment.", "[MinHeap]")
     arr2 = arr;
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.heap_size() == arr.heap_size());
@@ -536,18 +533,18 @@ TEST_CASE("Test MinHeap move assigment.", "[MinHeap]")
     arr2 = std::move(arr);
 
     REQUIRE(iterator() != arr2.begin());
-    REQUIRE(iterator() != arr2.cbegin());
+    REQUIRE(const_iterator() != arr2.cbegin());
     REQUIRE(iterator() != arr2.end());
-    REQUIRE(iterator() != arr2.cend());
+    REQUIRE(const_iterator() != arr2.cend());
 
     REQUIRE(!arr2.empty());
     REQUIRE(arr2.size() == arr2.heap_size());
     REQUIRE(arr2.size() == copy_arr.size());
 
     REQUIRE(iterator() == arr.begin());
-    REQUIRE(iterator() == arr.cbegin());
+    REQUIRE(const_iterator() == arr.cbegin());
     REQUIRE(iterator() == arr.end());
-    REQUIRE(iterator() == arr.cend());
+    REQUIRE(const_iterator() == arr.cend());
 
     REQUIRE(arr.empty());
     REQUIRE(0 == arr.heap_size());
@@ -570,9 +567,9 @@ TEST_CASE("Test MinHeap copy assignment using std::initializer_list.", "[MinHeap
     arr = list;
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -590,9 +587,9 @@ TEST_CASE("Test MinHeap assign function using pair IIterator.", "[MinHeap]")
     arr.assign(list.begin(), list.end());
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -611,9 +608,9 @@ TEST_CASE("Test MinHeap assign function with size and value.", "[MinHeap]")
     arr.assign(num_elem, value);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
@@ -634,9 +631,9 @@ TEST_CASE("Test MinHeap assign function using std::initializer_list.", "[MinHeap
     arr.assign(list);
 
     REQUIRE(iterator() != arr.begin());
-    REQUIRE(iterator() != arr.cbegin());
+    REQUIRE(const_iterator() != arr.cbegin());
     REQUIRE(iterator() != arr.end());
-    REQUIRE(iterator() != arr.cend());
+    REQUIRE(const_iterator() != arr.cend());
 
     REQUIRE(!arr.empty());
     REQUIRE(arr.size() == arr.heap_size());
