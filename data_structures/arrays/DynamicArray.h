@@ -263,8 +263,8 @@ public:
 		return 0 <= (m_pointer - p_rhs.m_pointer);
 	}
 
-	NODISCARD CONSTEXPR INLINE const reference operator*() const { return *m_pointer; }
-	NODISCARD CONSTEXPR INLINE const reference operator[](const int64_t &p_index) const { return m_pointer[p_index]; }
+	NODISCARD CONSTEXPR INLINE reference operator*() const { return *m_pointer; }
+	NODISCARD CONSTEXPR INLINE reference operator[](const int64_t &p_index) const { return m_pointer[p_index]; }
 	NODISCARD CONSTEXPR INLINE const_pointer content() const noexcept { return m_pointer; }
 
 protected:
