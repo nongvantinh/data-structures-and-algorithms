@@ -30,6 +30,12 @@ namespace dsaa
 
 	template <typename RIterator, typename Compare = std::greater_equal<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator sort_heap(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename IIterator, typename SortBy>
@@ -193,5 +199,40 @@ RIterator dsaa::sort_heap(RIterator p_first, RIterator p_last, Compare p_compare
 	}
 
 	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator second_half = dsaa::partition(p_first, p_last, p_compare);
+		dsaa::quick_sort(p_first, second_half - 1, p_compare); 
+		// p_last - 1 because p_last point 1 position beyond the last element.
+		dsaa::quick_sort(second_half +  1, p_last - 1, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::partition(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	RIterator pivot = p_last - 1;
+	RIterator i = p_first - 1;
+
+	for(RIterator k(p_first); p_last - 2 != k; ++k)
+	{
+		if(p_compare(*k , *pivot))
+		{
+			++i;
+			std::swap(*i, *k);
+		}
+	}
+	std::swap(*(i + 1), *(p_last - 1));
+
+	return i + 1;
 }
 #endif // !DSAA_SORT_H
