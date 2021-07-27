@@ -21,10 +21,15 @@ Compiler needed to build this library is:
 
   **You can install those via scoop/chocolatey on windows machine.**
   
+  With PowerShell, you must ensure Get-ExecutionPolicy is not Restricted.
+  
+  Run Get-ExecutionPolicy. If it returns Restricted, then run:
+  
+  ```Set-ExecutionPolicy Bypass -Scope Process```
+
+  
    Install chocholatey with:
   ```
-  Set-ExecutionPolicy Bypass
-  
   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
   ```
   And install scoop with:
