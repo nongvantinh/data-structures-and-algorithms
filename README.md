@@ -10,7 +10,7 @@
   Clone the project by using git command.
   
   `git clone https://github.com/nongvantinh/dsaa -b master`
-## Prerequisite
+## Setup Prerequisites
   You need the following prerequisites installed on your platform:
 
 Compiler needed to build this library is:
@@ -21,6 +21,24 @@ Compiler needed to build this library is:
 
   **You can install those via scoop/chocolatey on windows machine.**
   
+   Install chocholatey with:
+  ```
+  Set-ExecutionPolicy Bypass
+  
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+  ```
+  And install scoop with:
+  ```
+  Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+  
+  ```
+  Now install the following packets:
+  ```
+  choco install llvm mingw python make
+  ```
+  ```
+  scoop install scons yasm
+  ```
 ## Building and testing library.
   When you have the prerequisites installed you can easily build by command:
   
