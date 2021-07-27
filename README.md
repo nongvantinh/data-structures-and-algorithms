@@ -37,6 +37,8 @@ Compiler needed to build this library is:
   Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
   
   ```
+  - **You need to reboot your PC to continue**
+ 
   Now install the following packets:
   ```
   choco install llvm mingw python make
