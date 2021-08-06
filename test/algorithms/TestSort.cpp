@@ -806,7 +806,6 @@ TEST_CASE("Test quick_sort.", "[Sort]")
         dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
         dsaa::quick_sort(arr.begin(), arr.end());
-        dsaa::print_elem(arr.begin(), arr.end());
 
         REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<TestObject<int>>()));
     }
