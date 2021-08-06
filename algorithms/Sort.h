@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Random.h"
 #include "Heap.h"
 
 namespace dsaa
@@ -36,6 +37,13 @@ namespace dsaa
 
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
 }
 
 template <typename IIterator, typename SortBy>
@@ -242,4 +250,29 @@ RIterator dsaa::partition(RIterator p_first, RIterator p_last, Compare p_compare
 
 	return i;
 }
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::randomized_partition(p_first, p_last, p_compare);
+		dsaa::randomized_quick_sort(p_first, pivot_iter, p_compare);
+		dsaa::randomized_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_partition(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	size_t i(0);
+	i = dsaa::random::random_range_int(0, static_cast<int>((p_last - p_first) - 1));
+	std::swap(*(p_first + i), *(p_last - 1));
+	return dsaa::partition(p_first, p_last, p_compare);
+}
+
 #endif // !DSAA_SORT_H
