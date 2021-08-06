@@ -209,10 +209,9 @@ RIterator dsaa::quick_sort(RIterator p_first, RIterator p_last, Compare p_compar
 
 	if (p_first < p_last - 1)
 	{
-		RIterator second_half = dsaa::partition(p_first, p_last, p_compare);
-		dsaa::quick_sort(p_first, second_half - 1, p_compare); 
-		// p_last - 1 because p_last point 1 position beyond the last element.
-		dsaa::quick_sort(second_half +  1, p_last - 1, p_compare);
+		RIterator pivot_iter = dsaa::partition(p_first, p_last, p_compare);
+		dsaa::quick_sort(p_first, pivot_iter, p_compare);
+		dsaa::quick_sort(pivot_iter + 1, p_last, p_compare);
 	}
 	return p_last;
 }
@@ -220,19 +219,27 @@ RIterator dsaa::quick_sort(RIterator p_first, RIterator p_last, Compare p_compar
 template <typename RIterator, typename Compare>
 RIterator dsaa::partition(RIterator p_first, RIterator p_last, Compare p_compare)
 {
-	RIterator pivot = p_last - 1;
-	RIterator i = p_first - 1;
+	auto pivot = *(p_last - 1);
+	RIterator i = p_first;
+	bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
 
-	for(RIterator k(p_first); p_last - 2 != k; ++k)
+	for (RIterator k(p_first); (p_last - 1) != k; ++k)
 	{
-		if(p_compare(*k , *pivot))
+		if (p_compare(*k, pivot))
 		{
-			++i;
+			if (is_first)
+				is_first = false;
+			else
+				++i;
 			std::swap(*i, *k);
 		}
 	}
-	std::swap(*(i + 1), *(p_last - 1));
+	// Special case we never ever do swap.
+	if (is_first)
+		std::swap(*i, pivot);
+	else
+		std::swap(*++i, pivot);
 
-	return i + 1;
+	return i;
 }
 #endif // !DSAA_SORT_H
