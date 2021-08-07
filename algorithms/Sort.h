@@ -164,7 +164,7 @@ RIterator dsaa::quick_sort(RIterator p_first, RIterator p_last, Compare p_compar
 
 	if (p_first < p_last - 1)
 	{
-		RIterator pivot_iter = dsaa::partition(p_first, p_last, p_compare);
+		RIterator pivot_iter = dsaa::lomuto_partition(p_first, p_last, p_compare);
 		dsaa::quick_sort(p_first, pivot_iter, p_compare);
 		dsaa::quick_sort(pivot_iter + 1, p_last, p_compare);
 	}

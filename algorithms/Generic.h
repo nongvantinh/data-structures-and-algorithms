@@ -8,7 +8,7 @@ namespace dsaa
     RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
 
     template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
-    RIterator partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+    RIterator lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
     template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
     RIterator randomized_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
@@ -58,7 +58,7 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 }
 
 template <typename RIterator, typename Compare>
-RIterator dsaa::partition(RIterator p_first, RIterator p_last, Compare p_compare)
+RIterator dsaa::lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare)
 {
     auto pivot = *(p_last - 1);
     RIterator i = p_first;
@@ -90,5 +90,5 @@ RIterator dsaa::randomized_partition(RIterator p_first, RIterator p_last, Compar
     size_t i(0);
     i = dsaa::random::random_range_int(0, static_cast<int>((p_last - p_first) - 1));
     std::swap(*(p_first + i), *(p_last - 1));
-    return dsaa::partition(p_first, p_last, p_compare);
+    return dsaa::lomuto_partition(p_first, p_last, p_compare);
 }
