@@ -78,9 +78,9 @@ RIterator dsaa::partition(RIterator p_first, RIterator p_last, Compare p_compare
 	}
 	// Special case we never ever do swap.
 	if (is_first)
-		std::swap(*i, pivot);
+		std::swap(*i, *(p_last - 1));
 	else
-		std::swap(*++i, pivot);
+		std::swap(*++i, *(p_last - 1));
 
 	return i;
 }
