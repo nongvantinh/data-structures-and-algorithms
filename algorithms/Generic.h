@@ -11,7 +11,13 @@ namespace dsaa
     RIterator lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
     template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+    RIterator hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+    template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
     RIterator randomized_lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+    template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+    RIterator randomized_hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename RIterator, typename Compare>
@@ -85,10 +91,50 @@ RIterator dsaa::lomuto_partition(RIterator p_first, RIterator p_last, Compare p_
 }
 
 template <typename RIterator, typename Compare>
+RIterator dsaa::hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	auto pivot = *p_first;
+	RIterator i = p_first;
+	bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
+	RIterator k(p_last);
+
+	while (true)
+	{
+		// Find the element that satisfy the condition to swap.
+		do
+			--k;
+		while (p_compare(pivot, *k));
+
+		// Find the element doesn't satisfy the condition to swap.
+		do
+		{
+			if (is_first)
+				is_first = false;
+			else
+				++i;
+		} while (p_compare(*i, pivot));
+
+		// Return when all element has been put in correct side.
+		if (k <= i)
+			return k;
+		std::swap(*i, *k);
+	}
+}
+
+template <typename RIterator, typename Compare>
 RIterator dsaa::randomized_lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare)
 {
     size_t i(0);
     i = dsaa::random::random_range_int(0, static_cast<int>((p_last - p_first) - 1));
     std::swap(*(p_first + i), *(p_last - 1));
     return dsaa::lomuto_partition(p_first, p_last, p_compare);
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+    size_t i(0);
+    i = dsaa::random::random_range_int(0, static_cast<int>((p_last - p_first) - 1));
+    std::swap(*p_first, *(p_first + i));
+    return dsaa::hoare_partition(p_first, p_last, p_compare);
 }
