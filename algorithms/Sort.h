@@ -33,6 +33,9 @@ namespace dsaa
 	RIterator lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator randomized_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
@@ -167,6 +170,22 @@ RIterator dsaa::lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p
 		RIterator pivot_iter = dsaa::lomuto_partition(p_first, p_last, p_compare);
 		dsaa::lomuto_quick_sort(p_first, pivot_iter, p_compare);
 		dsaa::lomuto_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	while (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::lomuto_partition(p_first, p_last, p_compare);
+		dsaa::tail_lomuto_quick_sort(p_first, pivot_iter, p_compare);
+		p_first += (pivot_iter - p_first) + 1;
 	}
 	return p_last;
 }
