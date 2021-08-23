@@ -165,13 +165,13 @@ TEST_CASE("Test SinglyLinkList const_iterator constructor with const_pointer.", 
     {
         const_iterator iter(&arr.first());
         REQUIRE(&arr.first() == iter.content());
-        REQUIRE(arr.begin() == iter);
+        REQUIRE(arr.cbegin() == iter);
     }
     SECTION("Iterator at end")
     {
         const_iterator iter(nullptr);
         REQUIRE(nullptr == iter.content());
-        REQUIRE(arr.end() == iter);
+        REQUIRE(arr.cend() == iter);
     }
 }
 
@@ -254,7 +254,6 @@ TEST_CASE("Test SinglyLinkList iterator copy constructor.", "[SinglyLinkList]")
     iterator iter2(iter);
     iterator iter3(iter2);
 
-    REQUIRE(iter2 == iter);
     REQUIRE(iter2 == iter3);
 }
 

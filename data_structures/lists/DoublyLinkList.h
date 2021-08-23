@@ -680,7 +680,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR typename dsaa::DoublyLinkList<Elem, Alloc>::size_type dsaa::DoublyLinkList<Elem, Alloc>::get_index(const_iterator p_iterator)
 {
 	size_type index(0);
-	for (auto i(begin()); end() != i; ++i, ++index)
+	for (auto i(cbegin()); cend() != i; ++i, ++index)
 		if (i == p_iterator)
 			break;
 	return index;
@@ -1158,7 +1158,7 @@ CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::DoublyLinkList<Elem, Alloc>::erase(const const_iterator &p_first, const const_iterator &p_last)
 {
-	iterator i(p_first);
+	const_iterator i(p_first);
 	while (i != p_last)
 	{
 		erase(i++);

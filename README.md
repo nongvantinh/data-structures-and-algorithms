@@ -10,15 +10,42 @@
   Clone the project by using git command.
   
   `git clone https://github.com/nongvantinh/dsaa -b master`
-## Prerequisite
+## Setup Prerequisites
   You need the following prerequisites installed on your platform:
 
-  - llvm project with clang/clang++ or gcc/g++ compiler that support C++17.
+Compiler needed to build this library is:
+  - clang/clang++ version 12.0.0
+  - or gcc/g++ version 9.3.0.
   
   - scons build system version >= 4.1.
 
   **You can install those via scoop/chocolatey on windows machine.**
   
+  With PowerShell, you must ensure Get-ExecutionPolicy is not Restricted.
+  
+  Run Get-ExecutionPolicy. If it returns Restricted, then run:
+  
+  ```Set-ExecutionPolicy Bypass -Scope Process```
+
+  
+   Install chocholatey with:
+  ```
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+  ```
+  And install scoop with:
+  ```
+  Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+  
+  ```
+  - **You need to reboot your PC to continue**
+ 
+  Now install the following packets:
+  ```
+  choco install llvm mingw python make
+  ```
+  ```
+  scoop install scons yasm
+  ```
 ## Building and testing library.
   When you have the prerequisites installed you can easily build by command:
   

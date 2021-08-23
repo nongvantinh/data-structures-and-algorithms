@@ -167,8 +167,8 @@ TEST_CASE("Test DoublyLinkList DoublyLinkListNode operators.", "[DoublyLinkList]
 
 TEST_CASE("Test DoublyLinkList const_iterator default constructor.", "[DoublyLinkList]")
 {
-    const_iterator iter;
-    REQUIRE(nullptr == iter.content());
+    const_iterator iter(nullptr);
+    REQUIRE(iter == iter.content());
 }
 
 TEST_CASE("Test DoublyLinkList const_iterator constructor with const_pointer.", "[DoublyLinkList]")
@@ -179,13 +179,13 @@ TEST_CASE("Test DoublyLinkList const_iterator constructor with const_pointer.", 
     {
         const_iterator iter(&arr.first());
         REQUIRE(&arr.first() == iter.content());
-        REQUIRE(arr.begin() == iter);
+        REQUIRE(arr.cbegin() == iter);
     }
     SECTION("Iterator at end")
     {
         const_iterator iter(nullptr);
         REQUIRE(nullptr == iter.content());
-        REQUIRE(arr.end() == iter);
+        REQUIRE(arr.cend() == iter);
     }
 }
 
@@ -269,7 +269,6 @@ TEST_CASE("Test DoublyLinkList iterator copy constructor.", "[DoublyLinkList]")
     iterator iter2(iter);
     iterator iter3(iter2);
 
-    REQUIRE(iter2 == iter);
     REQUIRE(iter2 == iter3);
 }
 

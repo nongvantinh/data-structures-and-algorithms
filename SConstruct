@@ -103,33 +103,37 @@ if env['build'] in ('d', 'debug'):
     env.Append(CXXFLAGS=['-Og'])
     # Request or Suppress Warnings.
     env.Append(CXXFLAGS=['-Wall'])
-    env.Append(CXXFLAGS=['-Wabi=11'])
+    if env['use_llvm'] == 'no':
+        env.Append(CXXFLAGS=['-Wabi=11']) # g++ only
     env.Append(CXXFLAGS=['-Wextra'])
     # Control Diagnostic Messages Formatting.
     env.Append(CXXFLAGS=['-fdiagnostics-show-location=once'])
     env.Append(CXXFLAGS=['-fdiagnostics-color=always'])
-    env.Append(CXXFLAGS=['-fdiagnostics-urls=always'])
+    # env.Append(CXXFLAGS=['-fdiagnostics-urls=always'])
     env.Append(CXXFLAGS=['-fdiagnostics-show-template-tree'])
-    env.Append(CXXFLAGS=['-fdiagnostics-path-format=inline-events'])
-    env.Append(CXXFLAGS=['-fdiagnostics-show-path-depths'])
+    # env.Append(CXXFLAGS=['-fdiagnostics-path-format=inline-events'])
+    # env.Append(CXXFLAGS=['-fdiagnostics-show-path-depths'])
     # Controlling C++ Dialect.
-    env.Append(CXXFLAGS=['-Wcomma-subscript'])
+    # env.Append(CXXFLAGS=['-Wcomma-subscript'])
     env.Append(CXXFLAGS=['-Wctor-dtor-privacy'])
-    env.Append(CXXFLAGS=['-Wnoexcept'])
+    if env['use_llvm'] == 'no':
+        env.Append(CXXFLAGS=['-Wnoexcept']) # g++ only
     env.Append(CXXFLAGS=['-Wreorder'])
-    env.Append(CXXFLAGS=['-Wredundant-tags'])
+    # env.Append(CXXFLAGS=['-Wredundant-tags'])
     env.Append(CXXFLAGS=['-Weffc++'])
-    env.Append(CXXFLAGS=['-Wstrict-null-sentinel'])
+    if env['use_llvm'] == 'no':
+        env.Append(CXXFLAGS=['-Wstrict-null-sentinel']) # g++ only
     env.Append(CXXFLAGS=['-Wold-style-cast'])
     env.Append(CXXFLAGS=['-Woverloaded-virtual'])
     env.Append(CXXFLAGS=['-Wsign-promo'])
-    env.Append(CXXFLAGS=['-Wmismatched-tags'])
+    # env.Append(CXXFLAGS=['-Wmismatched-tags'])
     env.Append(CXXFLAGS=['-Wzero-as-null-pointer-constant'])
     env.Append(CXXFLAGS=['-Wextra-semi'])
-    env.Append(CXXFLAGS=['-Wsuggest-final-types'])
-    env.Append(CXXFLAGS=['-Wsuggest-final-methods'])
+    if env['use_llvm'] == 'no':
+        env.Append(CXXFLAGS=['-Wsuggest-final-types']) # g++ only
+        env.Append(CXXFLAGS=['-Wsuggest-final-methods']) # g++ only
+        env.Append(CXXFLAGS=['-Wuseless-cast']) # g++ only
     env.Append(CXXFLAGS=['-Wsuggest-override'])
-    env.Append(CXXFLAGS=['-Wuseless-cast'])
 else:
     env.Append(CXXFLAGS=['-O3'])
 
@@ -149,7 +153,7 @@ if env['param_check']:
     env.Append(CPPDEFINES='DSAA_PARAM_CHECK')
 
 # Controlling C Dialect.
-env.Append(CXXFLAGS=['-std=c++20'])
+env.Append(CXXFLAGS=['-std=c++2a'])
 env.Append(CPPPATH=library_paths)
 
 env['target_name'] += '.' + env['platform'] + \

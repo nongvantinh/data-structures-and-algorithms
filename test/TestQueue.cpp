@@ -155,13 +155,13 @@ TEST_CASE("Test Queue const_iterator constructor with const_pointer.", "[Queue]"
     {
         const_iterator iter(&arr.peek());
         REQUIRE(&arr.peek() == iter.content());
-        REQUIRE(arr.begin() == iter);
+        REQUIRE(arr.cbegin() == iter);
     }
     SECTION("Iterator at end")
     {
         const_iterator iter(nullptr);
         REQUIRE(nullptr == iter.content());
-        REQUIRE(arr.end() == iter);
+        REQUIRE(arr.cend() == iter);
     }
 }
 
@@ -239,7 +239,6 @@ TEST_CASE("Test Queue iterator copy constructor.", "[Queue]")
     iterator iter2(iter);
     iterator iter3(iter2);
 
-    REQUIRE(iter2 == iter);
     REQUIRE(iter2 == iter3);
 }
 
@@ -640,8 +639,8 @@ TEST_CASE("Test Queue get_index function.", "[Queue]")
     std::initializer_list<TestObject<int>> list{43, -84, -67, -90, -13, -69, 78, -27};
     dsaa::Queue<TestObject<int>> arr(list);
 
-    REQUIRE(0 == arr.get_index(arr.begin()));
-    REQUIRE(list.size() == arr.get_index(arr.end()));
+    REQUIRE(0 == arr.get_index(arr.cbegin()));
+    REQUIRE(list.size() == arr.get_index(arr.cend()));
 }
 
 TEST_CASE("Test Queue get_iterator function.", "[Queue]")

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Generic.h"
 #include "Heap.h"
 
 namespace dsaa
@@ -25,11 +26,32 @@ namespace dsaa
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator merge_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
-	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
-	RIterator merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare = Compare());
-
 	template <typename RIterator, typename Compare = std::greater_equal<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator sort_heap(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator tail_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
+	RIterator randomized_tail_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename IIterator, typename SortBy>
@@ -138,49 +160,6 @@ RIterator dsaa::merge_sort(RIterator p_first, RIterator p_last, Compare p_compar
 }
 
 template <typename RIterator, typename Compare>
-RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Compare p_compare)
-{
-	if (p_first == p_last)
-		return p_first;
-	size_t arr1_size = p_mid - p_first;
-	size_t arr2_size = p_last - p_mid;
-	std::vector<typename std::iterator_traits<RIterator>::value_type> left(arr1_size);
-	std::vector<typename std::iterator_traits<RIterator>::value_type> right(arr2_size);
-
-	for (size_t i(0); i < arr1_size; ++i)
-		left[i] = *(p_first + i);
-
-	for (size_t i(0); i < arr2_size; ++i)
-		right[i] = *(p_mid + i);
-
-	size_t i(0), m(0);
-	for (RIterator k(p_first); k != p_last; ++k)
-	{
-		if (arr1_size <= i)
-		{
-			*k = right[m];
-			++m;
-		}
-		else if (arr2_size <= m)
-		{
-			*k = left[i];
-			++i;
-		}
-		else if (p_compare(left[i], right[m]))
-		{
-			*k = left[i];
-			++i;
-		}
-		else
-		{
-			*k = right[m];
-			++m;
-		}
-	}
-	return p_last;
-}
-
-template <typename RIterator, typename Compare>
 RIterator dsaa::sort_heap(RIterator p_first, RIterator p_last, Compare p_compare)
 {
 	if (p_first == p_last)
@@ -194,4 +173,125 @@ RIterator dsaa::sort_heap(RIterator p_first, RIterator p_last, Compare p_compare
 
 	return p_last;
 }
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::lomuto_partition(p_first, p_last, p_compare);
+		dsaa::lomuto_quick_sort(p_first, pivot_iter, p_compare);
+		dsaa::lomuto_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::hoare_partition(p_first, p_last, p_compare);
+		dsaa::hoare_quick_sort(p_first, pivot_iter + 1, p_compare);
+		dsaa::hoare_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	while (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::lomuto_partition(p_first, p_last, p_compare);
+		dsaa::tail_lomuto_quick_sort(p_first, pivot_iter, p_compare);
+		p_first += (pivot_iter - p_first) + 1;
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::tail_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	while (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::hoare_partition(p_first, p_last, p_compare);
+		dsaa::tail_hoare_quick_sort(p_first, pivot_iter + 1, p_compare);
+		p_first += (pivot_iter - p_first) + 1;
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::randomized_lomuto_partition(p_first, p_last, p_compare);
+		dsaa::randomized_lomuto_quick_sort(p_first, pivot_iter, p_compare);
+		dsaa::randomized_lomuto_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::randomized_hoare_partition(p_first, p_last, p_compare);
+		dsaa::randomized_hoare_quick_sort(p_first, pivot_iter + 1, p_compare);
+		dsaa::randomized_hoare_quick_sort(pivot_iter + 1, p_last, p_compare);
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_tail_lomuto_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	while (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::randomized_lomuto_partition(p_first, p_last, p_compare);
+		dsaa::tail_lomuto_quick_sort(p_first, pivot_iter, p_compare);
+		p_first += (pivot_iter - p_first) + 1;
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare>
+RIterator dsaa::randomized_tail_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	while (p_first < p_last - 1)
+	{
+		RIterator pivot_iter = dsaa::randomized_hoare_partition(p_first, p_last, p_compare);
+		dsaa::tail_hoare_quick_sort(p_first, pivot_iter + 1, p_compare);
+		p_first += (pivot_iter - p_first) + 1;
+	}
+	return p_last;
+}
+
 #endif // !DSAA_SORT_H
