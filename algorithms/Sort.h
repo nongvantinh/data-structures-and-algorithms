@@ -5,6 +5,7 @@
 #include <functional>
 #include <algorithm>
 #include <iterator>
+#include <stdexcept>
 
 #include "Generic.h"
 #include "Heap.h"
@@ -52,6 +53,18 @@ namespace dsaa
 
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
 	RIterator randomized_tail_hoare_quick_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
+
+	// Produces a sorted array.
+	// IntType The type of element in array. The effect is undefined if this is not one of
+	// short, int, long, long long, unsigned short, unsigned int, unsigned long, or unsigned long long.
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>, typename IntType = typename std::iterator_traits<RIterator>::value_type>
+	RIterator counting_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare(), IntType p_min = std::numeric_limits<IntType>::min(), IntType p_max = std::numeric_limits<IntType>::max());
+
+	// Produces a sorted array.
+	// IntType The type of element in array. The effect is undefined if this is not one of
+	// short, int, long, long long, unsigned short, unsigned int, unsigned long, or unsigned long long.
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>, typename IntType = typename std::iterator_traits<RIterator>::value_type>
+	RIterator radix_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare(), IntType p_min = std::numeric_limits<IntType>::min(), IntType p_max = std::numeric_limits<IntType>::max(), int32_t p_base = 10);
 }
 
 template <typename IIterator, typename SortBy>
@@ -290,6 +303,113 @@ RIterator dsaa::randomized_tail_hoare_quick_sort(RIterator p_first, RIterator p_
 		RIterator pivot_iter = dsaa::randomized_hoare_partition(p_first, p_last, p_compare);
 		dsaa::tail_hoare_quick_sort(p_first, pivot_iter + 1, p_compare);
 		p_first += (pivot_iter - p_first) + 1;
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare, typename IntType>
+RIterator dsaa::counting_sort(RIterator p_first, RIterator p_last, Compare, IntType p_min, IntType p_max)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (std::numeric_limits<IntType>::min() == p_min)
+		p_min = *std::min_element(p_first, p_last);
+	if (std::numeric_limits<IntType>::max() == p_max)
+		p_max = *std::max_element(p_first, p_last);
+
+	dsaa::DynamicArray<IntType> count_table(p_max - p_min + 1);
+
+	// Start counting.
+	auto begin(p_first);
+	while (begin != p_last)
+		++count_table[*(begin++) - p_min];
+
+	// Detect offset for indexes.
+	for (auto iter(count_table.begin() + 1); iter != count_table.end(); ++iter)
+		*iter += *(iter - 1);
+
+	dsaa::DynamicArray<IntType> result(p_last - p_first);
+
+	for (auto iter(p_last - 1); p_first <= iter; --iter)
+	{
+		result[count_table[*iter - p_min] - 1] = *iter;
+
+		--count_table[*iter - p_min];
+	}
+
+	// Returns result.
+	if (std::is_same<Compare, std::less<IntType>>::value || std::is_same<Compare, std::less_equal<IntType>>::value)
+	{
+		begin = p_first;
+		for (auto iter(result.begin()); iter != result.end(); ++iter, ++begin)
+			*begin = *iter;
+	}
+	else
+	{
+		begin = p_last - 1;
+		for (auto iter(result.begin()); iter != result.end(); ++iter, --begin)
+			*begin = *iter;
+	}
+
+	return p_last;
+}
+
+template <typename RIterator, typename Compare, typename IntType>
+RIterator dsaa::radix_sort(RIterator p_first, RIterator p_last, Compare, IntType p_min, IntType p_max, int32_t p_base)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	if (std::numeric_limits<IntType>::min() == p_min)
+		p_min = *std::min_element(p_first, p_last);
+	if (p_min < 0)
+		throw std::runtime_error("p_min < 0 in radix sort. p_min must less than or eual to zero");
+	if (std::numeric_limits<IntType>::max() == p_max)
+		p_max = *std::max_element(p_first, p_last);
+
+	dsaa::DynamicArray<IntType> count_table(p_base);
+	dsaa::DynamicArray<IntType> result(p_last - p_first);
+
+	for (size_t exponential(1); 0 < (p_max) / exponential; exponential *= p_base)
+	{
+		count_table.clear();
+		count_table.resize(p_base);
+		result.clear();
+		result.resize(p_last - p_first);
+		// Start counting.
+		auto begin(p_first);
+		while (begin != p_last)
+			++count_table[(*(begin++) / exponential) % p_base];
+
+		// Detect offset for indexes.
+		for (auto iter(count_table.begin() + 1); iter != count_table.end(); ++iter)
+			*iter += *(iter - 1);
+
+		for (auto iter(p_last - 1); p_first <= iter; --iter)
+		{
+			result[count_table[((*iter) / exponential) % p_base] - 1] = *iter;
+
+			--count_table[((*iter) / exponential) % p_base];
+		}
+
+		// Returns result.
+		begin = p_first;
+		for (auto iter(result.begin()); iter != result.end(); ++iter, ++begin)
+			*begin = *iter;
+	}
+
+	if (std::is_same<Compare, std::less<IntType>>::value || std::is_same<Compare, std::less_equal<IntType>>::value)
+	{
+		auto begin = p_first;
+		for (auto iter(result.begin()); iter != result.end(); ++iter, ++begin)
+			*begin = *iter;
+	}
+	else
+	{
+		auto begin = p_last - 1;
+		for (auto iter(result.begin()); iter != result.end(); ++iter, --begin)
+			*begin = *iter;
 	}
 	return p_last;
 }
