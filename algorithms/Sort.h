@@ -65,6 +65,12 @@ namespace dsaa
 	// short, int, long, long long, unsigned short, unsigned int, unsigned long, or unsigned long long.
 	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>, typename IntType = typename std::iterator_traits<RIterator>::value_type>
 	RIterator radix_sort(RIterator p_first, RIterator p_last, Compare p_compare = Compare(), IntType p_min = std::numeric_limits<IntType>::min(), IntType p_max = std::numeric_limits<IntType>::max(), int32_t p_base = 10);
+
+	// Produces a sorted array on input [0:1].
+	// RealType The type of element in array. The effect is undefined if this is not one of
+	// float , double, long double.
+	template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>, typename RealType = typename std::iterator_traits<RIterator>::value_type>
+	RIterator bucket_sort_uniform_distribution(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 }
 
 template <typename IIterator, typename SortBy>
@@ -410,6 +416,42 @@ RIterator dsaa::radix_sort(RIterator p_first, RIterator p_last, Compare, IntType
 		auto begin = p_last - 1;
 		for (auto iter(result.begin()); iter != result.end(); ++iter, --begin)
 			*begin = *iter;
+	}
+	return p_last;
+}
+
+template <typename RIterator, typename Compare, typename RealType>
+RIterator dsaa::bucket_sort_uniform_distribution(RIterator p_first, RIterator p_last, Compare p_compare)
+{
+	if (p_first == p_last)
+		return p_last;
+
+	const size_t arr_size(p_last - p_first);
+	dsaa::DynamicArray<dsaa::DynamicArray<RealType>> buckets(arr_size);
+
+	auto begin(p_first);
+	for (size_t i(0); i != arr_size; ++i, ++begin)
+	{
+		size_t index = arr_size * (*begin);
+		buckets[index].insert_last(*begin);
+	}
+
+	for (size_t i(0); i != arr_size; ++i)
+	{
+		dsaa::insertion_sort(buckets[i].begin(), buckets[i].end(), p_compare);
+	}
+
+	if (std::is_same<Compare, std::less<RealType>>::value || std::is_same<Compare, std::less_equal<RealType>>::value)
+	{
+		for (size_t i(0); i != arr_size; ++i)
+			for (auto iter(buckets[i].begin()); buckets[i].end() != iter; ++iter, ++p_first)
+				*p_first = *iter;
+	}
+	else
+	{
+		for (size_t i(0); i != arr_size; ++i)
+			for (auto iter(buckets[i].end() - 1); buckets[i].begin() <= iter; --iter, ++p_first)
+				*p_first = *iter;
 	}
 	return p_last;
 }
