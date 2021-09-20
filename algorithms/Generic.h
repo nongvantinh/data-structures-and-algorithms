@@ -66,59 +66,59 @@ RIterator dsaa::merge(RIterator p_first, RIterator p_mid, RIterator p_last, Comp
 template <typename RIterator, typename Compare>
 RIterator dsaa::lomuto_partition(RIterator p_first, RIterator p_last, Compare p_compare)
 {
-	auto pivot = *(p_last - 1);
-	RIterator i = p_first;
-	bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
+    auto pivot = *(p_last - 1);
+    RIterator i = p_first;
+    bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
 
-	for (RIterator k(p_first); (p_last - 1) != k; ++k)
-	{
-		if (p_compare(*k, pivot))
-		{
-			if (is_first)
-				is_first = false;
-			else
-				++i;
-			std::swap(*i, *k);
-		}
-	}
-	// Special case we never ever do swap.
-	if (is_first)
-		std::swap(*i, *(p_last - 1));
-	else
-		std::swap(*++i, *(p_last - 1));
+    for (RIterator k(p_first); (p_last - 1) != k; ++k)
+    {
+        if (p_compare(*k, pivot))
+        {
+            if (is_first)
+                is_first = false;
+            else
+                ++i;
+            std::swap(*i, *k);
+        }
+    }
+    // Special case we never ever do swap.
+    if (is_first)
+        std::swap(*i, *(p_last - 1));
+    else
+        std::swap(*++i, *(p_last - 1));
 
-	return  i;
+    return i;
 }
 
 template <typename RIterator, typename Compare>
 RIterator dsaa::hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare)
 {
-	auto pivot = *p_first;
-	RIterator i = p_first;
-	bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
-	RIterator k(p_last);
+    auto pivot = *p_first;
+    RIterator i = p_first;
+    bool is_first(true); // To adapt to iterator, in case bound checking of iterator is turned on.
+    RIterator k(p_last);
 
-	while (true)
-	{
-		// Find the element that satisfy the condition to swap.
-		do
-			--k;
-		while (p_compare(pivot, *k));
+    while (true)
+    {
+        // Find the element that satisfy the condition to swap.
+        do
+            --k;
+        while (p_compare(pivot, *k));
 
-		// Find the element doesn't satisfy the condition to swap.
-		do
-		{
-			if (is_first)
-				is_first = false;
-			else
-				++i;
-		} while (p_compare(*i, pivot));
+        // Find the element doesn't satisfy the condition to swap.
+        do
+        {
+            if (is_first)
+                is_first = false;
+            else
+                ++i;
+        } while (p_compare(*i, pivot));
 
-		// Return when all element has been put in correct side.
-		if (k <= i)
-			return k;
-		std::swap(*i, *k);
-	}
+        // Return when all element has been put in correct side.
+        if (k <= i)
+            return k;
+        std::swap(*i, *k);
+    }
 }
 
 template <typename RIterator, typename Compare>

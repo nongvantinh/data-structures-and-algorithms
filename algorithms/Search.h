@@ -2,6 +2,8 @@
 #define DSAA_SEARCH_H
 
 #include <iostream>
+#include "Generic.h"
+#include "Sort.h"
 
 namespace dsaa
 {
@@ -15,6 +17,9 @@ namespace dsaa
 
 	template <typename RIterator, typename OrderBy, typename Predicate>
 	RIterator binary_search(RIterator p_first, RIterator p_last, OrderBy p_orderBy, Predicate p_predicate);
+
+	template <typename RIterator>
+	std::tuple<RIterator, RIterator> search_pair_min_max(RIterator p_first, RIterator p_last);
 }
 
 template <typename IIterator, typename Value>
@@ -103,4 +108,57 @@ RIterator dsaa::binary_search(RIterator p_first, RIterator p_last, OrderBy p_ord
 	return p_last;
 }
 
+template <typename RIterator>
+std::tuple<RIterator, RIterator> dsaa::search_pair_min_max(RIterator p_first, RIterator p_last)
+{
+	if (p_first == p_last)
+		return std::tuple(p_first, p_last);
+	if (1 == p_last - p_first)
+		return std::tuple(p_first, p_first);
+
+	RIterator min_value(p_first);
+	RIterator max_value(p_first);
+
+	// Even number of element.
+	if (0 == (p_last - p_first) % 2)
+	{
+		if (*p_first < *(p_first + 1))
+		{
+			min_value = p_first;
+			max_value = (p_first + 1);
+		}
+		else if (*p_first > *(p_first + 1))
+		{
+			min_value = (p_first + 1);
+			max_value = p_first;
+		}
+		p_first += 2;
+	}
+	else
+	{
+		min_value = max_value = p_first;
+		++p_first;
+	}
+
+	// Corner case, the rest elements are equal except the begining.
+	if (*p_first < *min_value)
+		min_value = p_first;
+	else if (*p_first > *max_value)
+		max_value = p_first;
+
+	for (auto iter(p_first); p_last != iter; iter += 2)
+	{
+		if (*iter < *(iter + 1))
+		{
+			min_value = (*iter < *min_value) ? iter : min_value;
+			max_value = (*max_value < *(iter + 1)) ? (iter + 1) : max_value;
+		}
+		else if (*iter > *(iter + 1))
+		{
+			min_value = (*(iter + 1) < *min_value) ? (iter + 1) : min_value;
+			max_value = (*max_value < *iter) ? iter : max_value;
+		}
+	}
+	return std::tuple(min_value, max_value);
+}
 #endif // !DSAA_SEARCH_H
