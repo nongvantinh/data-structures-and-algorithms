@@ -2163,6 +2163,363 @@ TEST_CASE("Test counting_sort.", "[Sort]")
     }
 }
 
+TEST_CASE("Test radix_sort.", "[Sort]")
+{
+    SECTION("An ordinary sequence.")
+    {
+        size_t arr_size(102);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("The empty sequence.")
+    {
+        dsaa::DynamicArray<int> arr;
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Just one element.")
+    {
+        size_t arr_size(1);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Even number of elements.")
+    {
+        size_t arr_size(1060);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Odd number of elements.")
+    {
+        size_t arr_size(1063);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("All elements equal.")
+    {
+        size_t arr_size(106);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Difference element at begining.")
+    {
+        size_t arr_size(267);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        int64_t index(0);
+        while (arr[index] == arr[index + 1])
+            arr[index] = dsaa::random::random_range_int<int>(0, 100);
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Difference element at end.")
+    {
+        size_t arr_size(520);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        int64_t index(arr.size() - 1);
+        while (arr[index] == arr[index - 1])
+            arr[index] = dsaa::random::random_range_int<int>(0, 100);
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("A very large sequence.")
+    {
+        size_t arr_size(12506);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Some sequences with a random number of elements.")
+    {
+        size_t arr_size(372);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::less<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::less_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::less<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+    ////////////////////////////
+    SECTION("An ordinary sequence.")
+    {
+        size_t arr_size(102);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("The empty sequence.")
+    {
+        dsaa::DynamicArray<int> arr;
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Just one element.")
+    {
+        size_t arr_size(1);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Even number of elements.")
+    {
+        size_t arr_size(1060);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Odd number of elements.")
+    {
+        size_t arr_size(1063);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("All elements equal.")
+    {
+        size_t arr_size(106);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Difference element at begining.")
+    {
+        size_t arr_size(267);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        int64_t index(0);
+        while (arr[index] == arr[index + 1])
+            arr[index] = dsaa::random::random_range_int<int>(0, 100);
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Difference element at end.")
+    {
+        size_t arr_size(520);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        int64_t index(arr.size() - 1);
+        while (arr[index] == arr[index - 1])
+            arr[index] = dsaa::random::random_range_int<int>(0, 100);
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("A very large sequence.")
+    {
+        size_t arr_size(12506);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+
+    SECTION("Some sequences with a random number of elements.")
+    {
+        size_t arr_size(372);
+        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+
+        dsaa::DynamicArray<int> arr2(arr);
+
+        dsaa::radix_sort(arr.begin(), arr.end(), std::greater<int>());
+        REQUIRE(dsaa::is_sorted(arr.begin(), arr.end(), std::greater_equal<int>()));
+
+        std::sort(arr2.begin(), arr2.end(), std::greater<int>());
+        auto arr_iter(arr.begin());
+        auto arr2_iter(arr2.begin());
+        for (; arr2.end() != arr2_iter; ++arr2_iter, ++arr_iter)
+            REQUIRE(*arr2_iter == *arr_iter);
+    }
+}
+
 #include "MinHeap.h"
 TEST_CASE("Test dsaa::heap_property for dsaa::MinHeap.", "[dsaa::heap_property]")
 {
