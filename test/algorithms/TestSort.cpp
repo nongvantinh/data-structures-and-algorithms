@@ -69,8 +69,7 @@ TEST_CASE("Test buble_sort.", "[Sort]")
     SECTION("All elements equal.")
     {
         size_t arr_size(8);
-
-        dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+        dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
         dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
         dsaa::buble_sort(arr.begin(), arr.end());
@@ -196,7 +195,7 @@ TEST_CASE("Test selection_sort.", "[Sort]")
     {
         size_t arr_size(8);
 
-        dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+        dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
         dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
         dsaa::selection_sort(arr.begin(), arr.end());
@@ -322,7 +321,7 @@ TEST_CASE("Test insertion_sort.", "[Sort]")
     {
         size_t arr_size(8);
 
-        dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+        dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
         dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
         dsaa::insertion_sort(arr.begin(), arr.end());
@@ -448,7 +447,7 @@ TEST_CASE("Test merge_sort.", "[Sort]")
     {
         size_t arr_size(8);
 
-        dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+        dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
         dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
         dsaa::merge_sort(arr.begin(), arr.end());
@@ -581,7 +580,7 @@ TEST_CASE("Test sort_heap.", "[Sort]")
         {
             size_t arr_size(8);
 
-            dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+            dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
             dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
             dsaa::build_heap(arr.begin(), arr.end());
@@ -717,7 +716,7 @@ TEST_CASE("Test sort_heap.", "[Sort]")
         {
             size_t arr_size(8);
 
-            dsaa::DynamicArray<int> param(dsaa::random::random_range_ints<int>(arr_size));
+            dsaa::DynamicArray<int> param(arr_size, dsaa::random::random_range_int<int>(-10000, 10000));
             dsaa::DynamicArray<TestObject<int>> arr(param.begin(), param.end());
 
             dsaa::build_heap(arr.begin(), arr.end(), std::less_equal<TestObject<int>>());
@@ -2072,7 +2071,7 @@ TEST_CASE("Test counting_sort.", "[Sort]")
     SECTION("All elements equal.")
     {
         size_t arr_size(106);
-        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, -100, 100));
+        dsaa::DynamicArray<int> arr(arr_size, dsaa::random::random_range_int<int>(-100, 100));
 
         dsaa::DynamicArray<int> arr2(arr);
 
@@ -2252,7 +2251,7 @@ TEST_CASE("Test radix_sort.", "[Sort]")
     SECTION("All elements equal.")
     {
         size_t arr_size(106);
-        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+        dsaa::DynamicArray<int> arr(arr_size, dsaa::random::random_range_int<int>(0, 100));
 
         dsaa::DynamicArray<int> arr2(arr);
 
@@ -2429,7 +2428,7 @@ TEST_CASE("Test radix_sort.", "[Sort]")
     SECTION("All elements equal.")
     {
         size_t arr_size(106);
-        dsaa::DynamicArray<int> arr(dsaa::random::random_range_ints<int>(arr_size, 0, 100));
+        dsaa::DynamicArray<int> arr(arr_size, dsaa::random::random_range_int<int>(0, 100));
 
         dsaa::DynamicArray<int> arr2(arr);
 
@@ -2519,6 +2518,7 @@ TEST_CASE("Test radix_sort.", "[Sort]")
             REQUIRE(*arr2_iter == *arr_iter);
     }
 }
+
 
 #include "MinHeap.h"
 TEST_CASE("Test dsaa::heap_property for dsaa::MinHeap.", "[dsaa::heap_property]")
