@@ -1,3 +1,6 @@
+#ifndef DSAA_GENERIC_H
+#define DSAA_GENERIC_H
+
 #include <functional>
 
 #include "Random.h"
@@ -138,3 +141,5 @@ RIterator dsaa::randomized_hoare_partition(RIterator p_first, RIterator p_last, 
     std::swap(*p_first, *(p_first + i));
     return dsaa::hoare_partition(p_first, p_last, p_compare);
 }
+
+#endif //!DSAA_GENERIC_H
