@@ -379,12 +379,6 @@ TEST_CASE("Test search_pair_min_max.", "[Search]")
 
 		auto min_max = dsaa::search_pair_min_max(arr.begin(), arr.end());
 
-		std::cout << '[' << min - arr.begin() << "] = " << *min << "\n";
-		std::cout << '[' << max - arr.begin() << "] = " << *max << "\n";
-
-		std::cout << '[' << std::get<0>(min_max) - arr.begin() << "] = " << *std::get<0>(min_max) << "\n";
-		std::cout << '[' << std::get<1>(min_max) - arr.begin() << "] = " << *std::get<1>(min_max) << "\n";
-
 		CHECK(min == std::get<0>(min_max));
 		CHECK(max == std::get<1>(min_max));
 	}
