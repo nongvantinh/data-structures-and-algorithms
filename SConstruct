@@ -49,9 +49,10 @@ opts.Update(env)
 # Local includes paths.
 test_arrays_path = 'test/data_structures/arrays/'
 test_lists_path = 'test/data_structures/lists/'
-test_heaps_path = 'test/data_structures//trees/heaps/'
+test_heaps_path = 'test/data_structures/trees/heaps/'
+test_binary_tree_path = 'test/data_structures/trees/binary_trees/'
 test_data_structures_paths = [
-    test_arrays_path, test_lists_path, test_heaps_path]
+    test_arrays_path, test_lists_path, test_heaps_path, test_binary_tree_path]
 
 test_cases_paths = ['modules/', 'test/', 'test/algorithms/']
 test_cases_paths += test_data_structures_paths
