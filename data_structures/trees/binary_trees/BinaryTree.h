@@ -470,7 +470,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::erase(pointer &p_node)
 {
     // The moment p_node transplant with its child, p_node will become invalid.
-    pointer deleting = p_node;
+    pointer substitute(p_node);
     if (!p_node->left())
         transplant(p_node, p_node->right());
     else if (!p_node->right())
@@ -489,8 +489,8 @@ CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::erase(pointer &p_node)
         succ->left() = p_node->left();
         succ->left()->parent() = succ;
     }
-    std::allocator_traits<allocator_type>::destroy(m_allocator, deleting);
-    std::allocator_traits<allocator_type>::deallocate(m_allocator, deleting, 1);
+    std::allocator_traits<allocator_type>::destroy(m_allocator, substitute);
+    std::allocator_traits<allocator_type>::deallocate(m_allocator, substitute, 1);
     --m_size;
 }
 
