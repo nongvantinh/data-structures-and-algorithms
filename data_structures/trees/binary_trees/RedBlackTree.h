@@ -105,13 +105,13 @@ public:
     using const_reference = const value_type &;
     using size_type = size_t;
 
-    CONSTEXPR BinaryTreeNode(bool p_is_red = false, const_reference p_value = value_type()) noexcept : m_is_red(p_is_red), m_value(p_value), m_parent(nullptr), m_left(nullptr), m_right(nullptr) {}
-    CONSTEXPR BinaryTreeNode(bool p_is_red, value_type &&p_value) noexcept : m_is_red(p_is_red), m_value(std::move(p_value)), m_parent(nullptr), m_left(nullptr), m_right(nullptr) {}
-    CONSTEXPR BinaryTreeNode(bool p_is_red, const_reference p_value, BinaryTreeNode *p_parent, BinaryTreeNode *p_left, BinaryTreeNode *p_right) noexcept : m_is_red(p_is_red), m_value(p_value), m_parent(p_parent), m_left(p_left), m_right(p_right) {}
-    CONSTEXPR BinaryTreeNode(bool p_is_red, value_type &&p_value, BinaryTreeNode *p_parent, BinaryTreeNode *p_left, BinaryTreeNode *p_right) noexcept : m_is_red(p_is_red), m_value(std::move(p_value)), m_parent(p_parent), m_left(p_left), m_right(p_right) { p_value = value_type(); }
+    CONSTEXPR RedBlackTreeNode(bool p_is_red = false, const_reference p_value = value_type()) noexcept : m_is_red(p_is_red), m_value(p_value), m_parent(nullptr), m_left(nullptr), m_right(nullptr) {}
+    CONSTEXPR RedBlackTreeNode(bool p_is_red, value_type &&p_value) noexcept : m_is_red(p_is_red), m_value(std::move(p_value)), m_parent(nullptr), m_left(nullptr), m_right(nullptr) {}
+    CONSTEXPR RedBlackTreeNode(bool p_is_red, const_reference p_value, RedBlackTreeNode *p_parent, RedBlackTreeNode *p_left, RedBlackTreeNode *p_right) noexcept : m_is_red(p_is_red), m_value(p_value), m_parent(p_parent), m_left(p_left), m_right(p_right) {}
+    CONSTEXPR RedBlackTreeNode(bool p_is_red, value_type &&p_value, RedBlackTreeNode *p_parent, RedBlackTreeNode *p_left, RedBlackTreeNode *p_right) noexcept : m_is_red(p_is_red), m_value(std::move(p_value)), m_parent(p_parent), m_left(p_left), m_right(p_right) { p_value = value_type(); }
 
-    CONSTEXPR BinaryTreeNode(const BinaryTreeNode &p_other) noexcept : m_is_red(p_other.m_is_red), m_value(p_other.m_value), m_parent(p_other.m_parent), m_left(p_other.m_left), m_right(p_other.m_right) {}
-    CONSTEXPR BinaryTreeNode(BinaryTreeNode &&p_other) noexcept : m_is_red(p_other.m_is_red), m_value(std::move(p_other.m_value)), m_parent(p_other.m_parent), m_left(p_other.m_left), m_right(p_other.m_right)
+    CONSTEXPR RedBlackTreeNode(const RedBlackTreeNode &p_other) noexcept : m_is_red(p_other.m_is_red), m_value(p_other.m_value), m_parent(p_other.m_parent), m_left(p_other.m_left), m_right(p_other.m_right) {}
+    CONSTEXPR RedBlackTreeNode(RedBlackTreeNode &&p_other) noexcept : m_is_red(p_other.m_is_red), m_value(std::move(p_other.m_value)), m_parent(p_other.m_parent), m_left(p_other.m_left), m_right(p_other.m_right)
     {
         p_other.m_is_red = false;
         p_other.m_value = value_type();
@@ -120,9 +120,9 @@ public:
         p_other.m_right = nullptr;
     }
 
-    ~BinaryTreeNode() {}
+    ~RedBlackTreeNode() {}
 
-    CONSTEXPR BinaryTreeNode &operator=(const BinaryTreeNode &p_other)
+    CONSTEXPR RedBlackTreeNode &operator=(const RedBlackTreeNode &p_other)
     {
         m_is_red = p_other.m_is_red;
         m_value = p_other.m_value;
@@ -133,7 +133,7 @@ public:
         return *this;
     }
 
-    CONSTEXPR BinaryTreeNode &operator=(BinaryTreeNode &&p_other)
+    CONSTEXPR RedBlackTreeNode &operator=(RedBlackTreeNode &&p_other)
     {
         m_is_red = p_other.m_is_red;
         m_value = std::move(p_other.m_value);
@@ -160,27 +160,27 @@ public:
     CONSTEXPR INLINE reference value() { return m_value; }
     CONSTEXPR INLINE const_reference value() const { return m_value; }
 
-    CONSTEXPR INLINE BinaryTreeNode *&parent() { return m_parent; }
-    CONSTEXPR INLINE BinaryTreeNode *const &parent() const { return m_parent; }
+    CONSTEXPR INLINE RedBlackTreeNode *&parent() { return m_parent; }
+    CONSTEXPR INLINE RedBlackTreeNode *const &parent() const { return m_parent; }
 
-    CONSTEXPR INLINE BinaryTreeNode *&left() { return m_left; }
-    CONSTEXPR INLINE BinaryTreeNode *const &left() const { return m_left; }
+    CONSTEXPR INLINE RedBlackTreeNode *&left() { return m_left; }
+    CONSTEXPR INLINE RedBlackTreeNode *const &left() const { return m_left; }
 
-    CONSTEXPR INLINE BinaryTreeNode *&right() { return m_right; }
-    CONSTEXPR INLINE BinaryTreeNode *const &right() const { return m_right; }
+    CONSTEXPR INLINE RedBlackTreeNode *&right() { return m_right; }
+    CONSTEXPR INLINE RedBlackTreeNode *const &right() const { return m_right; }
 
-    CONSTEXPR INLINE bool operator==(const BinaryTreeNode &p_other) const
+    CONSTEXPR INLINE bool operator==(const RedBlackTreeNode &p_other) const
     {
         return m_is_red == p_other.m_is_red && m_value == p_other.m_value && m_parent == p_other.m_parent && m_left == p_other.m_left && m_right == p_other.m_right;
     }
-    CONSTEXPR INLINE bool operator!=(const BinaryTreeNode &p_other) const { return !(*this == p_other); }
+    CONSTEXPR INLINE bool operator!=(const RedBlackTreeNode &p_other) const { return !(*this == p_other); }
 
 private:
     bool m_is_red;            // The color of red black tree, either red or black.
     value_type m_value;       // The key that this node hold.
-    BinaryTreeNode *m_parent; // The parent node of this node.
-    BinaryTreeNode *m_left;   // The left child.
-    BinaryTreeNode *m_right;  // The right child.
+    RedBlackTreeNode *m_parent; // The parent node of this node.
+    RedBlackTreeNode *m_left;   // The left child.
+    RedBlackTreeNode *m_right;  // The right child.
 };
 
 template <typename Elem, typename Alloc>
