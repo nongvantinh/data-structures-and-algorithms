@@ -49,6 +49,7 @@ namespace dsaa
         CONSTEXPR INLINE allocator_type allocator() const noexcept;
         CONSTEXPR INLINE pointer &root() noexcept;
         CONSTEXPR INLINE const_pointer root() const noexcept;
+        CONSTEXPR INLINE pointer sentinel() noexcept;
         CONSTEXPR INLINE const_pointer sentinel() const noexcept;
         CONSTEXPR INLINE size_type size() const noexcept;
 
@@ -91,7 +92,7 @@ namespace dsaa
     private:
         allocator_type m_allocator;
         pointer m_root;
-        const_pointer m_sentinel; // The only node that left child and right child is nullptr.
+        pointer m_sentinel; // The only node that left child and right child is nullptr.
         size_type m_size;
     };
 } // namespace dsaa
@@ -176,8 +177,8 @@ public:
     CONSTEXPR INLINE bool operator!=(const RedBlackTreeNode &p_other) const { return !(*this == p_other); }
 
 private:
-    bool m_is_red;            // The color of red black tree, either red or black.
-    value_type m_value;       // The key that this node hold.
+    bool m_is_red;              // The color of red black tree, either red or black.
+    value_type m_value;         // The key that this node hold.
     RedBlackTreeNode *m_parent; // The parent node of this node.
     RedBlackTreeNode *m_left;   // The left child.
     RedBlackTreeNode *m_right;  // The right child.
@@ -219,8 +220,8 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::RedBlackTree(RedBlackTree &&p_other) 
     : m_allocator(p_other.m_allocator), m_root(p_other.m_root), m_sentinel(p_other.m_sentinel), m_size(p_other.m_size)
 {
     p_other.m_allocator = allocator_type();
-    p_other.m_root = nullptr;
-    p_other.m_sentinel = nullptr;
+    p_other.m_root = p_other.m_sentinel = std::allocator_traits<allocator_type>::allocate(p_other.m_allocator, 1);
+    std::allocator_traits<allocator_type>::construct(p_other.m_allocator, p_other.m_sentinel, false, value_type(), nullptr, nullptr, nullptr);
     p_other.m_size = 0;
 }
 
@@ -229,8 +230,8 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::RedBlackTree(RedBlackTree &&p_other, 
     : m_allocator(p_allocator), m_root(p_other.m_root), m_sentinel(p_other.m_sentinel), m_size(p_other.m_size)
 {
     p_other.m_allocator = allocator_type();
-    p_other.m_root = nullptr;
-    p_other.m_sentinel = nullptr;
+    p_other.m_root = p_other.m_sentinel = std::allocator_traits<allocator_type>::allocate(p_other.m_allocator, 1);
+    std::allocator_traits<allocator_type>::construct(p_other.m_allocator, p_other.m_sentinel, false, value_type(), nullptr, nullptr, nullptr);
     p_other.m_size = 0;
 }
 
@@ -321,6 +322,12 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem
 }
 
 template <typename Elem, typename Alloc>
+CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() noexcept
+{
+    return m_sentinel;
+}
+
+template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() const noexcept
 {
     return m_sentinel;
@@ -329,7 +336,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_minimum(pointer p_node) noexcept
 {
-    while (sentinel() != p_node->left())
+    while (*sentinel() != *p_node->left())
         p_node = p_node->left();
 
     return p_node;
@@ -338,7 +345,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_maximum(pointer p_node) noexcept
 {
-    while (sentinel() != p_node->right())
+    while (*sentinel() != *p_node->right())
         p_node = p_node->right();
 
     return p_node;
@@ -347,7 +354,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_minimum(pointer p_node) noexcept
 {
-    if (sentinel() != p_node->left())
+    if (*sentinel() != *p_node->left())
         return recursive_minimum(p_node->left());
 
     return p_node;
@@ -356,7 +363,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_maximum(pointer p_node) noexcept
 {
-    if (sentinel() != p_node->right())
+    if (*sentinel() != *p_node->right())
         return recursive_maximum(p_node->right());
 
     return p_node;
@@ -365,11 +372,11 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::successor(pointer p_node) noexcept
 {
-    if (sentinel() != p_node->right())
+    if (*sentinel() != p_node->right())
         return iterative_minimum(p_node->right());
 
     pointer trailing = p_node->parent();
-    while (sentinel() != trailing && p_node == trailing->right())
+    while (*sentinel() != *trailing && p_node == trailing->right())
     {
         p_node = trailing;
         trailing = trailing->parent();
@@ -381,11 +388,11 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::predecessor(pointer p_node) noexcept
 {
-    if (sentinel() != p_node->left())
+    if (*sentinel() != p_node->left())
         return iterative_maximum(p_node->left());
 
     pointer trailing = p_node->parent();
-    while (sentinel() != trailing && p_node == trailing->left())
+    while (*sentinel() != *trailing && p_node == trailing->left())
     {
         p_node = trailing;
         trailing = trailing->parent();
@@ -397,7 +404,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_search(pointer p_node, const_reference p_value) noexcept
 {
-    if (!p_node || sentinel() == p_node || p_value == p_node->value())
+    if (!p_node || *sentinel() == *p_node || p_value == p_node->value())
         return p_node;
 
     if (p_value < p_node->value())
@@ -409,7 +416,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_search(pointer p_node, const_reference p_value) noexcept
 {
-    while (sentinel() != p_node && p_value != p_node->value())
+    while (*sentinel() != *p_node && p_value != p_node->value())
     {
         if (p_value < p_node->value())
             p_node = p_node->left();
@@ -424,7 +431,7 @@ template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_preorder_tree_walk(pointer &p_node, Action p_action)
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
         p_action(p_node);
         recursive_preorder_tree_walk(p_node->left(), p_action);
@@ -436,7 +443,7 @@ template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_preorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
         p_action(p_node);
         recursive_preorder_tree_walk(p_node->left(), p_action);
@@ -448,7 +455,7 @@ template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_inorder_tree_walk(pointer &p_node, Action p_action)
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
         recursive_inorder_tree_walk(p_node->left(), p_action);
         p_action(p_node);
@@ -460,7 +467,7 @@ template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_inorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
         recursive_inorder_tree_walk(p_node->left(), p_action);
         p_action(p_node);
@@ -472,7 +479,7 @@ template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_postorder_tree_walk(pointer &p_node, Action p_action)
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
         recursive_postorder_tree_walk(p_node->left(), p_action);
         recursive_postorder_tree_walk(p_node->right(), p_action);
@@ -480,13 +487,16 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_postorder_tree_walk(po
     }
 }
 
+#include <iostream>
 template <typename Elem, typename Alloc>
 template <typename Action>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_postorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
 {
-    if (sentinel() != p_node)
+    if (*sentinel() != *p_node)
     {
+        std::cout << "go left: " << p_node->left()->value() << std::endl;
         recursive_postorder_tree_walk(p_node->left(), p_action);
+        std::cout << "go right: " << p_node->left()->value() << std::endl;
         recursive_postorder_tree_walk(p_node->right(), p_action);
         p_action(p_node);
     }
@@ -496,7 +506,7 @@ template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::size_type dsaa::RedBlackTree<Elem, Alloc>::black_height(const_pointer &p_node) const
 {
     size_type count(0);
-    while (p_node != sentinel())
+    while (*p_node != *sentinel())
     {
         p_node = p_node->left();
         if (!p_node->is_red())
@@ -513,7 +523,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::left_rotate(pointer p_node) noex
     // p_node can be any node in the tree whose right child is not null.
     pointer right_child(p_node->right());
     right_child->parent() = p_node->parent();
-    if (sentinel() == p_node->parent())
+    if (*sentinel() == *p_node->parent())
         m_root = right_child;
     else if (p_node->parent()->left() == p_node)
         p_node->parent()->left() = right_child;
@@ -523,7 +533,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::left_rotate(pointer p_node) noex
     p_node->parent() = right_child;
 
     p_node->right() = right_child->left();
-    if (sentinel() != right_child->left())
+    if (*sentinel() != *right_child->left())
         right_child->left()->parent() = p_node;
 
     right_child->left() = p_node;
@@ -536,7 +546,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::right_rotate(pointer p_node) noe
     // p_node can be any node in the tree whose right child is not null.
     pointer left_child(p_node->left());
     left_child->parent() = p_node->parent();
-    if (sentinel() == p_node->parent())
+    if (*sentinel() == *p_node->parent())
         m_root = left_child;
     else if (p_node->parent()->left() == p_node)
         p_node->parent()->left() = left_child;
@@ -546,7 +556,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::right_rotate(pointer p_node) noe
     p_node->parent() = left_child;
 
     p_node->left() = left_child->right();
-    if (sentinel() != left_child->right())
+    if (*sentinel() != *left_child->right())
         left_child->right()->parent() = p_node;
 
     left_child->right() = p_node;
@@ -561,7 +571,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::insert(const_reference p_value)
 
     pointer direction = m_root;
     pointer trailing = sentinel();
-    while (direction != sentinel())
+    while (*direction != *sentinel())
     {
         trailing = direction;
         if (p_value < direction->value())
@@ -572,7 +582,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::insert(const_reference p_value)
 
     new_node->parent() = trailing;
 
-    if (sentinel() == m_root)
+    if (*sentinel() == *m_root)
         m_root = new_node;
     else if (p_value < trailing->value())
         trailing->left() = new_node;
@@ -587,30 +597,37 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::insert(const_reference p_value)
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::insert_fixup(pointer p_node)
 {
-    while (sentinel() != p_node->parent() && p_node->parent()->is_red())
+    while (*sentinel() != *p_node->parent() && p_node->parent()->is_red())
     {
-        // A root node always have black color.
+        // A root node always has black color.
         // That's why p_node->parent()->parent() always valid.
         if (p_node->parent() == p_node->parent()->parent()->left())
         {
             pointer uncle = p_node->parent()->parent()->right();
-            // Case 1.
+            // Case 1: uncle is red, We're close to uncle height, don't need to rotate.
             if (uncle->is_red())
             {
                 p_node->parent()->is_red() = false;
                 uncle->is_red() = false;
                 p_node->parent()->parent()->is_red() = true;
+                // Re-paint the parent and uncle solved the problem with property 4 of p_node's parent,
+                // and preserves the property 5, but could violate the property 2, and property 4 of the grandparent.
                 p_node = p_node->parent()->parent();
             }
-            // Case 2.
+            // Case 2:  p_node's parent is on the left side and this p_node is the right child of it,
+            //          but the uncle located on the right side has black color.
+            //          It means the uncle "MUST" be the leaf node, so we have "LEFT HEAVY" tree.
             else if (p_node == p_node->parent()->right())
             {
+                // Transform it into case 3.
                 p_node = p_node->parent();
                 left_rotate(p_node);
             }
-            // Case 3.
+            // Case 3: We're on the left side, but the uncle located on right side. Which is black.
+            //          It means the uncle "MUST" be the leaf node, so we have "LEFT HEAVY" tree.
             else
             {
+                // This solves the problem with property 4, and does not introduce any problem with red black tree properties.
                 p_node->parent()->is_red() = false;
                 p_node->parent()->parent()->is_red() = true;
                 right_rotate(p_node->parent()->parent());
@@ -649,18 +666,19 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::insert_fixup(pointer p_node)
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase(pointer &p_node)
 {
+    std::cout << "erase: " << p_node->value() << std::endl;
     // The moment p_node transplant with its child, p_node will become invalid.
     pointer substitute(p_node);
     pointer tracker(nullptr);
     // Keeps track violation of red black propteries. It's p_node or p_node's successor.
     bool original_color(substitute->is_red());
 
-    if (sentinel() == p_node->left())
+    if (*sentinel() == *p_node->left())
     {
         tracker = p_node->right();
         transplant(p_node, p_node->right());
     }
-    else if (sentinel() == p_node->right())
+    else if (*sentinel() == *p_node->right())
     {
         tracker = p_node->left();
         transplant(p_node, p_node->left());
@@ -702,9 +720,9 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase(pointer &p_node)
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
 {
-    while (m_root != p_node && !p_node->is_red())
+    while (*m_root != *p_node && !p_node->is_red())
     {
-        if (p_node == p_node->parent->left())
+        if (*p_node == *p_node->parent()->left())
         {
             // Sibling of a black node can not be nullptr because it will violate property 5.
             pointer sibling(p_node->parent()->right());
@@ -717,13 +735,13 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
                 sibling = p_node->parent()->right();
             }
             // Case 2.
-            if (!sibling->left()->is_red() && !sibling->right()->is_red())
+            if (sibling->left() && !sibling->left()->is_red() && sibling->right() && !sibling->right()->is_red())
             {
                 sibling->is_red() = true;
                 p_node = p_node->parent();
             }
             // Case 3.
-            else if (!sibling->right()->is_red())
+            else if (sibling->right() && !sibling->right()->is_red())
             {
                 sibling->left()->is_red() = false;
                 sibling->is_red() = true;
@@ -767,6 +785,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
                 sibling = p_node->parent()->left();
             }
             // Case 8.
+            else
             {
                 sibling->is_red() = p_node->parent()->is_red();
                 p_node->parent()->is_red() = false;
@@ -783,14 +802,16 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::transplant(pointer &p_node, pointer &p_child) noexcept
 {
-    if (sentinel() == p_node->parent())
+    // Because sentinel don't have parent by default.
+    pointer p(p_node->parent());
+    if (*sentinel() == *p_node->parent())
         m_root = p_child;
     else if (p_node == p_node->parent()->left())
         p_node->parent()->left() = p_child;
     else
         p_node->parent()->right() = p_child;
 
-    p_child->parent() = p_node->parent();
+    p_child->parent() = p;
 }
 
 #endif //!DSAA_RED_BLACK_TREE_H
