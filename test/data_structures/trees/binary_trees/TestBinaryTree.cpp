@@ -60,6 +60,8 @@ TEST_CASE("Test BinaryTree BinaryTreeNode constructor by move value.", "[BinaryT
     node = nullptr;
 }
 
+// --------------------------------------------------------------
+
 TEST_CASE("Test BinaryTree default constructor", "[BinaryTree]")
 {
     dsaa::BinaryTree<TestObject<int>> tree;
@@ -69,7 +71,7 @@ TEST_CASE("Test BinaryTree default constructor", "[BinaryTree]")
 
 TEST_CASE("Test BinaryTree default constructor with std::allocator", "[BinaryTree]")
 {
-    std::allocator<TestObject<int>> allocator;
+    allocator_type allocator;
     dsaa::BinaryTree<TestObject<int>> tree(allocator);
     REQUIRE(nullptr == tree.root());
     REQUIRE(0 == tree.size());
@@ -96,7 +98,7 @@ TEST_CASE("Test BinaryTree copy constructor with std::allocator", "[BinaryTree]"
 {
     std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
     dsaa::BinaryTree<TestObject<int>> tree(arg);
-    std::allocator<TestObject<int>> allocator;
+    allocator_type allocator;
     dsaa::BinaryTree<TestObject<int>> tree2(tree, allocator);
     REQUIRE(nullptr != tree.root());
     REQUIRE(arg.size() == tree.size());
@@ -130,7 +132,7 @@ TEST_CASE("Test BinaryTree move constructor with std::allocator", "[BinaryTree]"
 {
     std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
     dsaa::BinaryTree<TestObject<int>> tree(arg);
-    std::allocator<TestObject<int>> allocator;
+    allocator_type allocator;
     dsaa::BinaryTree<TestObject<int>> tree2(std::move(tree), allocator);
 
     REQUIRE(nullptr == tree.root());
@@ -173,7 +175,7 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
     {
         std::initializer_list<TestObject<int>> arg{6, 5, 7};
         dsaa::BinaryTree<TestObject<int>> tree(arg);
-        std::allocator<TestObject<int>> allocator;
+        allocator_type allocator;
         dsaa::BinaryTree<TestObject<int>> tree2(tree, allocator);
         REQUIRE(nullptr != tree.root());
         REQUIRE(arg.size() == tree.size());
@@ -187,7 +189,7 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
     {
         std::initializer_list<TestObject<int>> arg{6, 5, 2, 7};
         dsaa::BinaryTree<TestObject<int>> tree(arg);
-        std::allocator<TestObject<int>> allocator;
+        allocator_type allocator;
         dsaa::BinaryTree<TestObject<int>> tree2(tree, allocator);
         REQUIRE(nullptr != tree.root());
         REQUIRE(arg.size() == tree.size());
@@ -201,7 +203,7 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
     {
         std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7};
         dsaa::BinaryTree<TestObject<int>> tree(arg);
-        std::allocator<TestObject<int>> allocator;
+        allocator_type allocator;
         dsaa::BinaryTree<TestObject<int>> tree2(tree, allocator);
         REQUIRE(nullptr != tree.root());
         REQUIRE(arg.size() == tree.size());
@@ -215,7 +217,7 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
     {
         std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
         dsaa::BinaryTree<TestObject<int>> tree(arg);
-        std::allocator<TestObject<int>> allocator;
+        allocator_type allocator;
         dsaa::BinaryTree<TestObject<int>> tree2(tree, allocator);
         REQUIRE(nullptr != tree.root());
         REQUIRE(arg.size() == tree.size());
@@ -388,7 +390,6 @@ TEST_CASE("Test BinaryTree insert.", "[BinaryTree]")
         std::initializer_list<TestObject<int>> arg{6};
         std::initializer_list<TestObject<int>> arg2{6, 5};
         dsaa::BinaryTree<TestObject<int>> tree(arg);
-
 
         tree.insert(5);
 
