@@ -254,25 +254,25 @@ dsaa::BinaryTree<Elem, Alloc>::~BinaryTree()
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR INLINE dsaa::BinaryTree<Elem, Alloc>::size_type dsaa::BinaryTree<Elem, Alloc>::size() const noexcept
+CONSTEXPR INLINE typename dsaa::BinaryTree<Elem, Alloc>::size_type dsaa::BinaryTree<Elem, Alloc>::size() const noexcept
 {
     return m_size;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer &dsaa::BinaryTree<Elem, Alloc>::root() noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer &dsaa::BinaryTree<Elem, Alloc>::root() noexcept
 {
     return m_root;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::const_pointer dsaa::BinaryTree<Elem, Alloc>::root() const noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::const_pointer dsaa::BinaryTree<Elem, Alloc>::root() const noexcept
 {
     return m_root;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_minimum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_minimum(pointer p_node) noexcept
 {
     while (p_node->left())
         p_node = p_node->left();
@@ -281,7 +281,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_maximum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_maximum(pointer p_node) noexcept
 {
     while (p_node->right())
         p_node = p_node->right();
@@ -290,7 +290,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_minimum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_minimum(pointer p_node) noexcept
 {
     if (p_node->left())
         return recursive_minimum(p_node->left());
@@ -299,7 +299,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_maximum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_maximum(pointer p_node) noexcept
 {
     if (p_node->right())
         return recursive_maximum(p_node->right());
@@ -308,7 +308,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::successor(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::successor(pointer p_node) noexcept
 {
     if (p_node->right())
         return iterative_minimum(p_node->right());
@@ -324,7 +324,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::predecessor(pointer p_node) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::predecessor(pointer p_node) noexcept
 {
     if (p_node->left())
         return iterative_maximum(p_node->left());
@@ -340,7 +340,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_search(pointer p_node, const_reference p_value) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::recursive_search(pointer p_node, const_reference p_value) noexcept
 {
     if (!p_node || p_value == p_node->value())
         return p_node;
@@ -352,7 +352,7 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_search(pointer p_node, const_reference p_value) noexcept
+CONSTEXPR typename dsaa::BinaryTree<Elem, Alloc>::pointer dsaa::BinaryTree<Elem, Alloc>::iterative_search(pointer p_node, const_reference p_value) noexcept
 {
     while (p_node && p_value != p_node->value())
     {
