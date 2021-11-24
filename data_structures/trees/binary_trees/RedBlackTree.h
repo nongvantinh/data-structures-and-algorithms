@@ -250,8 +250,8 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::RedBlackTree(const std::initializer_l
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::operator=(const RedBlackTree &p_other)
 {
-    recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
-                                  { erase(p_node); });
+    while(size())
+        erase(m_root);
 
     p_other.recursive_preorder_tree_walk(p_other.root(), [&](const_pointer p_node)
                                          { insert(p_node->value()); });
@@ -295,53 +295,53 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::oper
 template <typename Elem, typename Alloc>
 dsaa::RedBlackTree<Elem, Alloc>::~RedBlackTree()
 {
-    // while (size())
-    // erase(m_root);
-    std::cout << "~destructor\n";
+    while (size())
+        erase(m_root);
+    // std::cout << "~destructor\n";
 
-    recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
-                                  {
-                                      std::cout << p_node->value() << " ";
-                                      erase(p_node);
-                                  });
-    std::cout << "\n";
+    // recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
+    //                               {
+    //                                 //   std::cout << p_node->value() << " ";
+    //                                   erase(p_node);
+    //                               });
+    // std::cout << "\n";
 
     std::allocator_traits<allocator_type>::destroy(m_allocator, m_sentinel);
     std::allocator_traits<allocator_type>::deallocate(m_allocator, m_sentinel, 1);
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR INLINE dsaa::RedBlackTree<Elem, Alloc>::size_type dsaa::RedBlackTree<Elem, Alloc>::size() const noexcept
+CONSTEXPR INLINE typename dsaa::RedBlackTree<Elem, Alloc>::size_type dsaa::RedBlackTree<Elem, Alloc>::size() const noexcept
 {
     return m_size;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer &dsaa::RedBlackTree<Elem, Alloc>::root() noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer &dsaa::RedBlackTree<Elem, Alloc>::root() noexcept
 {
     return m_root;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem, Alloc>::root() const noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem, Alloc>::root() const noexcept
 {
     return m_root;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() noexcept
 {
     return m_sentinel;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() const noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::const_pointer dsaa::RedBlackTree<Elem, Alloc>::sentinel() const noexcept
 {
     return m_sentinel;
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_minimum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_minimum(pointer p_node) noexcept
 {
     while (sentinel() != p_node->left())
         p_node = p_node->left();
@@ -350,7 +350,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_maximum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_maximum(pointer p_node) noexcept
 {
     while (sentinel() != p_node->right())
         p_node = p_node->right();
@@ -359,7 +359,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_minimum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_minimum(pointer p_node) noexcept
 {
     if (sentinel() != p_node->left())
         return recursive_minimum(p_node->left());
@@ -368,7 +368,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_maximum(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_maximum(pointer p_node) noexcept
 {
     if (sentinel() != p_node->right())
         return recursive_maximum(p_node->right());
@@ -377,7 +377,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::successor(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::successor(pointer p_node) noexcept
 {
     if (sentinel() != p_node->right())
         return iterative_minimum(p_node->right());
@@ -393,7 +393,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::predecessor(pointer p_node) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::predecessor(pointer p_node) noexcept
 {
     if (sentinel() != p_node->left())
         return iterative_maximum(p_node->left());
@@ -409,7 +409,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_search(pointer p_node, const_reference p_value) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::recursive_search(pointer p_node, const_reference p_value) noexcept
 {
     if (!p_node || sentinel() == p_node || p_value == p_node->value())
         return p_node;
@@ -421,7 +421,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Allo
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_search(pointer p_node, const_reference p_value) noexcept
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::pointer dsaa::RedBlackTree<Elem, Alloc>::iterative_search(pointer p_node, const_reference p_value) noexcept
 {
     while (sentinel() != p_node && p_value != p_node->value())
     {
@@ -507,7 +507,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::recursive_postorder_tree_walk(co
 }
 
 template <typename Elem, typename Alloc>
-CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::size_type dsaa::RedBlackTree<Elem, Alloc>::black_height(const_pointer &p_node) const
+CONSTEXPR typename dsaa::RedBlackTree<Elem, Alloc>::size_type dsaa::RedBlackTree<Elem, Alloc>::black_height(const_pointer &p_node) const
 {
     size_type count(0);
     while (p_node != sentinel())
@@ -739,13 +739,13 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
                 sibling = p_node->parent()->right();
             }
             // Case 2.
-            if (sibling->left() && !sibling->left()->is_red() && sibling->right() && !sibling->right()->is_red())
+            if (!sibling->left()->is_red() && !sibling->right()->is_red())
             {
                 sibling->is_red() = true;
                 p_node = p_node->parent();
             }
             // Case 3.
-            else if (sibling->right() && !sibling->right()->is_red())
+            else if (!sibling->right()->is_red())
             {
                 sibling->left()->is_red() = false;
                 sibling->is_red() = true;
