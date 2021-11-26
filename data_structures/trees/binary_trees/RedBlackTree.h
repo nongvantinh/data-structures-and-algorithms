@@ -250,7 +250,7 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc>::RedBlackTree(const std::initializer_l
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::operator=(const RedBlackTree &p_other)
 {
-    while(size())
+    while (size())
         erase(m_root);
 
     p_other.recursive_preorder_tree_walk(p_other.root(), [&](const_pointer p_node)
@@ -261,8 +261,9 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::oper
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::operator=(RedBlackTree &&p_other)
 {
-    recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
-                                  { erase(p_node); });
+    while (size())
+        erase(m_root);
+
     std::allocator_traits<allocator_type>::destroy(m_allocator, m_sentinel);
     std::allocator_traits<allocator_type>::deallocate(m_allocator, m_sentinel, 1);
 
@@ -282,8 +283,8 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::oper
 template <typename Elem, typename Alloc>
 CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::operator=(const std::initializer_list<value_type> &p_elements)
 {
-    recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
-                                  { erase(p_node); });
+    while (size())
+        erase(m_root);
 
     for (auto i(p_elements.begin()); p_elements.end() != i; ++i)
         insert(*i);
@@ -291,20 +292,11 @@ CONSTEXPR dsaa::RedBlackTree<Elem, Alloc> &dsaa::RedBlackTree<Elem, Alloc>::oper
     return *this;
 }
 
-#include <iostream>
 template <typename Elem, typename Alloc>
 dsaa::RedBlackTree<Elem, Alloc>::~RedBlackTree()
 {
     while (size())
         erase(m_root);
-    // std::cout << "~destructor\n";
-
-    // recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
-    //                               {
-    //                                 //   std::cout << p_node->value() << " ";
-    //                                   erase(p_node);
-    //                               });
-    // std::cout << "\n";
 
     std::allocator_traits<allocator_type>::destroy(m_allocator, m_sentinel);
     std::allocator_traits<allocator_type>::deallocate(m_allocator, m_sentinel, 1);
