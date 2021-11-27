@@ -216,9 +216,9 @@ TEST_CASE("Test RedBlackTree RedBlackTreeNode move assignment.", "[RedBlackTree]
     REQUIRE(value == **node2);
     REQUIRE(value == node2->value());
     REQUIRE(true == node2->is_red());
-    REQUIRE(nullptr == node->parent());
-    REQUIRE(nullptr == node->left());
-    REQUIRE(nullptr == node->right());
+    REQUIRE(nullptr == node2->parent());
+    REQUIRE(nullptr == node2->left());
+    REQUIRE(nullptr == node2->right());
 
     delete node;
     delete node2;
