@@ -683,17 +683,16 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase(pointer &p_node)
     {
         pointer succ = iterative_minimum(p_node->right());
         original_color = succ->is_red();
-        tracker = succ->right(); // The sentinel node.
+        tracker = succ->right();
 
-        // Whenever transplant gets called the parent of sentinel is changed.
+        // In case tracker is the sentinel node.
         if (succ->parent() == p_node)
         {
             tracker->parent() = succ;
         }
         else
         {
-            pointer temp(succ); // Avoid change value of "succ" itself.
-            transplant(temp, succ->right());
+            transplant(succ, succ->right());
             succ->right() = p_node->right();
             succ->right()->parent() = succ;
         }
@@ -708,7 +707,7 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase(pointer &p_node)
     std::allocator_traits<allocator_type>::deallocate(m_allocator, substitute, 1);
     --m_size;
 
-    // Was the original color of "succ" painted black?
+    // Was the original color painted black? It could violate property 5.
     if (!original_color)
         erase_fixup(tracker);
 }
@@ -748,8 +747,8 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
             else
             {
                 sibling->is_red() = p_node->parent()->is_red();
-                p_node->parent()->is_red() = false;
                 sibling->right()->is_red() = false;
+                p_node->parent()->is_red() = false;
                 left_rotate(p_node->parent());
                 p_node = m_root;
             }
@@ -784,8 +783,8 @@ CONSTEXPR void dsaa::RedBlackTree<Elem, Alloc>::erase_fixup(pointer p_node)
             else
             {
                 sibling->is_red() = p_node->parent()->is_red();
-                p_node->parent()->is_red() = false;
                 sibling->left()->is_red() = false;
+                p_node->parent()->is_red() = false;
                 right_rotate(p_node->parent());
                 p_node = m_root;
             }

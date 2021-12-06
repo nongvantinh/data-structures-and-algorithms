@@ -247,8 +247,6 @@ CONSTEXPR dsaa::BinaryTree<Elem, Alloc> &dsaa::BinaryTree<Elem, Alloc>::operator
 template <typename Elem, typename Alloc>
 dsaa::BinaryTree<Elem, Alloc>::~BinaryTree()
 {
-    // while (size())
-    // erase(m_root);
     recursive_postorder_tree_walk(m_root, [&](pointer &p_node)
                                   { erase(p_node); });
 }
@@ -471,7 +469,7 @@ CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::erase(pointer &p_node)
 {
     // The moment p_node transplant with its child, p_node will become invalid.
     pointer substitute(p_node);
-    
+
     if (!p_node->left())
         transplant(p_node, p_node->right());
     else if (!p_node->right())
