@@ -11,8 +11,8 @@ Given a rod of length "n" inches and a table of prices "pi" for i = 0, 1, ..., n
 determine the maximum revenue "rn" obtainable by cutting up the rod and selling the pieces. 
 
 Note that if the price "pn" for a rod of length n is large enough, an optimal solution may require no cutting at all.
-length i |  1   2   3   4   5   6   7   8   9   10
-price pi |  1   5   8   9   10  17  17  20  24  30
+length i | 1   2   3   4   5   6   7   8   9   10
+price pi | 1   5   8   9   10  17  17  20  24  30
 
 example:
     input:
@@ -30,16 +30,23 @@ or not cutting, at distance i inches from the left end.
 #include <vector>
 
 int cut_rod(const std::vector<int> &prices, int length);
+int top_down_memoized_cut_rod(const std::vector<int> &prices, int length);
+int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results);
+int bottom_up_cut_rod(const std::vector<int> &prices, int length);
 
 int main()
 {
-    std::vector<int> i{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    std::vector<int> pi{1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
-    std::cout << cut_rod(pi, 4) << "\n";
+    // std::vector<int> i{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int> pi{1, 5, 8, 9, 10, 17, 17, 20, 24, 30, 37, 96, 100, 101, 106, 120, 207, 245, 256, 279, 310, 366, 368, 459, 470, 494, 519, 597, 601, 610, 716, 731, 775, 779, 807, 846, 933, 960, 994, 1034, 1085, 1088, 1108, 1185, 1213};
+    // std::cout << cut_rod(pi, 40) << "\n";
+    std::cout << "cut rod\n";
+    std::cout << top_down_memoized_cut_rod(pi, 4) << "\n";
+    std::cout << bottom_up_cut_rod(pi, 4) << "\n";
 
     return 0;
 }
 
+// Simple rot cutting.
 int cut_rod(const std::vector<int> &prices, int length)
 {
     if (0 == length)
@@ -47,8 +54,51 @@ int cut_rod(const std::vector<int> &prices, int length)
 
     int max_revenue = INT32_MIN;
 
-    for (int i = 0; i < length; ++i)
+    for (int i = 0; i != length; ++i)
         max_revenue = std::max(max_revenue, prices[i] + cut_rod(prices, length - i - 1));
 
     return max_revenue;
+}
+
+// Dynamic programming: Top-down cut rod procedure with memoized added.
+int top_down_memoized_cut_rod(const std::vector<int> &prices, int length)
+{
+    std::vector<int> results(length, INT32_MIN);
+    return top_down_memoized_cut_rod_aux(prices, length, results);
+}
+
+int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results)
+{
+    if (0 <= results[length - 1])
+        return results[length - 1];
+
+    int max_revenue = INT32_MIN;
+    if (0 == length)
+        max_revenue = 0;
+    else
+    {
+        for (int i = 0; i != length; ++i)
+            max_revenue = std::max(max_revenue, prices[i] + top_down_memoized_cut_rod_aux(prices, length - i - 1, results));
+    }
+
+    results[length - 1] = max_revenue;
+    return max_revenue;
+}
+
+// Dynamic programming: Bottom up cut rod.
+int bottom_up_cut_rod(const std::vector<int> &prices, int length)
+{
+    std::vector<int> results(length + 1, INT32_MIN);
+    results[0] = 0;
+
+    for (int i = 1; i != length + 1; ++i)
+    {
+        int max_revenue = INT32_MIN;
+        for (int k = 0; k != i; ++k)
+            max_revenue = std::max(max_revenue, prices[k] + results[i - k - 1]);
+
+        results[i] = max_revenue;
+    }
+
+    return results[length];
 }
