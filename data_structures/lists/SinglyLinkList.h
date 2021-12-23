@@ -7,6 +7,7 @@
 #include <stdexcept>		// std::out_of_range.
 #include <iterator>			// std::iterator_traits
 #include <cassert>
+#include <limits>
 
 #include "dsaaTypedefs.h"
 
