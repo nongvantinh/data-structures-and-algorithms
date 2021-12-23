@@ -818,7 +818,7 @@ CONSTEXPR void dsaa::DynamicArray<Elem, Alloc>::resize(const size_type &p_size, 
 	reserve(p_size);
 	if (size() <= p_size)
 	{
-		iterator from(&m_elements[size()]), to(&m_elements[size() + p_size]);
+		iterator from(&m_elements[size()]), to(&m_elements[p_size]);
 		while (from != to)
 		{
 			std::allocator_traits<allocator_type>::construct(m_allocator, from.content(), p_value);
