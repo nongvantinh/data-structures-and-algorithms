@@ -109,4 +109,24 @@ bool operator>(const TestObject<T> &p_first, const TestObject<T> &p_last)
 {
 	return (p_first.value() > p_last.value());
 }
+
+
+template <typename T>
+TestObject<T> operator-(const TestObject<T> &p_first, const TestObject<T> &p_last)
+{
+	return (p_first.value() - p_last.value());
+}
+
+template <typename T>
+TestObject<T> operator+(const TestObject<T> &p_first, const TestObject<T> &p_last)
+{
+	return (p_first.value() + p_last.value());
+}
+
+template <typename T>
+TestObject<T> operator*(const TestObject<T> &p_first, const TestObject<T> &p_last)
+{
+	return (p_first.value() * p_last.value());
+}
+
 #endif //DSAA_TESTER_H
