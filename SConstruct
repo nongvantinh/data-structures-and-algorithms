@@ -51,8 +51,9 @@ test_arrays_path = 'test/data_structures/arrays/'
 test_lists_path = 'test/data_structures/lists/'
 test_heaps_path = 'test/data_structures/trees/heaps/'
 test_binary_tree_path = 'test/data_structures/trees/binary_trees/'
+test_math_path = 'test/math/'
 test_data_structures_paths = [
-    test_arrays_path, test_lists_path, test_heaps_path, test_binary_tree_path]
+    test_arrays_path, test_lists_path, test_heaps_path, test_binary_tree_path, test_math_path]
 
 test_cases_paths = ['modules/', 'test/', 'test/algorithms/']
 test_cases_paths += test_data_structures_paths
@@ -70,8 +71,10 @@ binary_trees_path = "data_structures/trees/binary_trees/"
 heaps_path = "data_structures/trees/heaps/"
 multi_way_trees_path = "data_structures/trees/multi_way_trees/"
 
+math = "math/"
+
 data_structures_paths = ['data_structures/', arrays_path, lists_path,
-                         trees_path, b_trees_path, binary_trees_path, heaps_path, multi_way_trees_path]
+                         trees_path, b_trees_path, binary_trees_path, heaps_path, multi_way_trees_path, math]
 
 library_paths = [root_path, algorithms_path]
 library_paths += (data_structures_paths)
@@ -100,7 +103,7 @@ if env['build'] == 'r':
 
 if env['build'] in ('d', 'debug'):
     # Debugging Your Program.
-    env.Append(CXXFLAGS=['-g3'])
+    env.Append(CXXFLAGS=['-g'])
     env.Append(CXXFLAGS=['-Og'])
     # Request or Suppress Warnings.
     env.Append(CXXFLAGS=['-Wall'])
