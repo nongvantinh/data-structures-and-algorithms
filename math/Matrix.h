@@ -152,7 +152,7 @@ CONSTEXPR dsaa::Matrix<Elem, ElementAllocator, ContainerAllocator> dsaa::Matrix<
     {
         for (size_type k(0); k != result.column_size(); ++k)
         {
-            for (size_type m(0); m != p_other.row_size(); ++m)
+            for (size_type m(0); m != row_size(); ++m)
             {
                 result[i][k] = result[i][k] + (*this)[i][m] * p_other[m][k];
             }
