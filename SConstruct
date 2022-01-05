@@ -176,8 +176,15 @@ def run_program(target, source, env):
                     env['PROGSUFFIX'] + ' --reporter compact --success')
     return None
 
+env["CCOMSTR"] = "Compiling $SOURCES ==> $TARGET"
 env["CXXCOMSTR"] = "Compiling $SOURCES ==> $TARGET"
 env["LINKCOMSTR"] = "Linking $SOURCES ==> $TARGET"
+
+env["SHCCCOMSTR"] = "Compiling $SOURCES ==> $TARGET"
+env["SHCXXCOMSTR"] = "Compiling $SOURCES ==> $TARGET"
+env["SHLINKCOMSTR"] = "Compiling $SOURCES ==> $TARGET"
+
+
 
 if env['target'] == 'run_test':
     print("Build and run test cases for :", env['target_name'])
