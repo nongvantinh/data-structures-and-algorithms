@@ -66,6 +66,19 @@ namespace dsaa
         template <typename Action>
         CONSTEXPR void recursive_postorder_tree_walk(const_pointer p_node, Action p_action) const noexcept;
 
+        template <typename Action>
+        CONSTEXPR void iterative_preorder_tree_walk(pointer &p_node, Action p_action);
+        template <typename Action>
+        CONSTEXPR void iterative_preorder_tree_walk(const_pointer p_node, Action p_action) const noexcept;
+        template <typename Action>
+        CONSTEXPR void iterative_inorder_tree_walk(pointer &p_node, Action p_action);
+        template <typename Action>
+        CONSTEXPR void iterative_inorder_tree_walk(const_pointer p_node, Action p_action) const noexcept;
+        template <typename Action>
+        CONSTEXPR void iterative_postorder_tree_walk(pointer &p_node, Action p_action);
+        template <typename Action>
+        CONSTEXPR void iterative_postorder_tree_walk(const_pointer p_node, Action p_action) const noexcept;
+
         // p_other will take place of p_node in tree.
         CONSTEXPR void transplant(pointer &p_node, pointer &p_other) noexcept;
 
@@ -434,6 +447,163 @@ CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::recursive_postorder_tree_walk(cons
         p_action(p_node);
     }
 }
+
+//-----------------------------------------Iterative walk------------------------
+
+#include "DynamicArray.h"
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_preorder_tree_walk(pointer &p_node, Action p_action)
+{
+    if (nullptr == p_node)
+        return;
+
+    dsaa::DynamicArray<pointer> holder;
+    holder.reserve(size());
+
+    pointer visitor(p_node);
+    while (visitor)
+    {
+        p_action(visitor);
+        if (visitor->right())
+            holder.insert_last(visitor->right());
+
+        visitor = visitor->left();
+
+        if (nullptr == visitor && holder.size())
+        {
+            visitor = holder[holder.size() - 1];
+            holder.erase_last();
+        }
+    }
+}
+
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_preorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
+{
+    if (nullptr == p_node)
+        return;
+
+    dsaa::DynamicArray<const_pointer> holder;
+    holder.reserve(size());
+
+    pointer visitor(p_node);
+    while (visitor)
+    {
+        p_action(visitor);
+        if (visitor->right())
+            holder.insert_last(visitor->right());
+
+        visitor = visitor->left();
+
+        if (nullptr == visitor && holder.size())
+        {
+            visitor = holder[holder.size() - 1];
+            holder.erase_last();
+        }
+    }
+}
+
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_inorder_tree_walk(pointer &p_node, Action p_action)
+{
+    if (nullptr == p_node)
+        return;
+
+    dsaa::DynamicArray<pointer> holder;
+    holder.reserve(size());
+
+    pointer visitor(p_node);
+    while (visitor || holder.size())
+    {
+        while (visitor)
+        {
+            holder.insert_last(visitor);
+            visitor = visitor->left();
+        }
+
+        visitor = holder[holder.size() - 1];
+        holder.erase_last();
+
+        p_action(visitor);
+
+        visitor = visitor->right();
+    }
+}
+
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_inorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
+{
+    if (nullptr == p_node)
+        return;
+
+    dsaa::DynamicArray<pointer> holder;
+    holder.reserve(size());
+
+    pointer visitor(p_node);
+    while (visitor || holder.size())
+    {
+        while (visitor)
+        {
+            holder.insert_last(visitor);
+            visitor = visitor->left();
+        }
+
+        visitor = holder[holder.size() - 1];
+        holder.erase_last();
+
+        p_action(visitor);
+
+        visitor = visitor->right();
+    }
+}
+
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_postorder_tree_walk(pointer &p_node, Action p_action)
+{
+    if (nullptr == p_node)
+        return;
+
+    dsaa::DynamicArray<pointer> holder, actions;
+    holder.reserve(size());
+
+    pointer visitor(p_node);
+    holder.insert_last(visitor);
+    while (holder.size())
+    {
+        visitor = holder[holder.size() - 1];
+        holder.erase_last();
+        actions.insert_last(visitor);
+
+        if (visitor->left())
+            holder.insert_last(visitor->left());
+        if (visitor->right())
+            holder.insert_last(visitor->right());
+    }
+
+    int index(actions.size() - 1);
+    while (0 <= index)
+    {
+        p_action(actions[index--]);
+    }
+}
+
+template <typename Elem, typename Alloc>
+template <typename Action>
+CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::iterative_postorder_tree_walk(const_pointer p_node, Action p_action) const noexcept
+{
+    if (nullptr != p_node)
+    {
+        iterative_postorder_tree_walk(p_node->left(), p_action);
+        iterative_postorder_tree_walk(p_node->right(), p_action);
+        p_action(p_node);
+    }
+}
+//-----------------------------------------Iterative walk------------------------
 
 template <typename Elem, typename Alloc>
 CONSTEXPR void dsaa::BinaryTree<Elem, Alloc>::insert(const_reference p_value)
