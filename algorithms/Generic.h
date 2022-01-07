@@ -2,6 +2,7 @@
 #define DSAA_GENERIC_H
 
 #include <functional>
+#include <cmath>
 
 #include "Random.h"
 #include "BinaryTree.h"
@@ -23,14 +24,7 @@ namespace dsaa
     template <typename RIterator, typename Compare = std::less<typename std::iterator_traits<RIterator>::value_type>>
     RIterator randomized_hoare_partition(RIterator p_first, RIterator p_last, Compare p_compare = Compare());
 
-    template <typename T, typename Action>
-    void recursive_preorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action);
-
-    template <typename T, typename Action>
-    void recursive_inorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action);
-
-    template <typename T, typename Action>
-    void recursive_postorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action);
+    bool is_prime(size_t p_number);
 }
 
 template <typename RIterator, typename Compare>
@@ -152,36 +146,4 @@ RIterator dsaa::randomized_hoare_partition(RIterator p_first, RIterator p_last, 
     return dsaa::hoare_partition(p_first, p_last, p_compare);
 }
 
-template <typename T, typename Action>
-void dsaa::recursive_preorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action)
-{
-    if (nullptr != p_node)
-    {
-        p_action(p_node);
-        recursive_preorder_tree_walk(p_node->left(), p_action);
-        recursive_preorder_tree_walk(p_node->right(), p_action);
-    }
-}
-
-template <typename T, typename Action>
-void dsaa::recursive_inorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action)
-{
-    if (nullptr != p_node)
-    {
-        recursive_inorder_tree_walk(p_node->left(), p_action);
-        p_action(p_node);
-        recursive_inorder_tree_walk(p_node->right(), p_action);
-    }
-}
-
-template <typename T, typename Action>
-void dsaa::recursive_postorder_tree_walk(BinaryTreeNode<T> *&p_node, Action p_action)
-{
-    if (nullptr != p_node)
-    {
-        recursive_postorder_tree_walk(p_node->left(), p_action);
-        recursive_postorder_tree_walk(p_node->right(), p_action);
-        p_action(p_node);
-    }
-}
 #endif //!DSAA_GENERIC_H
