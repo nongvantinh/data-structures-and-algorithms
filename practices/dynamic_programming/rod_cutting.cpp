@@ -126,16 +126,16 @@ int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int l
         results[i] = max_revenue;
     }
 
-    std::cout << "Length: " << length << std::endl
-              << "max revenue: " << results[length] << std::endl
-              << "Decomposition: ";
-    while (0 < length)
+    std::cout << "Length: " << length << "\nDecomposition: ";
+    const int cost_cut = 1;
+    int r = results[length];
+    int piece = length;
+    while (0 < piece)
     {
-        std::cout << solutions[length] << " ";
-        length -= solutions[length];
+        r -= cost_cut;
+        std::cout << solutions[piece] << " ";
+        piece -= solutions[piece];
     }
-
-    std::cout << std::endl;
-
+    std::cout << "\nmax revenue: " << r << std::endl;
     return results[results.size() - 1];
 }
