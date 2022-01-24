@@ -146,15 +146,15 @@ CONSTEXPR dsaa::Matrix<Elem, ElementAllocator, ContainerAllocator> dsaa::Matrix<
 {
     if (column_size() != p_other.row_size())
         throw std::runtime_error("Incompatible dimention: row_size() != p_other.column_size().\n");
+    
     Matrix result(row_size(), p_other.column_size());
-
     for (size_type i(0); i != result.row_size(); ++i)
     {
         for (size_type k(0); k != result.column_size(); ++k)
         {
-            for (size_type m(0); m != result.row_size(); ++m)
+            for (size_type m(0); m != this->column_size(); ++m)
             {
-                result[i][k] = result[i][k] + (*this)[i][m] * p_other[m][k];
+                    result[i][k] = result[i][k] + (*this)[i][m] * p_other[m][k];
             }
         }
     }
@@ -219,7 +219,6 @@ CONSTEXPR dsaa::Matrix<Elem, ElementAllocator, ContainerAllocator> dsaa::Matrix<
 
     return result;
 }
-
 
 template <typename Elem, typename ElementAllocator, typename ContainerAllocator>
 CONSTEXPR dsaa::Matrix<Elem, ElementAllocator, ContainerAllocator> dsaa::Matrix<Elem, ElementAllocator, ContainerAllocator>::identity(size_type p_row, size_type p_column)
