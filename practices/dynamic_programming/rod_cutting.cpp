@@ -29,67 +29,64 @@ or not cutting, at distance i inches from the left end.
 #include <iostream>
 #include <vector>
 
-int cut_rod(const std::vector<int> &prices, int length);
-int top_down_memoized_cut_rod(const std::vector<int> &prices, int length);
-void top_down_memoized_cut_rod_with_solutions(const std::vector<int> &prices, int length);
-int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results);
-int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices, int length, std::vector<int> &results, std::vector<int> &solutions);
-int bottom_up_cut_rod(const std::vector<int> &prices, int length);
-int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int length);
+int cut_rod(const std::vector<int> &prices, int length, const int cost_cutting);
+int top_down_memoized_cut_rod(const std::vector<int> &prices, int length, const int cost_cutting);
+void top_down_memoized_cut_rod_with_solutions(const std::vector<int> &prices, int length, const int cost_cutting);
+int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results, const int cost_cutting);
+int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices, int length, std::vector<int> &results, std::vector<int> &solutions, const int cost_cutting);
+int bottom_up_cut_rod(const std::vector<int> &prices, int length, const int cost_cutting);
+int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int length, const int cost_cutting);
 
 int main()
 {
     // std::vector<int> i{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     std::vector<int> pi{1, 5, 8, 9, 10, 17, 17, 20, 24, 30, 37, 96, 100, 101, 106, 120, 207, 245, 256, 279, 310, 366, 368, 459, 470, 494, 519, 597, 601, 610, 716, 731, 775, 779, 807, 846, 933, 960, 994, 1034, 1085, 1088, 1108, 1185, 1213};
-    // std::cout << cut_rod(pi, 40) << "\n";
-    // std::cout << "cut rod\n";
-    // std::cout << top_down_memoized_cut_rod(pi, 4) << "\n";
-    top_down_memoized_cut_rod_with_solutions(pi, 4);
-    // std::cout << bottom_up_cut_rod(pi, 4) << "\n";
-    // bottom_up_cut_rod_reconstruct_solution(pi, 4);
+    // std::cout << cut_rod(pi, 4, 1) << "\n";
+    // std::cout << top_down_memoized_cut_rod(pi, 4, 1) << "\n";
+    // top_down_memoized_cut_rod_with_solutions(pi, 4, 1);
+    // std::cout << bottom_up_cut_rod(pi, 4, 1) << "\n";
+    // bottom_up_cut_rod_reconstruct_solution(pi, 4, 1);
     return 0;
 }
 
 // Simple rod cutting.
-int cut_rod(const std::vector<int> &prices, int length)
+int cut_rod(const std::vector<int> &prices, int length, const int cost_cutting)
 {
     if (0 == length)
         return 0;
 
     int max_revenue = INT32_MIN;
-    // prices[i] = the length at "index i".
+    // Index start at 0 so prices[i] mean price at index i with length i + 1.
     for (int i = 0; i != length; ++i)
-        max_revenue = std::max(max_revenue, prices[i] + cut_rod(prices, length - i - 1));
+        max_revenue = std::max(max_revenue, prices[i] + cut_rod(prices, length - i - 1, cost_cutting) - cost_cutting);
 
     return max_revenue;
 }
 
 // Dynamic programming: Top-down cut rod procedure with memoized added.
-int top_down_memoized_cut_rod(const std::vector<int> &prices, int length)
+int top_down_memoized_cut_rod(const std::vector<int> &prices, int length, const int cost_cutting)
 {
     std::vector<int> results(length + 1, INT32_MIN);
-    return top_down_memoized_cut_rod_aux(prices, length, results);
+    return top_down_memoized_cut_rod_aux(prices, length, results, cost_cutting);
 }
 
-void top_down_memoized_cut_rod_with_solutions(const std::vector<int> &prices, int length)
+void top_down_memoized_cut_rod_with_solutions(const std::vector<int> &prices, int length, const int cost_cutting)
 {
     std::vector<int> results(length + 1, INT32_MIN);
     std::vector<int> solutions(length + 1, INT32_MIN);
 
     std::cout << "Length: " << length << "\nDecomposition: ";
     const int cost_cut = 1;
-    int r = top_down_memoized_cut_rod_with_solutions_aux(prices, length, results, solutions);
-    int piece = length;
-    while (0 < piece)
+    int r = top_down_memoized_cut_rod_with_solutions_aux(prices, length, results, solutions, cost_cutting);
+    while (0 < length)
     {
-        r -= cost_cut;
-        std::cout << solutions[piece] << " ";
-        piece -= solutions[piece];
+        std::cout << solutions[length] << " ";
+        length -= solutions[length];
     }
     std::cout << "\nmax revenue: " << r << std::endl;
 }
 
-int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results)
+int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, std::vector<int> &results, const int cost_cutting)
 {
     if (0 <= results[length])
         return results[length];
@@ -100,14 +97,14 @@ int top_down_memoized_cut_rod_aux(const std::vector<int> &prices, int length, st
     else
     {
         for (int i = 0; i != length; ++i)
-            max_revenue = std::max(max_revenue, prices[i] + top_down_memoized_cut_rod_aux(prices, length - i - 1, results));
+            max_revenue = std::max(max_revenue, prices[i] + top_down_memoized_cut_rod_aux(prices, length - i - 1, results, cost_cutting) - cost_cutting);
     }
 
     results[length] = max_revenue;
     return max_revenue;
 }
 
-int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices, int length, std::vector<int> &results, std::vector<int> &solutions)
+int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices, int length, std::vector<int> &results, std::vector<int> &solutions, const int cost_cutting)
 {
     if (0 <= results[length])
         return results[length];
@@ -119,7 +116,7 @@ int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices,
     {
         for (int i = 0; i != length; ++i)
         {
-            int r = prices[i] + top_down_memoized_cut_rod_with_solutions_aux(prices, length - i - 1, results, solutions);
+            int r = prices[i] + top_down_memoized_cut_rod_with_solutions_aux(prices, length - i - 1, results, solutions, cost_cutting) - cost_cutting;
             if (max_revenue < r)
             {
                 max_revenue = r;
@@ -133,7 +130,7 @@ int top_down_memoized_cut_rod_with_solutions_aux(const std::vector<int> &prices,
 }
 
 // Dynamic programming: Bottom up cut rod.
-int bottom_up_cut_rod(const std::vector<int> &prices, int length)
+int bottom_up_cut_rod(const std::vector<int> &prices, int length, const int cost_cutting)
 {
     std::vector<int> results(length + 1, INT32_MIN);
     results[0] = 0;
@@ -142,7 +139,7 @@ int bottom_up_cut_rod(const std::vector<int> &prices, int length)
     {
         int max_revenue = INT32_MIN;
         for (int k = 0; k != i; ++k)
-            max_revenue = std::max(max_revenue, prices[k] + results[i - k - 1]);
+            max_revenue = std::max(max_revenue, prices[k] + results[i - k - 1] - cost_cutting);
 
         results[i] = max_revenue;
     }
@@ -151,7 +148,7 @@ int bottom_up_cut_rod(const std::vector<int> &prices, int length)
 }
 
 // Dynamic programming: Bottom up cut rod and reconstruct the solution.
-int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int length)
+int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int length, const int cost_cutting)
 {
     std::vector<int> results(length + 1, INT32_MIN);
     std::vector<int> solutions(length + 1, INT32_MIN);
@@ -162,9 +159,9 @@ int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int l
         int max_revenue = INT32_MIN;
         for (int k = 0; k != i; ++k)
         {
-            if (max_revenue < (prices[k] + results[i - k - 1]))
+            if (max_revenue < (prices[k] + results[i - k - 1] - cost_cutting))
             {
-                max_revenue = prices[k] + results[i - k - 1];
+                max_revenue = prices[k] + results[i - k - 1] - cost_cutting;
                 solutions[i] = k + 1;
             }
         }
@@ -173,15 +170,12 @@ int bottom_up_cut_rod_reconstruct_solution(const std::vector<int> &prices, int l
     }
 
     std::cout << "Length: " << length << "\nDecomposition: ";
-    const int cost_cut = 1;
-    int r = results[length];
     int piece = length;
     while (0 < piece)
     {
-        r -= cost_cut;
         std::cout << solutions[piece] << " ";
         piece -= solutions[piece];
     }
-    std::cout << "\nmax revenue: " << r << std::endl;
-    return results[results.size() - 1];
+    std::cout << "\nmax revenue: " << results[length] << std::endl;
+    return results[length];
 }
