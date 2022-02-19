@@ -87,10 +87,10 @@ TEST_CASE("Test BinaryTree copy constructor", "[BinaryTree]")
     REQUIRE(arg.size() == tree2.size());
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
     arr_iter = arg.begin();
-    dsaa::recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+    tree2.recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
                                        { REQUIRE(*arr_iter++ == value->value()); });
 }
 
@@ -105,10 +105,10 @@ TEST_CASE("Test BinaryTree copy constructor with std::allocator", "[BinaryTree]"
     REQUIRE(arg.size() == tree2.size());
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
     arr_iter = arg.begin();
-    dsaa::recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+    tree2.recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
                                        { REQUIRE(*arr_iter++ == value->value()); });
 }
 
@@ -124,8 +124,8 @@ TEST_CASE("Test BinaryTree move constructor", "[BinaryTree]")
     REQUIRE(arg.size() == tree2.size());
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree move constructor with std::allocator", "[BinaryTree]")
@@ -141,8 +141,8 @@ TEST_CASE("Test BinaryTree move constructor with std::allocator", "[BinaryTree]"
     REQUIRE(arg.size() == tree2.size());
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
@@ -155,8 +155,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("with two values")
@@ -167,8 +167,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("with three values")
@@ -181,8 +181,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("with four values")
@@ -195,8 +195,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("with five values")
@@ -209,8 +209,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("with five values")
@@ -223,8 +223,8 @@ TEST_CASE("Test BinaryTree with std::initializer_list", "[BinaryTree]")
         REQUIRE(arg.size() == tree.size());
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 }
 
@@ -238,8 +238,8 @@ TEST_CASE("Test BinaryTree copy assigment.", "[BinaryTree]")
     tree2 = tree;
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree move assigment.", "[BinaryTree]")
@@ -252,8 +252,8 @@ TEST_CASE("Test BinaryTree move assigment.", "[BinaryTree]")
     tree2 = std::move(tree);
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree2.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree initializer_list assigment.", "[BinaryTree]")
@@ -265,8 +265,8 @@ TEST_CASE("Test BinaryTree initializer_list assigment.", "[BinaryTree]")
     tree = arg2;
 
     auto arr_iter(arg2.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree iterative_minimum.", "[BinaryTree]")
@@ -345,8 +345,8 @@ TEST_CASE("Test BinaryTree recursive_preorder_tree_walk.", "[BinaryTree]")
     dsaa::BinaryTree<TestObject<int>> tree(arg);
 
     auto arr_iter(arg.begin());
-    dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                       { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                      { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree recursive_inorder_tree_walk.", "[BinaryTree]")
@@ -356,21 +356,226 @@ TEST_CASE("Test BinaryTree recursive_inorder_tree_walk.", "[BinaryTree]")
     dsaa::BinaryTree<TestObject<int>> tree(arg);
 
     auto arr_iter(arg2.begin());
-    dsaa::recursive_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                      { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                     { REQUIRE(*arr_iter++ == value->value()); });
 }
 
 TEST_CASE("Test BinaryTree recursive_postorder_tree_walk.", "[BinaryTree]")
 {
     std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
-    std::initializer_list<TestObject<int>> arg2{2, 5, 5, 6, 7, 8};
+    std::initializer_list<TestObject<int>> arg2{2, 5, 5, 8, 7, 6};
     dsaa::BinaryTree<TestObject<int>> tree(arg);
 
     auto arr_iter(arg2.begin());
-    dsaa::recursive_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                      { REQUIRE(*arr_iter++ == value->value()); });
+    tree.recursive_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                       { REQUIRE(*arr_iter++ == value->value()); });
 }
 
+/////////////////////////////////////////////////
+TEST_CASE("Test BinaryTree iterative_preorder_tree_walk.", "[BinaryTree]")
+{
+    SECTION("with empty tree.")
+    {
+        std::initializer_list<TestObject<int>> arg;
+        std::initializer_list<TestObject<int>> arg2;
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 1 element.")
+    {
+        std::initializer_list<TestObject<int>> arg{6};
+        std::initializer_list<TestObject<int>> arg2{6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+    SECTION("with 2 element: heavy on the left.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5};
+        std::initializer_list<TestObject<int>> arg2{6, 5};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 2 element: heavy on the right.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 7};
+        std::initializer_list<TestObject<int>> arg2{6, 7};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 3 element: balanced tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5, 7};
+        std::initializer_list<TestObject<int>> arg2{6, 5, 7};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with normal tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
+        std::initializer_list<TestObject<int>> arg2{6, 5, 2, 5, 7, 8};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
+    }
+}
+
+TEST_CASE("Test BinaryTree iterative_inorder_tree_walk.", "[BinaryTree]")
+{
+    SECTION("with empty tree.")
+    {
+        std::initializer_list<TestObject<int>> arg;
+        std::initializer_list<TestObject<int>> arg2;
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 1 element.")
+    {
+        std::initializer_list<TestObject<int>> arg{6};
+        std::initializer_list<TestObject<int>> arg2{6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+    SECTION("with 2 element: heavy on the left.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5};
+        std::initializer_list<TestObject<int>> arg2{5, 6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 2 element: heavy on the right.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 7};
+        std::initializer_list<TestObject<int>> arg2{6, 7};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 3 element: balanced tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5, 7};
+        std::initializer_list<TestObject<int>> arg2{5, 6, 7};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with normal tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5, 2, 5, 7, 8};
+        std::initializer_list<TestObject<int>> arg2{2, 5, 5, 6, 7, 8};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_inorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                         { REQUIRE(*arr_iter++ == value->value()); });
+    }
+}
+
+TEST_CASE("Test BinaryTree iterative_postorder_tree_walk.", "[BinaryTree]")
+{
+    SECTION("with empty tree.")
+    {
+        std::initializer_list<TestObject<int>> arg;
+        std::initializer_list<TestObject<int>> arg2;
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 1 element.")
+    {
+        std::initializer_list<TestObject<int>> arg{6};
+        std::initializer_list<TestObject<int>> arg2{6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+    SECTION("with 2 element: heavy on the left.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5};
+        std::initializer_list<TestObject<int>> arg2{5, 6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 2 element: heavy on the right.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 7};
+        std::initializer_list<TestObject<int>> arg2{7, 6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with 3 element: balanced tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 5, 7};
+        std::initializer_list<TestObject<int>> arg2{5, 7, 6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+
+    SECTION("with normal tree.")
+    {
+        std::initializer_list<TestObject<int>> arg{6, 4, 2, 5, 7, 8};
+        std::initializer_list<TestObject<int>> arg2{2, 5, 4, 8, 7, 6};
+        dsaa::BinaryTree<TestObject<int>> tree(arg);
+
+        auto arr_iter(arg2.begin());
+        tree.iterative_postorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                           { REQUIRE(*arr_iter++ == value->value()); });
+    }
+}
+//////////////////////////////////////////////////////
 TEST_CASE("Test BinaryTree insert.", "[BinaryTree]")
 {
     SECTION("insert on empty tree")
@@ -381,8 +586,8 @@ TEST_CASE("Test BinaryTree insert.", "[BinaryTree]")
         tree.insert(6);
 
         auto arr_iter(arg.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("insert on binary tree that has 1 child")
@@ -394,8 +599,8 @@ TEST_CASE("Test BinaryTree insert.", "[BinaryTree]")
         tree.insert(5);
 
         auto arr_iter(arg2.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("insert on binary tree that has 2 child")
@@ -407,8 +612,8 @@ TEST_CASE("Test BinaryTree insert.", "[BinaryTree]")
         tree.insert(7);
 
         auto arr_iter(arg2.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 }
 
@@ -422,8 +627,8 @@ TEST_CASE("Test BinaryTree erase.", "[BinaryTree]")
 
         auto arr_iter(arg.begin());
         ++arr_iter;
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
     SECTION("erase with no right child")
     {
@@ -433,8 +638,8 @@ TEST_CASE("Test BinaryTree erase.", "[BinaryTree]")
 
         auto arr_iter(arg.begin());
         ++arr_iter;
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("erase with two children")
@@ -447,8 +652,8 @@ TEST_CASE("Test BinaryTree erase.", "[BinaryTree]")
         tree.erase(node);
 
         auto arr_iter(arg2.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 
     SECTION("erase with two children")
@@ -461,7 +666,7 @@ TEST_CASE("Test BinaryTree erase.", "[BinaryTree]")
         tree.erase(node);
 
         auto arr_iter(arg2.begin());
-        dsaa::recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
-                                           { REQUIRE(*arr_iter++ == value->value()); });
+        tree.recursive_preorder_tree_walk(tree.root(), [&arr_iter](dsaa::BinaryTreeNode<TestObject<int>> *&value)
+                                          { REQUIRE(*arr_iter++ == value->value()); });
     }
 }
