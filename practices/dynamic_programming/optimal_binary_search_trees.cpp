@@ -222,7 +222,7 @@ public:
 std::tuple<Matrix, Matrix> optimal_BST(const std::vector<double>& p_keys, const std::vector<double>& p_dummys)
 {
 	// Even if the key is NULL, we still have probability when searching for a key that does not exist.
-	assert(0 != p_dummys.size());
+	assert(p_keys.size() == p_dummys.size() - 1);
 
 	if (0 == p_keys.size())
 	{
