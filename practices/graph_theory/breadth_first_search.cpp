@@ -1,4 +1,4 @@
-#include "Catch2/Catch.hpp"
+#include "Catch2.hpp"
 #include <queue>
 #include <memory>
 #include <list>
@@ -85,8 +85,7 @@ struct Vertex
 	enum class Color
 	{
 		WHITE, // We haven't reach this Vertex yet.
-		GRAY, // The frontier Vertex.
-		BLACK // Vertex has been discovered.
+		GRAY, // The Vertex has been discovered.
 	};
 
 	Vertex() : id(KeyType()), color(Color::WHITE), distance(-1), parent(nullptr) {}
@@ -137,8 +136,6 @@ void breadth_first_search(GraphType& p_graph, std::shared_ptr<Vertex<KeyType>>& 
 				frontier.push(neighbor);
 			}
 		}
-		//the source is now behind the frontier.
-		source->color = Vertex<KeyType>::Color::BLACK;
 	}
 }
 
