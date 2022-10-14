@@ -82,34 +82,25 @@ bool operator==(const Matrix<ValueType>& p_first, const Matrix<ValueType>& p_sec
 template <typename KeyType>
 struct Vertex
 {
-	enum class Color
-	{
-		WHITE, // We haven't reach this Vertex yet.
-		GRAY, // The Vertex has been discovered.
-	};
-
-	Vertex() : id(KeyType()), color(Color::WHITE), distance(-1), parent(nullptr) {}
-	Vertex(KeyType p_id, Color p_color = Color::WHITE, int p_distance = -1, std::shared_ptr<Vertex<KeyType>> p_parent = nullptr)
-		: id(p_id), color(p_color), distance(p_distance), parent(p_parent) {}
+	Vertex() : id(KeyType()), distance(-1), parent(nullptr) {}
+	Vertex(KeyType p_id, int p_distance = -1, std::shared_ptr<Vertex<KeyType>> p_parent = nullptr)
+		: id(p_id), distance(p_distance), parent(p_parent) {}
 	bool operator==(const Vertex<KeyType>& other) const
 	{
-		return (id == other.id && color == other.color && parent == other.parent);
+		return (id == other.id && parent == other.parent);
 	}
 
 	KeyType id;
-	Color color;
 	int distance;
 	std::shared_ptr<Vertex<KeyType>> parent;
 };
 
-// Requires std::shared_ptr<Vertex<KeyType>> must start out with color WHITE.
 // -	GraphType:	Container that used to store the graph, it must support subscript operator[KeyType][KeyType],
 //				and method GraphType[KeyType].size() must exist.
 // -	KeyType:	The type used to represent the Vertex in graph.
 template<typename GraphType, typename KeyType>
 void breadth_first_search(GraphType& p_graph, std::shared_ptr<Vertex<KeyType>>& p_source)
 {
-	p_source->color = Vertex<KeyType>::Color::GRAY;
 	p_source->distance = 0;
 	p_source->parent = nullptr;
 
@@ -127,9 +118,8 @@ void breadth_first_search(GraphType& p_graph, std::shared_ptr<Vertex<KeyType>>& 
 			std::shared_ptr<Vertex<KeyType>>& neighbor = p_graph[source->id][k];
 
 			// Is this neighbor being discovered now?
-			if (nullptr != neighbor && Vertex<KeyType>::Color::WHITE == neighbor->color)
+			if (nullptr != neighbor && -1 == neighbor->distance)
 			{
-				neighbor->color = Vertex<KeyType>::Color::GRAY;
 				neighbor->distance = source->distance + 1;
 				neighbor->parent = source;
 				// this neighbor is now on the frontier.
